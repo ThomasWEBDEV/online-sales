@@ -1,15 +1,98 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
+/* Navbar Le Wagon */
+.navbar-lewagon {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-lewagon .navbar-brand {
+  color: #167FFB;
+  font-weight: bold;
+}
+
+/* Banner */
+.banner {
+  background-size: cover;
+  background-position: center;
+  padding: 150px 0;
+  margin-bottom: 32px;
+}
+
+.banner h1 {
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.banner p {
+  color: white;
+  font-size: 20px;
+  opacity: .8;
+}
+
+/* Buttons */
+.btn-flat {
+  color: white;
+  padding: 8px 24px;
+  background: #167FFB;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-ghost {
+  color: #4A4A4A;
+  border: 1px solid #4A4A4A;
+  padding: 8px 24px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 16px;
+}
+
+/* Card Product */
+.card-product {
+  overflow: hidden;
+  height: 120px;
+  background: white;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.card-product img {
+  height: 100%;
+  width: 120px;
+  object-fit: cover;
+}
+
+.card-product h2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card-product p {
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: .7;
+  margin-bottom: 0;
+  margin-top: 8px;
+}
+
+.card-product .card-product-infos {
+  padding: 16px;
+  position: relative;
+  flex-grow: 1;
+}
+
+.card-product-pricing {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  color: #167FFB;
+}
