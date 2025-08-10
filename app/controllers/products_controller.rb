@@ -1,49 +1,58 @@
 class ProductsController < ApplicationController
-    before_action :authenticate_user!, except: [:index, :show]
+  include Pundit::Authorization
 
-    def index
-      @products = Product.all
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_product, only: [:show, :edit, :update, :destroy]
+
+  def index
+    @products = policy_scope(Product)
+  end
+
+  def show
+    authorize @product
+  end
+
+  def new
+    @product = current_user.products.new
+    authorize @product
+  end
+
+  def create
+    @product = current_user.products.new(product_params)
+    authorize @product
+    if @product.save
+      redirect_to @product, notice: 'Produit créé avec succès.'
+    else
+      render :new, status: :unprocessable_entity
     end
+  end
 
-    def show
-      @product = Product.find(params[:id])
+  def edit
+    authorize @product
+  end
+
+  def update
+    authorize @product
+    if @product.update(product_params)
+      redirect_to @product, notice: 'Produit mis à jour avec succès.'
+    else
+      render :edit, status: :unprocessable_entity
     end
+  end
 
-    def new
-      @product = current_user.products.new
-    end
+  def destroy
+    authorize @product
+    @product.destroy
+    redirect_to products_path, notice: 'Produit supprimé avec succès.'
+  end
 
-    def create
-      @product = current_user.products.new(product_params)
-      if @product.save
-        redirect_to @product
-      else
-        render :new, status: :unprocessable_entity
-      end
-    end
+  private
 
-    def edit
-      @product = current_user.products.find(params[:id])
-    end
+  def set_product
+    @product = Product.find(params[:id])
+  end
 
-    def update
-      @product = current_user.products.find(params[:id])
-      if @product.update(product_params)
-        redirect_to @product
-      else
-        render :edit, status: :unprocessable_entity
-      end
-    end
-
-    def destroy
-      @product = current_user.products.find(params[:id])
-      @product.destroy
-      redirect_to products_path
-    end
-
-    private
-
-    def product_params
-      params.require(:product).permit(:name, :description, :price, :photo)
-    end
+  def product_params
+    params.require(:product).permit(:name, :description, :price, :photo)
+  end
 end

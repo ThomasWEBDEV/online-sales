@@ -27,6 +27,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 gem "devise"
+gem "pundit"
 
 gem "cloudinary"
 
