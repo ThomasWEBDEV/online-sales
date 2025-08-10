@@ -26,6 +26,11 @@
     <%= form.text_area :description, rows: 4, class: "form-control" %>
   </div>
 
+  <div class="mb-3">
+    <%= form.label :photo, "Photo du produit", class: "form-label" %>
+    <%= form.file_field :photo, class: "form-control" %>
+  </div>
+
   <%= form.submit "Mettre en vente", class: "btn btn-flat" %>
   <%= link_to "Annuler", products_path, class: "btn btn-ghost" %>
 <% end %>

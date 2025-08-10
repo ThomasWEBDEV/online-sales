@@ -12,7 +12,11 @@
   <div class="cards">
     <% @products.each do |product| %>
       <div class="card-product">
-        <%= image_tag "https://picsum.photos/seed/#{product.id}/200/150" %>
+        <% if product.photo.attached? %>
+          <%= cl_image_tag product.photo.key, height: 150, width: 200, crop: :fill %>
+        <% else %>
+          <%= image_tag "https://picsum.photos/seed/#{product.id}/200/150" %>
+        <% end %>
         <div class="card-product-infos">
           <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
           <p><%= product.description.truncate(100) %></p>
