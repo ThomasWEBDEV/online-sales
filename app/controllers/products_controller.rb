@@ -10,6 +10,7 @@ class ProductsController < ApplicationController
 
   def show
     authorize @product
+    @product.increment!(:views_count)
   end
 
   def new
