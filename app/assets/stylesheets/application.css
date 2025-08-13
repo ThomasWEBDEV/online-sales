@@ -93,6 +93,6 @@
 .card-product-pricing {
   position: absolute;
   right: 16px;
-  top: 16px;
+  bottom: 16px;
   color: #167FFB;
 }

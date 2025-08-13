@@ -18,14 +18,16 @@
           <%= image_tag "https://picsum.photos/seed/#{product.id}/200/150" %>
         <% end %>
         <div class="card-product-infos">
-          <h2>
-            <%= link_to product.name, product, class: "text-decoration-none" %>
-            <% if product.created_at > 7.days.ago %>
+          <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
+          <p>
+            <% if product.sold %>
+              <span class="badge bg-danger">Vendu</span>
+            <% elsif product.created_at > 7.days.ago %>
               <span class="badge bg-success">Nouveau</span>
             <% end %>
-          </h2>
-          <p><%= product.description.truncate(100) %></p>
-          <h2 class="card-product-pricing"><%= product.price %>€</h2>
+            <%= product.description.truncate(80) %>
+          </p>
+          <p class="text-primary fw-bold"><%= product.price %>€</p>
         </div>
       </div>
     <% end %>

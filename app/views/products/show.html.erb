@@ -17,15 +17,29 @@
       <p class="text-muted">Vendu par : <%= @product.user.email %></p>
     </div>
 
-<% if policy(@product).edit? %>
+    <% if @product.sold %>
+      <div class="alert alert-warning mt-3">
+        <strong>📦 PRODUIT VENDU</strong>
+      </div>
+    <% end %>
+
+    <% if policy(@product).edit? %>
       <div class="mt-4">
         <%= link_to "Modifier", edit_product_path(@product), class: "btn btn-ghost" %>
         <% if policy(@product).destroy? %>
           <%= button_to "Supprimer", @product, method: :delete, data: { turbo_confirm: "Êtes-vous sûr ?" }, class: "btn btn-danger" %>
         <% end %>
+        <% if !@product.sold %>
+          <%= button_to "Marquer comme vendu", @product,
+                        method: :patch,
+                        params: { product: { sold: true } },
+                        class: "btn btn-success mt-2" %>
+        <% end %>
       </div>
-    <% elsif user_signed_in? %>
+    <% elsif user_signed_in? && !@product.sold %>
       <button class="btn btn-flat w-100 mt-4">Contacter le vendeur</button>
+    <% elsif user_signed_in? && @product.sold %>
+      <p class="text-muted mt-4">Ce produit n'est plus disponible</p>
     <% else %>
       <%= link_to "Se connecter pour acheter", new_user_session_path, class: "btn btn-flat w-100 mt-4" %>
     <% end %>
