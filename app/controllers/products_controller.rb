@@ -6,6 +6,9 @@ class ProductsController < ApplicationController
 
   def index
     @products = policy_scope(Product)
+    if params[:query].present?
+      @products = @products.where("name ILIKE ?", "%#{params[:query]}%")
+    end
   end
 
   def show

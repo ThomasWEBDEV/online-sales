@@ -8,6 +8,16 @@
   </div>
 </div>
 
+<div class="container mt-4 mb-3">
+  <%= form_with url: products_path, method: :get, class: "d-flex" do |f| %>
+    <%= f.text_field :query,
+                     value: params[:query],
+                     placeholder: "Rechercher un produit...",
+                     class: "form-control me-2" %>
+    <%= f.submit "Rechercher", class: "btn btn-flat" %>
+  <% end %>
+</div>
+
 <div class="container mt-4">
   <div class="cards">
     <% @products.each do |product| %>
