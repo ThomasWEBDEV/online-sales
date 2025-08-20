@@ -15,6 +15,9 @@
                      placeholder: "Rechercher un produit...",
                      class: "form-control me-2" %>
     <%= f.submit "Rechercher", class: "btn btn-flat" %>
+    <% if params[:query].present? %>
+      <%= link_to "✕ Effacer", products_path, class: "btn btn-outline-secondary ms-2" %>
+    <% end %>
   <% end %>
 </div>
 
