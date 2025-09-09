@@ -21,6 +21,19 @@
   <% end %>
 </div>
 
+<div class="container mb-3">
+  <div class="btn-group" role="group">
+    <%= link_to "Plus récents", products_path(query: params[:query], sort: nil),
+                class: "btn btn-outline-secondary #{'active' unless params[:sort]}" %>
+    <%= link_to "Prix croissant", products_path(query: params[:query], sort: 'price_asc'),
+                class: "btn btn-outline-secondary #{'active' if params[:sort] == 'price_asc'}" %>
+    <%= link_to "Prix décroissant", products_path(query: params[:query], sort: 'price_desc'),
+                class: "btn btn-outline-secondary #{'active' if params[:sort] == 'price_desc'}" %>
+    <%= link_to "Populaires", products_path(query: params[:query], sort: 'popular'),
+                class: "btn btn-outline-secondary #{'active' if params[:sort] == 'popular'}" %>
+  </div>
+</div>
+
 <div class="container mt-4">
   <div class="cards">
     <% @products.each do |product| %>

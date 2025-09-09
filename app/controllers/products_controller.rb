@@ -6,8 +6,22 @@ class ProductsController < ApplicationController
 
   def index
     @products = policy_scope(Product)
+
+    # Recherche existante
     if params[:query].present?
       @products = @products.where("name ILIKE ?", "%#{params[:query]}%")
+    end
+
+    # Nouveau : Tri
+    case params[:sort]
+    when 'price_asc'
+      @products = @products.order(price: :asc)
+    when 'price_desc'
+      @products = @products.order(price: :desc)
+    when 'popular'
+      @products = @products.order(views_count: :desc)
+    else
+      @products = @products.order(created_at: :desc) # Plus récents par défaut
     end
   end
 
