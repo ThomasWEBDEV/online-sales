@@ -48,21 +48,25 @@
     <% @products.each do |product| %>
       <div class="card-product">
         <% if product.photo.attached? %>
-          <%= cl_image_tag product.photo.key, height: 150, width: 200, crop: :fill %>
+          <%= cl_image_tag product.photo.key, height: 150, width: 150, crop: :fill %>
         <% else %>
-          <%= image_tag "https://picsum.photos/seed/#{product.id}/200/150" %>
+          <%= image_tag "https://picsum.photos/seed/#{product.id}/150/150" %>
         <% end %>
         <div class="card-product-infos">
-          <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
-          <p>
-            <% if product.sold %>
-              <span class="badge bg-danger">Vendu</span>
-            <% elsif product.created_at > 7.days.ago %>
-              <span class="badge bg-success">Nouveau</span>
-            <% end %>
-            <%= product.description.truncate(80) %>
-          </p>
-          <p class="text-primary fw-bold"><%= product.price %>€</p>
+          <div class="card-product-content">
+            <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
+            <p>
+              <% if product.sold %>
+                <span class="badge bg-danger">Vendu</span>
+              <% elsif product.created_at > 7.days.ago %>
+                <span class="badge bg-success">Nouveau</span>
+              <% end %>
+              <%= truncate(product.description, length: 100, separator: ' ') %>
+            </p>
+          </div>
+          <div class="card-product-pricing">
+            <%= number_to_currency(product.price, unit: '€', separator: ',', delimiter: ' ', format: '%n %u') %>
+          </div>
         </div>
       </div>
     <% end %>
