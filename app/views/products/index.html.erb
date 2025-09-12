@@ -44,31 +44,48 @@
 </div>
 
 <div class="container mt-4">
-  <div class="cards">
-    <% @products.each do |product| %>
-      <div class="card-product">
-        <% if product.photo.attached? %>
-          <%= cl_image_tag product.photo.key, height: 150, width: 150, crop: :fill %>
-        <% else %>
-          <%= image_tag "https://picsum.photos/seed/#{product.id}/150/150" %>
-        <% end %>
-        <div class="card-product-infos">
-          <div class="card-product-content">
-            <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
-            <p>
-              <% if product.sold %>
-                <span class="badge bg-danger">Vendu</span>
-              <% elsif product.created_at > 7.days.ago %>
-                <span class="badge bg-success">Nouveau</span>
-              <% end %>
-              <%= truncate(product.description, length: 100, separator: ' ') %>
-            </p>
-          </div>
-          <div class="card-product-pricing">
-            <%= number_to_currency(product.price, unit: '€', separator: ',', delimiter: ' ', format: '%n %u') %>
+  <% if @products.any? %>
+    <div class="cards">
+      <% @products.each do |product| %>
+        <div class="card-product">
+          <% if product.photo.attached? %>
+            <%= cl_image_tag product.photo.key, height: 150, width: 150, crop: :fill %>
+          <% else %>
+            <%= image_tag "https://picsum.photos/seed/#{product.id}/150/150" %>
+          <% end %>
+          <div class="card-product-infos">
+            <div class="card-product-content">
+              <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
+              <p>
+                <% if product.sold %>
+                  <span class="badge bg-danger">Vendu</span>
+                <% elsif product.created_at > 7.days.ago %>
+                  <span class="badge bg-success">Nouveau</span>
+                <% end %>
+                <%= truncate(product.description, length: 100, separator: ' ') %>
+              </p>
+            </div>
+            <div class="card-product-pricing">
+              <%= number_to_currency(product.price, unit: '€', separator: ',', delimiter: ' ', format: '%n %u') %>
+            </div>
           </div>
         </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state text-center py-5">
+      <div class="mb-4">
+        <i class="fas fa-search fa-3x text-muted"></i>
       </div>
-    <% end %>
-  </div>
+      <h3 class="text-muted">Aucun produit trouvé</h3>
+      <p class="text-muted">
+        <% if params[:query].present? %>
+          Essayez avec d'autres mots-clés ou
+          <%= link_to "voir tous les produits", products_path, class: "text-primary" %>
+        <% else %>
+          Soyez le premier à <%= link_to "mettre un produit en vente", new_product_path, class: "text-primary" if user_signed_in? %>
+        <% end %>
+      </p>
+    </div>
+  <% end %>
 </div>
