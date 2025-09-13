@@ -1,46 +1,55 @@
 // ===== NAVBAR COMPONENT =====
+// Migration de votre navbar existante + améliorations
+
 .navbar-lewagon {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  // Upgrade: gradient au lieu de background blanc
+  background: $gradient-primary;
+  box-shadow: $shadow-sm;
   padding: 12px 0;
 
   .navbar-brand {
+    color: $white !important; // Adapté au nouveau background
+    font-weight: bold;
     text-decoration: none !important;
-  }
-
-  .brand-icon {
-    background: white;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-right: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 
-    i {
-      color: #667eea;
-      font-size: 18px;
+    // Nouveau: icône stylée
+    .brand-icon {
+      background: $white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      box-shadow: $shadow-sm;
+
+      i {
+        color: $primary;
+        font-size: 18px;
+      }
+    }
+
+    .brand-text {
+      color: $white;
+      font-weight: bold;
+      font-size: 20px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
   }
 
-  .brand-text {
-    color: white;
-    font-weight: bold;
-    font-size: 20px;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
-  }
-
+  // Améliorations des liens nav
   .navbar-nav .nav-link {
     color: rgba(255,255,255,0.9) !important;
     font-weight: 500;
     padding: 8px 16px;
-    border-radius: 6px;
+    border-radius: $radius;
     transition: all 0.3s ease;
 
     &:hover {
-      color: white !important;
+      color: $white !important;
       background: rgba(255,255,255,0.1);
     }
   }
@@ -55,26 +64,21 @@
     }
   }
 
-  .user-menu {
-    background: rgba(255,255,255,0.1);
-    border-radius: 20px;
-  }
-
   .dropdown-menu {
-    border-radius: 8px;
+    border-radius: $radius-lg;
     border: none;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: $shadow-lg;
   }
 
   .btn-outline-primary {
-    border-color: white !important;
-    color: white !important;
-    border-radius: 20px;
+    border-color: $white !important;
+    color: $white !important;
+    border-radius: $radius-pill;
     padding: 6px 16px;
 
     &:hover {
-      background: white !important;
-      color: #667eea !important;
+      background: $white !important;
+      color: $primary !important;
     }
   }
 }
