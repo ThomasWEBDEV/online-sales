@@ -1,0 +1,22 @@
+// ===== DESIGN SYSTEM VARIABLES =====
+
+// Brand colors
+$primary: #667eea;
+$secondary: #764ba2;
+$success: #28a745;
+$danger: #dc3545;
+$warning: #ffc107;
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, $primary 0%, $secondary 100%);
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+$shadow-md: 0 4px 15px rgba(0,0,0,0.1);
+$shadow-lg: 0 4px 20px rgba(0,0,0,0.15);
+
+// Border radius
+$radius-sm: 4px;
+$radius: 6px;
+$radius-lg: 8px;
+$radius-pill: 20px;
