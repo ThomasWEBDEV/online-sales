@@ -1,0 +1,80 @@
+// ===== NAVBAR COMPONENT =====
+.navbar-lewagon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 12px 0;
+
+  .navbar-brand {
+    text-decoration: none !important;
+  }
+
+  .brand-icon {
+    background: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+    i {
+      color: #667eea;
+      font-size: 18px;
+    }
+  }
+
+  .brand-text {
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .navbar-nav .nav-link {
+    color: rgba(255,255,255,0.9) !important;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: white !important;
+      background: rgba(255,255,255,0.1);
+    }
+  }
+
+  .btn-sell {
+    background: rgba(255,255,255,0.2) !important;
+    border: 1px solid rgba(255,255,255,0.3);
+
+    &:hover {
+      background: rgba(255,255,255,0.3) !important;
+      transform: translateY(-1px);
+    }
+  }
+
+  .user-menu {
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+  }
+
+  .dropdown-menu {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  .btn-outline-primary {
+    border-color: white !important;
+    color: white !important;
+    border-radius: 20px;
+    padding: 6px 16px;
+
+    &:hover {
+      background: white !important;
+      color: #667eea !important;
+    }
+  }
+}
