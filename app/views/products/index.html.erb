@@ -1,13 +1,3 @@
-<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('https://picsum.photos/1200/400?shop');">
-  <div class="container">
-    <h1>Marketplace</h1>
-    <p>Achetez et vendez en toute simplicité</p>
-    <% if user_signed_in? && policy(Product).new? %>
-      <%= link_to "Mettre en vente", new_product_path, class: "btn btn-flat" %>
-    <% end %>
-  </div>
-</div>
-
 <div class="container mt-4 mb-3">
   <%= form_with url: products_path, method: :get, class: "d-flex" do |f| %>
     <%= f.text_field :query,
