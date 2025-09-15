@@ -1,0 +1,129 @@
+// ===== HERO BANNER COMPONENT =====
+.hero-banner {
+  background: $gradient-primary;
+  padding: 80px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  .hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    color: $white;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    backdrop-filter: blur(10px);
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: $white;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    margin-bottom: 60px;
+  }
+
+  .btn-hero-primary {
+    background: $white;
+    color: $primary;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    margin: 0 10px 10px 0;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      color: $primary;
+    }
+  }
+
+  .btn-hero-secondary {
+    background: transparent;
+    color: $white;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    margin: 0 10px 10px 0;
+    border: 2px solid $white;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: $white;
+      color: $primary;
+    }
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    opacity: 0.9;
+
+    .stat {
+      text-align: center;
+      color: $white;
+
+      strong {
+        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      span {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+    }
+
+    .hero-stats {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .btn-hero-primary,
+    .btn-hero-secondary {
+      display: block;
+      margin: 10px auto;
+      max-width: 250px;
+    }
+  }
+}
