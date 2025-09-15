@@ -1,3 +1,5 @@
+<%= breadcrumbs ["Produits", products_path], [@product.name, product_path(@product)], ["Modifier", nil] %>
+
 <h1>Mettre en vente</h1>
 
 <%= form_with model: @product do |form| %>
