@@ -1,0 +1,30 @@
+// ===== BREADCRUMBS COMPONENT =====
+.breadcrumbs {
+  background: #f8f9fa;
+  padding: 12px 0;
+  border-bottom: 1px solid #e9ecef;
+  margin-bottom: 20px;
+
+  .breadcrumb {
+    background: transparent;
+    margin-bottom: 0;
+    padding: 0;
+
+    .breadcrumb-item {
+      font-size: 14px;
+
+      a {
+        color: $primary;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      &.active {
+        color: #6c757d;
+      }
+    }
+  }
+}
