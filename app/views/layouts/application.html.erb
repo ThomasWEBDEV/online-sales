@@ -78,8 +78,43 @@
       </div>
     </nav>
 
-    <div class="container mt-4">
-      <%= yield %>
+    <!-- Bannière moderne avec dégradé -->
+    <div class="hero-banner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-star me-2"></i>Plateforme #1 en France
+        </div>
+        <h1 class="hero-title">
+          Votre marketplace de confiance
+        </h1>
+        <p class="hero-subtitle">
+          Découvrez des milliers de produits ou vendez les vôtres en quelques clics.
+          <br>Simple, sécurisé, sans commission cachée.
+        </p>
+        <div class="hero-actions">
+          <%= link_to "Découvrir les produits", products_path, class: "btn btn-hero-primary" %>
+          <% if user_signed_in? %>
+            <%= link_to "Commencer à vendre", new_product_path, class: "btn btn-hero-secondary" %>
+          <% else %>
+            <%= link_to "Rejoindre la communauté", new_user_registration_path, class: "btn btn-hero-secondary" %>
+          <% end %>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <strong>1,247</strong>
+            <span>Produits</span>
+          </div>
+          <div class="stat">
+            <strong>328</strong>
+            <span>Vendeurs</span>
+          </div>
+          <div class="stat">
+            <strong>4.8/5</strong>
+            <span>Satisfaction</span>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
 
     <!-- Footer simple -->
