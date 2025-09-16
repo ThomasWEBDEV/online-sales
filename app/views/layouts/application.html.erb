@@ -78,6 +78,25 @@
       </div>
     </nav>
 
+    <!-- Messages flash stylisés -->
+    <% if notice %>
+      <div class="alert alert-flash alert-success" role="alert">
+        <div class="alert-content">
+          <i class="fas fa-check-circle"></i>
+          <div class="alert-text"><%= notice %></div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if alert %>
+      <div class="alert alert-flash alert-danger" role="alert">
+        <div class="alert-content">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div class="alert-text"><%= alert %></div>
+        </div>
+      </div>
+    <% end %>
+
     <!-- Contenu principal des pages -->
     <div class="container mt-4">
       <%= yield %>
@@ -85,7 +104,7 @@
     </div>
 
     <!-- Footer simple -->
-    <footer class="footer-sticky text-white text-center py-4 mt-5">
+    <footer class="bg-dark text-white text-center py-4 mt-5">
       <div class="container">
         <p class="mb-0">&copy; 2024 MarketPlace - Plateforme de vente en ligne</p>
       </div>
