@@ -1,5 +1,9 @@
 // ===== FOOTER COMPONENT =====
 // Plus de spécificité pour battre Bootstrap
+html, body {
+  height: 100% !important;
+}
+
 footer.footer-sticky {
   position: fixed !important;
   bottom: 0 !important;
@@ -13,10 +17,16 @@ footer.footer-sticky {
   z-index: 1000 !important;
   box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
   margin: 0 !important;
+  height: 60px !important;
 }
 
 // Padding pour éviter que le contenu soit caché
 body {
-  padding-bottom: 70px !important;
+  padding-bottom: 80px !important;
   margin-bottom: 0 !important;
+}
+
+// S'assurer que le main content ne chevauche pas
+.container {
+  margin-bottom: 20px !important;
 }
