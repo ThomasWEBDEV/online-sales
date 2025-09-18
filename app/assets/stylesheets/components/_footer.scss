@@ -1,22 +1,23 @@
 // ===== FOOTER COMPONENT =====
-// Plus de spécificité pour battre Bootstrap
+// Footer qui reste en bas de la page (pas de l'écran)
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
 footer.footer-sticky {
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
   background: #343a40 !important;
   color: white !important;
   text-align: center !important;
   padding: 15px 0 !important;
-  z-index: 1000 !important;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
-  margin: 0 !important;
-}
-
-// Padding pour éviter que le contenu soit caché
-body {
-  padding-bottom: 70px !important;
-  margin-bottom: 0 !important;
+  margin-top: auto;
+  width: 100%;
 }
