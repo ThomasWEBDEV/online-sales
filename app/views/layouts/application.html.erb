@@ -23,8 +23,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <!-- NOS STYLES EN DERNIER POUR ÉCRASER BOOTSTRAP -->
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
 
   <body>
@@ -98,13 +99,14 @@
     <% end %>
 
     <!-- Contenu principal des pages -->
-    <div class="container mt-4">
-      <%= yield %>
-    </div>
-    </div>
+    <main>
+      <div class="container mt-4 mb-5">
+        <%= yield %>
+      </div>
+    </main>
 
-    <!-- Footer simple -->
-    <footer class="bg-dark text-white text-center py-4 mt-5">
+    <!-- Footer avec la bonne classe -->
+    <footer class="footer-normal">
       <div class="container">
         <p class="mb-0">&copy; 2024 MarketPlace - Plateforme de vente en ligne</p>
       </div>
