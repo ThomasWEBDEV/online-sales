@@ -63,6 +63,13 @@
         </div>
       <% end %>
     </div>
+
+    <div class="text-center mt-4">
+      <% if @products.count == 12 %>
+        <%= link_to "Voir plus de produits", products_path(page: 2), class: "btn btn-outline-primary" %>
+      <% end %>
+    </div>
+
   <% else %>
     <div class="empty-state text-center py-5">
       <div class="mb-4">
