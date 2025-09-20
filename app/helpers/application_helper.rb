@@ -15,4 +15,12 @@ module ApplicationHelper
       end
     end
   end
+
+  def highlight_search_terms(text, query)
+    if query.present?
+      highlight(text, query, highlighter: '<mark class="search-highlight">\1</mark>')
+    else
+      text
+    end
+  end
 end
