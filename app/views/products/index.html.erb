@@ -46,7 +46,7 @@
           <% end %>
           <div class="card-product-infos">
             <div class="card-product-content">
-              <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
+              <h2><%= link_to highlight_search_terms(product.name, params[:query]).html_safe, product, class: "text-decoration-none" %></h2>
               <p>
                 <% if product.sold %>
                   <span class="badge bg-danger">Vendu</span>
