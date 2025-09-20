@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include ActionView::Helpers::TextHelper
+
   def breadcrumbs(*links)
     content_tag :nav, class: "breadcrumbs" do
       content_tag :div, class: "container" do
