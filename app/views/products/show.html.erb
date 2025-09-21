@@ -15,7 +15,18 @@
     <p class="mt-3"><%= @product.description %></p>
 
     <div class="mt-4">
-      <p class="text-muted">Vendu par : <%= @product.user.email %></p>
+      <p class="text-muted">
+        Vendu par : <%= @product.user.email %>
+        <% if @product.user.updated_at > 24.hours.ago %>
+          <span class="badge bg-success ms-2">
+            <i class="fas fa-circle" style="font-size: 8px;"></i> En ligne récemment
+          </span>
+        <% elsif @product.user.updated_at > 7.days.ago %>
+          <span class="badge bg-warning ms-2">
+            <i class="fas fa-circle" style="font-size: 8px;"></i> Actif cette semaine
+          </span>
+        <% end %>
+      </p>
     </div>
 
     <% if @product.sold %>
