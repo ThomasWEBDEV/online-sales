@@ -40,22 +40,20 @@
       <% @products.each do |product| %>
         <div class="card-product">
           <% if product.photo.attached? %>
-            <%= cl_image_tag product.photo.key, height: 150, width: 150, crop: :fill %>
+            <%= cl_image_tag product.photo.key, height: 320, width: 400, crop: :fill %>
           <% else %>
-            <%= image_tag "https://picsum.photos/seed/#{product.id}/150/150" %>
+            <%= image_tag "https://picsum.photos/seed/#{product.id}/400/320" %>
           <% end %>
-          <div class="card-product-infos">
-            <div class="card-product-content">
-              <h2><%= link_to highlight_search_terms(product.name, params[:query]).html_safe, product, class: "text-decoration-none" %></h2>
-              <p>
-                <% if product.sold %>
-                  <span class="badge bg-danger">Vendu</span>
-                <% elsif product.created_at > 7.days.ago %>
-                  <span class="badge bg-success">Nouveau</span>
-                <% end %>
-                <%= truncate(product.description, length: 100, separator: ' ') %>
-              </p>
-            </div>
+
+          <% if product.sold %>
+            <span class="badge bg-danger">Vendu</span>
+          <% elsif product.created_at > 7.days.ago %>
+            <span class="badge bg-success">Nouveau</span>
+          <% end %>
+
+          <div class="card-product-overlay">
+            <h2><%= link_to highlight_search_terms(product.name, params[:query]).html_safe, product, class: "text-decoration-none" %></h2>
+            <p><%= truncate(product.description, length: 100, separator: ' ') %></p>
             <div class="card-product-pricing">
               <%= number_to_currency(product.price, unit: '€', separator: ',', delimiter: ' ', format: '%n %u') %>
             </div>
