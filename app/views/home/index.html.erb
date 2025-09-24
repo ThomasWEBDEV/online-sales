@@ -1,36 +1,60 @@
-<!-- Hero Section pour la page d'accueil -->
-<div class="hero-banner">
+<!-- Hero Section marketplace moderne -->
+<div class="hero-marketplace">
   <div class="hero-content">
-    <div class="hero-badge">
-      <i class="fas fa-star me-2"></i>Plateforme #1 en France
+    <div class="hero-text">
+      <h1>Achetez et vendez en toute simplicité</h1>
+      <p class="hero-subtitle">
+        Découvrez des milliers de produits ou mettez les vôtres en vente sur la marketplace de confiance.
+      </p>
+
+      <div class="hero-features">
+        <div class="feature">
+          <i class="fas fa-shield-alt"></i>
+          <span>Paiement sécurisé</span>
+        </div>
+        <div class="feature">
+          <i class="fas fa-shipping-fast"></i>
+          <span>Livraison rapide</span>
+        </div>
+        <div class="feature">
+          <i class="fas fa-headset"></i>
+          <span>Support 7j/7</span>
+        </div>
+        <div class="feature">
+          <i class="fas fa-medal"></i>
+          <span>Vendeurs vérifiés</span>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <%= link_to "Explorer les produits", products_path, class: "btn btn-hero-primary" %>
+        <% if user_signed_in? %>
+          <%= link_to "Vendre maintenant", new_product_path, class: "btn btn-hero-secondary" %>
+        <% else %>
+          <%= link_to "Devenir vendeur", new_user_registration_path, class: "btn btn-hero-secondary" %>
+        <% end %>
+      </div>
     </div>
-    <h1 class="hero-title">
-      Votre marketplace de confiance
-    </h1>
-    <p class="hero-subtitle">
-      Découvrez des milliers de produits ou vendez les vôtres en quelques clics.
-      <br>Simple, sécurisé, sans commission cachée.
-    </p>
-    <div class="hero-actions">
-      <%= link_to "Découvrir les produits", products_path, class: "btn btn-hero-primary" %>
-      <% if user_signed_in? %>
-        <%= link_to "Commencer à vendre", new_product_path, class: "btn btn-hero-secondary" %>
-      <% else %>
-        <%= link_to "Rejoindre la communauté", new_user_registration_path, class: "btn btn-hero-secondary" %>
-      <% end %>
-    </div>
+
     <div class="hero-stats">
-      <div class="stat">
-        <strong><%= Product.count %></strong>
-        <span>Produits</span>
-      </div>
-      <div class="stat">
-        <strong><%= User.count %></strong>
-        <span>Vendeurs</span>
-      </div>
-      <div class="stat">
-        <strong>4.8/5</strong>
-        <span>Satisfaction</span>
+      <div class="stats-title">Nos chiffres en temps réel</div>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-number"><%= Product.count %></span>
+          <span class="stat-label">Produits</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number"><%= User.count %></span>
+          <span class="stat-label">Membres</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number"><%= Product.where(sold: true).count %></span>
+          <span class="stat-label">Ventes</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">4.8★</span>
+          <span class="stat-label">Satisfaction</span>
+        </div>
       </div>
     </div>
   </div>
@@ -39,19 +63,26 @@
 <!-- Section produits populaires -->
 <div class="container my-5">
   <div class="text-center mb-4">
-    <h2>Produits populaires</h2>
-    <p class="text-muted">Découvrez nos meilleures ventes</p>
+    <h2>Découvrez nos meilleures ventes</h2>
+    <p class="text-muted">Les produits les plus appréciés par notre communauté</p>
   </div>
 
   <div class="cards">
     <% Product.order(views_count: :desc).limit(6).each do |product| %>
       <div class="card-product">
         <% if product.photo.attached? %>
-          <%= cl_image_tag product.photo.key, height: 150, width: 150, crop: :fill %>
+          <%= cl_image_tag product.photo.key, height: 320, width: 400, crop: :fill %>
         <% else %>
-          <%= image_tag "https://picsum.photos/seed/#{product.id}/150/150" %>
+          <%= image_tag "https://picsum.photos/seed/#{product.id}/400/320" %>
         <% end %>
-        <div class="card-product-infos">
+
+        <% if product.sold %>
+          <span class="badge bg-danger">Vendu</span>
+        <% elsif product.created_at > 7.days.ago %>
+          <span class="badge bg-success">Nouveau</span>
+        <% end %>
+
+        <div class="card-product-overlay">
           <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
           <p><%= truncate(product.description, length: 80) %></p>
           <div class="card-product-pricing"><%= product.price %>€</div>
@@ -64,6 +95,3 @@
     <%= link_to "Voir tous les produits", products_path, class: "btn btn-flat" %>
   </div>
 </div>
-
-<!-- Espaceur pour pousser le footer en bas -->
-<div class="flex-grow-1"></div>
