@@ -7,10 +7,29 @@ class ProductsController < ApplicationController
   def index
     @products = policy_scope(Product)
 
+    # Recherche par nom
     if params[:query].present?
       @products = @products.where("name ILIKE ?", "%#{params[:query]}%")
     end
 
+    # Filtres de prix
+    if params[:min_price].present?
+      @products = @products.where("price >= ?", params[:min_price])
+    end
+
+    if params[:max_price].present?
+      @products = @products.where("price <= ?", params[:max_price])
+    end
+
+    # Filtre par statut
+    case params[:status]
+    when 'available'
+      @products = @products.where(sold: [false, nil])
+    when 'sold'
+      @products = @products.where(sold: true)
+    end
+
+    # Tri
     case params[:sort]
     when 'price_asc'
       @products = @products.order(price: :asc)
