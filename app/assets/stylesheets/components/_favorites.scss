@@ -43,7 +43,7 @@
     }
 
     &:hover i {
-      color: darken($danger, 10%);
+      color: $danger-dark;
     }
   }
 
