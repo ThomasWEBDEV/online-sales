@@ -1,159 +1,209 @@
-<!-- BANNIÈRE HERO AJOUTÉE -->
-<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('https://picsum.photos/1200/400?shop');">
-  <div class="container">
-    <h1>Marketplace</h1>
-    <p>Achetez et vendez en toute simplicité</p>
-    <% if user_signed_in? && policy(Product).new? %>
-      <%= link_to "Mettre en vente", new_product_path, class: "btn btn-flat" %>
+<!-- Hero Section marketplace moderne -->
+<div class="hero-marketplace">
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>Achetez et vendez en toute simplicité</h1>
+      <p class="hero-subtitle">
+        Découvrez des milliers de produits ou mettez les vôtres en vente sur la marketplace de confiance.
+      </p>
+      <div class="hero-features">
+        <div class="feature">
+          <i class="fas fa-shield-alt"></i>
+          <span>Paiement sécurisé</span>
+        </div>
+        <div class="feature">
+          <i class="fas fa-shipping-fast"></i>
+          <span>Livraison rapide</span>
+        </div>
+        <div class="feature">
+          <i class="fas fa-headset"></i>
+          <span>Support 7j/7</span>
+        </div>
+        <div class="feature">
+          <i class="fas fa-medal"></i>
+          <span>Vendeurs vérifiés</span>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <%= link_to "Explorer les produits", "#produits", class: "btn btn-hero-primary", data: { turbo: false } %>
+        <% if user_signed_in? %>
+          <%= link_to "Vendre maintenant", new_product_path, class: "btn btn-hero-secondary" %>
+        <% else %>
+          <%= link_to "Devenir vendeur", new_user_registration_path, class: "btn btn-hero-secondary" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stats-title">Nos chiffres en temps réel</div>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-number"><%= Product.count %></span>
+          <span class="stat-label">Produits</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number"><%= User.count %></span>
+          <span class="stat-label">Membres</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number"><%= Product.where(sold: true).count %></span>
+          <span class="stat-label">Ventes</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">4.8★</span>
+          <span class="stat-label">Satisfaction</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="produits">
+  <%= breadcrumbs ["Produits", nil] %>
+
+  <!-- Barre de recherche et filtres -->
+  <div class="container mt-4 mb-3">
+    <%= form_with url: products_path, method: :get, local: true, class: "search-filters" do |f| %>
+      <!-- Recherche principale -->
+      <div class="search-main mb-3">
+        <%= f.text_field :query,
+                         value: params[:query],
+                         placeholder: "Rechercher un produit...",
+                         class: "form-control search-input" %>
+        <%= f.submit "Rechercher", class: "btn btn-flat search-btn" %>
+      </div>
+
+      <!-- Filtres avancés -->
+      <div class="filters-advanced">
+        <div class="row">
+          <div class="col-md-3">
+            <%= f.label :min_price, "Prix minimum", class: "form-label" %>
+            <%= f.number_field :min_price,
+                               value: params[:min_price],
+                               placeholder: "0€",
+                               class: "form-control",
+                               min: 0 %>
+          </div>
+          <div class="col-md-3">
+            <%= f.label :max_price, "Prix maximum", class: "form-label" %>
+            <%= f.number_field :max_price,
+                               value: params[:max_price],
+                               placeholder: "10000€",
+                               class: "form-control",
+                               min: 0 %>
+          </div>
+          <div class="col-md-3">
+            <%= f.label :status, "Statut", class: "form-label" %>
+            <%= f.select :status,
+                         options_for_select([
+                           ['Tous', ''],
+                           ['Disponibles uniquement', 'available'],
+                           ['Vendus uniquement', 'sold']
+                         ], params[:status]),
+                         {},
+                         { class: "form-select" } %>
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <%= f.submit "Filtrer", class: "btn btn-outline-primary me-2" %>
+            <%= link_to "Effacer", products_path, class: "btn btn-outline-secondary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Tri et compteurs -->
+  <div class="container mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="btn-group" role="group">
+        <%= link_to "Plus récents", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: nil),
+                    class: "btn btn-outline-secondary #{'active' unless params[:sort]}" %>
+        <%= link_to "Prix croissant", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'price_asc'),
+                    class: "btn btn-outline-secondary #{'active' if params[:sort] == 'price_asc'}" %>
+        <%= link_to "Prix décroissant", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'price_desc'),
+                    class: "btn btn-outline-secondary #{'active' if params[:sort] == 'price_desc'}" %>
+        <%= link_to "Populaires", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'popular'),
+                    class: "btn btn-outline-secondary #{'active' if params[:sort] == 'popular'}" %>
+      </div>
+      <span class="text-muted">
+        <i class="fas fa-shopping-bag"></i>
+        <%= @products.count %> produit<%= 's' if @products.count > 1 %>
+        <% if @products.where(sold: false).any? %>
+          · <%= @products.where(sold: false).count %> disponible<%= 's' if @products.where(sold: false).count > 1 %>
+        <% end %>
+      </span>
+    </div>
+  </div>
+
+  <!-- Filtres actifs -->
+  <div class="container mb-3">
+    <% active_filters = [] %>
+    <% active_filters << "\"#{params[:query]}\"" if params[:query].present? %>
+    <% active_filters << "Prix min: #{params[:min_price]}€" if params[:min_price].present? %>
+    <% active_filters << "Prix max: #{params[:max_price]}€" if params[:max_price].present? %>
+    <% active_filters << "Statut: #{params[:status] == 'available' ? 'Disponibles' : 'Vendus'}" if params[:status].present? %>
+
+    <% if active_filters.any? %>
+      <div class="active-filters">
+        <small class="text-muted">Filtres actifs:</small>
+        <% active_filters.each do |filter| %>
+          <span class="badge bg-primary me-1"><%= filter %></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Grille des produits -->
+  <div class="container mt-4">
+    <% if @products.any? %>
+      <div class="cards">
+        <% @products.each do |product| %>
+          <div class="card-product">
+            <% if product.photo.attached? %>
+              <%= cl_image_tag product.photo.key, height: 320, width: 400, crop: :fill %>
+            <% else %>
+              <%= image_tag "https://picsum.photos/seed/#{product.id}/400/320" %>
+            <% end %>
+
+            <%= favorite_button(product) %>
+
+            <% if product.sold %>
+              <span class="badge bg-danger">Vendu</span>
+            <% elsif product.created_at > 7.days.ago %>
+              <span class="badge bg-success">Nouveau</span>
+            <% end %>
+
+            <div class="card-product-overlay">
+              <h2><%= link_to highlight_search_terms(product.name, params[:query]).html_safe, product, class: "text-decoration-none" %></h2>
+              <p><%= truncate(product.description, length: 100, separator: ' ') %></p>
+              <div class="card-product-pricing">
+                <%= number_to_currency(product.price, unit: '€', separator: ',', delimiter: ' ', format: '%n %u') %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="text-center mt-4">
+        <% if @products.count == 12 %>
+          <%= link_to "Voir plus de produits", products_path(page: 2), class: "btn btn-outline-primary" %>
+        <% end %>
+      </div>
+
+    <% else %>
+      <div class="empty-state text-center py-5">
+        <div class="mb-4">
+          <i class="fas fa-search fa-3x text-muted"></i>
+        </div>
+        <h3 class="text-muted">Aucun produit trouvé</h3>
+        <p class="text-muted">
+          <% if params[:query].present? || params[:min_price].present? || params[:max_price].present? || params[:status].present? %>
+            Essayez de modifier vos critères de recherche ou
+            <%= link_to "voir tous les produits", products_path, class: "text-primary" %>
+          <% else %>
+            Soyez le premier à <%= link_to "mettre un produit en vente", new_product_path, class: "text-primary" if user_signed_in? %>
+          <% end %>
+        </p>
+      </div>
     <% end %>
   </div>
 </div>
-
-<%= breadcrumbs ["Produits", nil] %>
-
-<!-- Barre de recherche et filtres -->
-<div class="container mt-4 mb-3">
-  <%= form_with url: products_path, method: :get, local: true, class: "search-filters" do |f| %>
-    <!-- Recherche principale -->
-    <div class="search-main mb-3">
-      <%= f.text_field :query,
-                       value: params[:query],
-                       placeholder: "Rechercher un produit...",
-                       class: "form-control search-input" %>
-      <%= f.submit "Rechercher", class: "btn btn-flat search-btn" %>
-    </div>
-
-    <!-- Filtres avancés -->
-    <div class="filters-advanced">
-      <div class="row">
-        <div class="col-md-3">
-          <%= f.label :min_price, "Prix minimum", class: "form-label" %>
-          <%= f.number_field :min_price,
-                             value: params[:min_price],
-                             placeholder: "0€",
-                             class: "form-control",
-                             min: 0 %>
-        </div>
-        <div class="col-md-3">
-          <%= f.label :max_price, "Prix maximum", class: "form-label" %>
-          <%= f.number_field :max_price,
-                             value: params[:max_price],
-                             placeholder: "10000€",
-                             class: "form-control",
-                             min: 0 %>
-        </div>
-        <div class="col-md-3">
-          <%= f.label :status, "Statut", class: "form-label" %>
-          <%= f.select :status,
-                       options_for_select([
-                         ['Tous', ''],
-                         ['Disponibles uniquement', 'available'],
-                         ['Vendus uniquement', 'sold']
-                       ], params[:status]),
-                       {},
-                       { class: "form-select" } %>
-        </div>
-        <div class="col-md-3 d-flex align-items-end">
-          <%= f.submit "Filtrer", class: "btn btn-outline-primary me-2" %>
-          <%= link_to "Effacer", products_path, class: "btn btn-outline-secondary" %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-</div>
-
-<!-- Tri et compteurs -->
-<div class="container mb-3">
-  <div class="d-flex justify-content-between align-items-center">
-    <div class="btn-group" role="group">
-      <%= link_to "Plus récents", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: nil),
-                  class: "btn btn-outline-secondary #{'active' unless params[:sort]}" %>
-      <%= link_to "Prix croissant", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'price_asc'),
-                  class: "btn btn-outline-secondary #{'active' if params[:sort] == 'price_asc'}" %>
-      <%= link_to "Prix décroissant", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'price_desc'),
-                  class: "btn btn-outline-secondary #{'active' if params[:sort] == 'price_desc'}" %>
-      <%= link_to "Populaires", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'popular'),
-                  class: "btn btn-outline-secondary #{'active' if params[:sort] == 'popular'}" %>
-    </div>
-    <span class="text-muted">
-      <i class="fas fa-shopping-bag"></i>
-      <%= @products.count %> produit<%= 's' if @products.count > 1 %>
-      <% if @products.where(sold: false).any? %>
-        · <%= @products.where(sold: false).count %> disponible<%= 's' if @products.where(sold: false).count > 1 %>
-      <% end %>
-    </span>
-  </div>
-</div>
-
-<!-- Filtres actifs -->
-<div class="container mb-3">
-  <% active_filters = [] %>
-  <% active_filters << "\"#{params[:query]}\"" if params[:query].present? %>
-  <% active_filters << "Prix min: #{params[:min_price]}€" if params[:min_price].present? %>
-  <% active_filters << "Prix max: #{params[:max_price]}€" if params[:max_price].present? %>
-  <% active_filters << "Statut: #{params[:status] == 'available' ? 'Disponibles' : 'Vendus'}" if params[:status].present? %>
-
-  <% if active_filters.any? %>
-    <div class="active-filters">
-      <small class="text-muted">Filtres actifs:</small>
-      <% active_filters.each do |filter| %>
-        <span class="badge bg-primary me-1"><%= filter %></span>
-      <% end %>
-    </div>
-  <% end %>
-</div>
-
-<!-- Grille des produits -->
-<div class="container mt-4">
-  <% if @products.any? %>
-    <div class="cards">
-      <% @products.each do |product| %>
-        <div class="card-product">
-          <% if product.photo.attached? %>
-            <%= cl_image_tag product.photo.key, height: 320, width: 400, crop: :fill %>
-          <% else %>
-            <%= image_tag "https://picsum.photos/seed/#{product.id}/400/320" %>
-          <% end %>
-
-          <%= favorite_button(product) %>
-
-          <% if product.sold %>
-            <span class="badge bg-danger">Vendu</span>
-          <% elsif product.created_at > 7.days.ago %>
-            <span class="badge bg-success">Nouveau</span>
-          <% end %>
-
-          <div class="card-product-overlay">
-            <h2><%= link_to highlight_search_terms(product.name, params[:query]).html_safe, product, class: "text-decoration-none" %></h2>
-            <p><%= truncate(product.description, length: 100, separator: ' ') %></p>
-            <div class="card-product-pricing">
-              <%= number_to_currency(product.price, unit: '€', separator: ',', delimiter: ' ', format: '%n %u') %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-
-    <div class="text-center mt-4">
-      <% if @products.count == 12 %>
-        <%= link_to "Voir plus de produits", products_path(page: 2), class: "btn btn-outline-primary" %>
-      <% end %>
-    </div>
-
-  <% else %>
-    <div class="empty-state text-center py-5">
-      <div class="mb-4">
-        <i class="fas fa-search fa-3x text-muted"></i>
-      </div>
-      <h3 class="text-muted">Aucun produit trouvé</h3>
-      <p class="text-muted">
-        <% if params[:query].present? || params[:min_price].present? || params[:max_price].present? || params[:status].present? %>
-          Essayez de modifier vos critères de recherche ou
-          <%= link_to "voir tous les produits", products_path, class: "text-primary" %>
-        <% else %>
-          Soyez le premier à <%= link_to "mettre un produit en vente", new_product_path, class: "text-primary" if user_signed_in? %>
-        <% end %>
-      </p>
-    </div>
-  <% end %>
-</div
