@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
-  root to: 'home#index'
+  root to: 'products#index'
 
   resources :products do
     member do
@@ -9,5 +9,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :favorites, only: [:index] # Page "Mes favoris"
+  resources :favorites, only: [:index]
 end
