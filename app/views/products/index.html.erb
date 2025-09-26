@@ -104,6 +104,8 @@
             <%= image_tag "https://picsum.photos/seed/#{product.id}/400/320" %>
           <% end %>
 
+          <%= favorite_button(product) %>
+
           <% if product.sold %>
             <span class="badge bg-danger">Vendu</span>
           <% elsif product.created_at > 7.days.ago %>
