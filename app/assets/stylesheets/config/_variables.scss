@@ -9,6 +9,11 @@ $gray: #4A4A4A;
 // Nouvelles couleurs (upgrade)
 $primary: #167FFB; // Garde votre bleu actuel
 $primary-dark: #0f5cb8;
+$danger: #e74c3c; // AJOUTÉ pour les favoris et erreurs
+$danger-dark: #c0392b; // AJOUTÉ version plus foncée
+$success: #2ecc71; // AJOUTÉ pour les succès
+$warning: #f39c12; // AJOUTÉ pour les warnings
+
 $gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
 // Système de design
@@ -26,4 +31,4 @@ $shadow-lg: 0 4px 20px rgba(0,0,0,0.25);
 $radius-sm: 4px;
 $radius: 8px;
 $radius-lg: 12px;
-$radius-pill: 20
+$radius-pill: 20px; // CORRIGÉ : il manquait 'px'
