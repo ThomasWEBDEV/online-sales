@@ -2,34 +2,17 @@ class ProductsController < ApplicationController
   include Pundit::Authorization
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :favorite, :unfavorite]
 
   def index
     @products = policy_scope(Product)
 
-    # Recherche par nom
+    # Recherche existante
     if params[:query].present?
       @products = @products.where("name ILIKE ?", "%#{params[:query]}%")
     end
 
-    # Filtres de prix
-    if params[:min_price].present?
-      @products = @products.where("price >= ?", params[:min_price])
-    end
-
-    if params[:max_price].present?
-      @products = @products.where("price <= ?", params[:max_price])
-    end
-
-    # Filtre par statut
-    case params[:status]
-    when 'available'
-      @products = @products.where(sold: [false, nil])
-    when 'sold'
-      @products = @products.where(sold: true)
-    end
-
-    # Tri
+    # Nouveau : Tri
     case params[:sort]
     when 'price_asc'
       @products = @products.order(price: :asc)
@@ -38,10 +21,8 @@ class ProductsController < ApplicationController
     when 'popular'
       @products = @products.order(views_count: :desc)
     else
-      @products = @products.order(created_at: :desc)
+      @products = @products.order(created_at: :desc) # Plus récents par défaut
     end
-
-    @products = @products.limit(12)
   end
 
   def show
@@ -81,6 +62,22 @@ class ProductsController < ApplicationController
     authorize @product
     @product.destroy
     redirect_to products_path, notice: 'Produit supprimé avec succès.'
+  end
+
+  # NOUVELLES ACTIONS POUR LES FAVORIS
+  def favorite
+    @favorite = current_user.favorites.build(product: @product)
+    if @favorite.save
+      redirect_back(fallback_location: @product, notice: 'Produit ajouté aux favoris!')
+    else
+      redirect_back(fallback_location: @product, alert: 'Erreur lors de l\'ajout aux favoris.')
+    end
+  end
+
+  def unfavorite
+    @favorite = current_user.favorites.find_by(product: @product)
+    @favorite&.destroy
+    redirect_back(fallback_location: @product, notice: 'Produit retiré des favoris!')
   end
 
   private
