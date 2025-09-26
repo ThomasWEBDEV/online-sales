@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-heart text-danger"></i> Mes Favoris</h1>
+    <span class="badge bg-primary fs-6"><%= @favorites.count %> produit<%= 's' if @favorites.count > 1 %></span>
+  </div>
+
+  <% if @products.any? %>
+    <div class="cards">
+      <% @products.each do |product| %>
+        <div class="card-product">
+          <% if product.photo.attached? %>
+            <%= cl_image_tag product.photo.key, height: 150, width: 200, crop: :fill %>
+          <% else %>
+            <%= image_tag "https://picsum.photos/seed/#{product.id}/200/150" %>
+          <% end %>
+          <div class="card-product-infos">
+            <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
+            <p>
+              <% if product.sold %>
+                <span class="badge bg-danger">Vendu</span>
+              <% elsif product.created_at > 7.days.ago %>
+                <span class="badge bg-success">Nouveau</span>
+              <% end %>
+              <%= product.description.truncate(80) %>
+            </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="text-primary fw-bold mb-0"><%= product.price %>€</p>
+              <%= button_to unfavorite_product_path(product),
+                            method: :delete,
+                            form: { data: { turbo: false } },
+                            class: "btn btn-outline-danger btn-sm" do %>
+                <i class="fas fa-heart"></i> Retirer
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-5">
+      <i class="fas fa-heart-broken fa-3x text-muted mb-3"></i>
+      <h3 class="text-muted">Aucun favori pour le moment</h3>
+      <p class="text-muted">Ajoutez des produits à votre wishlist en cliquant sur le cœur ❤️</p>
+      <%= link_to "Découvrir les produits", products_path, class: "btn btn-flat mt-3" %>
+    </div>
+  <% end %>
+</div>
