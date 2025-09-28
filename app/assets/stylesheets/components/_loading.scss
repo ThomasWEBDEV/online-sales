@@ -1,10 +1,71 @@
 // ===== LOADING COMPONENT =====
+
+// Loader de page complet pour Turbo
+.turbo-progress-bar {
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, $primary, lighten($primary, 20%));
+  z-index: 2147483647;
+  transition: width 300ms ease-out, opacity 150ms ease-in;
+  transform: translate3d(0, 0, 0);
+  box-shadow: 0 0 10px rgba($primary, 0.4);
+}
+
+// Loader overlay élégant pour les actions importantes
+.page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .loader-content {
+    text-align: center;
+
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba($primary, 0.1);
+      border-radius: 50%;
+      border-top-color: $primary;
+      animation: spin-modern 1s ease-in-out infinite;
+      margin: 0 auto 20px;
+    }
+
+    .loader-text {
+      color: $primary;
+      font-weight: 600;
+      font-size: 0.95rem;
+      animation: pulse-text 2s ease-in-out infinite;
+    }
+  }
+}
+
+// Amélioration des boutons avec loader
 .btn-loading {
   position: relative;
   pointer-events: none;
 
   .btn-text {
     opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
   .spinner {
@@ -12,17 +73,142 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255,255,255,0.3);
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     border-top-color: white;
-    animation: spin 0.8s ease-in-out infinite;
+    animation: spin-modern 0.8s linear infinite;
+  }
+
+  // Variants pour différents types de boutons
+  &.btn-primary .spinner {
+    border-color: rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+  }
+
+  &.btn-outline-primary .spinner {
+    border-color: rgba($primary, 0.3);
+    border-top-color: $primary;
+  }
+
+  &.btn-success .spinner {
+    border-color: rgba(255, 255, 255, 0.3);
+    border-top-color: white;
   }
 }
 
-@keyframes spin {
-  to {
+// Skeleton loader pour le contenu
+.skeleton-loader {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  border-radius: 4px;
+
+  &.skeleton-text {
+    height: 16px;
+    margin-bottom: 8px;
+
+    &.skeleton-title {
+      height: 24px;
+      width: 60%;
+    }
+
+    &.skeleton-line {
+      width: 100%;
+
+      &:last-child {
+        width: 80%;
+      }
+    }
+  }
+
+  &.skeleton-card {
+    height: 200px;
+    border-radius: 8px;
+  }
+
+  &.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}
+
+// Micro-animations pour les interactions
+.btn {
+  transition: all 0.3s ease;
+
+  &:hover:not(.btn-loading) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active:not(.btn-loading) {
+    transform: translateY(0);
+  }
+}
+
+// Animations
+@keyframes spin-modern {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
     transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-text {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+// States de succès pour les boutons
+.btn-success-animation {
+  background: $success !important;
+  border-color: $success !important;
+
+  &::after {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    animation: success-pop 0.6s ease;
+  }
+
+  .btn-text {
+    opacity: 0;
+  }
+}
+
+@keyframes success-pop {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
   }
 }
