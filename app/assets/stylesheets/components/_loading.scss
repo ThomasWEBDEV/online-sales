@@ -1,214 +1,217 @@
-// ===== LOADING COMPONENT =====
-
-// Loader de page complet pour Turbo
-.turbo-progress-bar {
+// ===== ALERTS COMPONENT =====
+.alert-flash {
   position: fixed;
-  display: block;
-  top: 0;
-  left: 0;
-  height: 3px;
-  background: linear-gradient(90deg, $primary, lighten($primary, 20%));
-  z-index: 2147483647;
-  transition: width 300ms ease-out, opacity 150ms ease-in;
-  transform: translate3d(0, 0, 0);
-  box-shadow: 0 0 10px rgba($primary, 0.4);
-}
+  top: 80px;
+  right: 20px;
+  z-index: 1050;
+  min-width: 300px;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
 
-// Loader overlay élégant pour les actions importantes
-.page-loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-
-  &.active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .loader-content {
-    text-align: center;
-
-    .loader-spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgba($primary, 0.1);
-      border-radius: 50%;
-      border-top-color: $primary;
-      animation: spin-modern 1s ease-in-out infinite;
-      margin: 0 auto 20px;
-    }
-
-    .loader-text {
-      color: $primary;
-      font-weight: 600;
-      font-size: 0.95rem;
-      animation: pulse-text 2s ease-in-out infinite;
-    }
-  }
-}
-
-// Amélioration des boutons avec loader
-.btn-loading {
-  position: relative;
-  pointer-events: none;
-
-  .btn-text {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .spinner {
+  // Barre de progression pour auto-dismiss
+  &::before {
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin-modern 0.8s linear infinite;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    animation: progressBar 4s linear;
+    z-index: 1;
   }
 
-  // Variants pour différents types de boutons
-  &.btn-primary .spinner {
-    border-color: rgba(255, 255, 255, 0.3);
-    border-top-color: white;
+  &.alert-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+
+    &::before {
+      background: rgba(255, 255, 255, 0.4);
+    }
   }
 
-  &.btn-outline-primary .spinner {
-    border-color: rgba($primary, 0.3);
-    border-top-color: $primary;
+  &.alert-danger {
+    background: linear-gradient(135deg, #dc3545, #fd7e14);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+
+    &::before {
+      background: rgba(255, 255, 255, 0.4);
+    }
   }
 
-  &.btn-success .spinner {
-    border-color: rgba(255, 255, 255, 0.3);
-    border-top-color: white;
+  &.alert-warning {
+    background: linear-gradient(135deg, #ffc107, #fd7e14);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+
+    &::before {
+      background: rgba(255, 255, 255, 0.4);
+    }
   }
-}
 
-// Skeleton loader pour le contenu
-.skeleton-loader {
-  animation: skeleton-pulse 1.5s ease-in-out infinite;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
+  &.alert-info {
+    background: linear-gradient(135deg, $primary, lighten($primary, 15%));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
 
-  &.skeleton-text {
-    height: 16px;
-    margin-bottom: 8px;
+    &::before {
+      background: rgba(255, 255, 255, 0.4);
+    }
+  }
 
-    &.skeleton-title {
-      height: 24px;
-      width: 60%;
+  .alert-content {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px;
+    position: relative;
+
+    i {
+      font-size: 22px;
+      margin-right: 14px;
+      animation: iconPulse 0.6s ease-out;
     }
 
-    &.skeleton-line {
-      width: 100%;
+    .alert-text {
+      flex-grow: 1;
+      font-weight: 500;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
 
-      &:last-child {
-        width: 80%;
+    .alert-close {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 4px;
+      margin-left: 10px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        transform: scale(1.1);
       }
     }
   }
 
-  &.skeleton-card {
-    height: 200px;
-    border-radius: 8px;
+  // Animation de sortie
+  &.alert-dismissing {
+    animation: slideOut 0.3s ease-in forwards;
   }
 
-  &.skeleton-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+  // Variant compact pour mobile
+  @media (max-width: 576px) {
+    right: 10px;
+    left: 10px;
+    min-width: auto;
+    max-width: none;
+    top: 70px;
+
+    .alert-content {
+      padding: 14px 16px;
+
+      i {
+        font-size: 20px;
+        margin-right: 10px;
+      }
+
+      .alert-text {
+        font-size: 0.9rem;
+      }
+    }
   }
 }
 
-// Micro-animations pour les interactions
-.btn {
-  transition: all 0.3s ease;
+// Stack multiple alerts
+.alert-flash:nth-child(2) { top: 160px; }
+.alert-flash:nth-child(3) { top: 240px; }
+.alert-flash:nth-child(4) { top: 320px; }
 
-  &:hover:not(.btn-loading) {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  &:active:not(.btn-loading) {
-    transform: translateY(0);
-  }
+@media (max-width: 576px) {
+  .alert-flash:nth-child(2) { top: 140px; }
+  .alert-flash:nth-child(3) { top: 210px; }
+  .alert-flash:nth-child(4) { top: 280px; }
 }
 
 // Animations
-@keyframes spin-modern {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
+@keyframes slideIn {
+  from {
+    transform: translateX(120%) scale(0.9);
+    opacity: 0;
   }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
-@keyframes skeleton-pulse {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-@keyframes pulse-text {
-  0%, 100% {
+  to {
+    transform: translateX(0) scale(1);
     opacity: 1;
   }
-  50% {
-    opacity: 0.6;
-  }
 }
 
-// States de succès pour les boutons
-.btn-success-animation {
-  background: $success !important;
-  border-color: $success !important;
-
-  &::after {
-    content: "✓";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-weight: bold;
-    animation: success-pop 0.6s ease;
+@keyframes slideOut {
+  from {
+    transform: translateX(0) scale(1);
+    opacity: 1;
   }
-
-  .btn-text {
+  to {
+    transform: translateX(120%) scale(0.9);
     opacity: 0;
   }
 }
 
-@keyframes success-pop {
+@keyframes progressBar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+@keyframes iconPulse {
   0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
+    transform: scale(0.8);
+    opacity: 0.8;
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.2);
+    transform: scale(1.1);
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
     opacity: 1;
+  }
+}
+
+// Toast notifications groupées
+.alerts-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 1050;
+  pointer-events: none;
+
+  .alert-flash {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-bottom: 10px;
+    pointer-events: all;
+  }
+
+  @media (max-width: 576px) {
+    right: 10px;
+    left: 10px;
+    top: 70px;
   }
 }
