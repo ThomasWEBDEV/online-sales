@@ -10,4 +10,7 @@ Rails.application.routes.draw do
   end
 
   resources :favorites, only: [:index]
+
+  # Profils publics des vendeurs
+  resources :users, only: [:show]
 end
