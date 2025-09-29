@@ -1,0 +1,123 @@
+<%= breadcrumbs ["Produits", products_path], ["Profil vendeur", nil] %>
+
+<!-- En-tête profil vendeur -->
+<div class="seller-profile-header mb-4">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <div class="d-flex align-items-center">
+          <div class="seller-avatar me-3">
+            <i class="fas fa-user-circle fa-4x text-primary"></i>
+          </div>
+          <div>
+            <h2 class="mb-2"><%= @user.email.split('@').first.capitalize %></h2>
+            <p class="text-muted mb-2">
+              Membre depuis <%= @user.created_at.strftime("%B %Y") %>
+              <% if @user.updated_at > 24.hours.ago %>
+                <span class="badge bg-success ms-2">
+                  <i class="fas fa-circle" style="font-size: 8px;"></i> En ligne récemment
+                </span>
+              <% elsif @user.updated_at > 7.days.ago %>
+                <span class="badge bg-warning ms-2">
+                  <i class="fas fa-circle" style="font-size: 8px;"></i> Actif cette semaine
+                </span>
+              <% end %>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="seller-stats">
+          <div class="stat-item">
+            <span class="stat-number"><%= @products_count %></span>
+            <span class="stat-label">Produits</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number"><%= @sold_products.count %></span>
+            <span class="stat-label">Vendus</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number"><%= @available_products.count %></span>
+            <span class="stat-label">Disponibles</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabs pour organiser les produits -->
+<div class="container mb-4">
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#all-products" type="button">
+        Tous les produits (<%= @products_count %>)
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#available-products" type="button">
+        Disponibles (<%= @available_products.count %>)
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#sold-products" type="button">
+        Vendus (<%= @sold_products.count %>)
+      </button>
+    </li>
+  </ul>
+</div>
+
+<!-- Contenu des tabs -->
+<div class="container">
+  <div class="tab-content">
+    <!-- Tous les produits -->
+    <div class="tab-pane fade show active" id="all-products">
+      <% if @products.any? %>
+        <div class="cards">
+          <% @products.each do |product| %>
+            <%= render partial: 'shared/product_card', locals: { product: product } %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+          <p class="text-muted">Ce vendeur n'a pas encore de produits</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Produits disponibles -->
+    <div class="tab-pane fade" id="available-products">
+      <% if @available_products.any? %>
+        <div class="cards">
+          <% @available_products.each do |product| %>
+            <%= render partial: 'shared/product_card', locals: { product: product } %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+          <p class="text-muted">Aucun produit disponible actuellement</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Produits vendus -->
+    <div class="tab-pane fade" id="sold-products">
+      <% if @sold_products.any? %>
+        <div class="cards">
+          <% @sold_products.each do |product| %>
+            <%= render partial: 'shared/product_card', locals: { product: product } %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="fas fa-check-circle fa-3x text-muted mb-3"></i>
+          <p class="text-muted">Aucune vente pour le moment</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= link_to "← Retour aux produits", products_path, class: "btn btn-secondary mt-4" %>

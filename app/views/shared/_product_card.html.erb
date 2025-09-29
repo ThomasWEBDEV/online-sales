@@ -1,0 +1,23 @@
+<div class="card-product">
+  <% if product.photo.attached? %>
+    <%= cl_image_tag product.photo.key, height: 150, width: 200, crop: :fill %>
+  <% else %>
+    <%= image_tag "https://picsum.photos/seed/#{product.id}/200/150" %>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <%= favorite_button(product) %>
+  <% end %>
+
+  <% if product.sold %>
+    <span class="badge bg-danger">Vendu</span>
+  <% elsif product.created_at > 7.days.ago %>
+    <span class="badge bg-success">Nouveau</span>
+  <% end %>
+
+  <div class="card-product-infos">
+    <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
+    <p><%= truncate(product.description, length: 80) %></p>
+    <p class="text-primary fw-bold"><%= product.price %>€</p>
+  </div>
+</div>
