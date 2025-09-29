@@ -1,0 +1,71 @@
+// ===== SELLER PROFILE COMPONENT =====
+
+.seller-profile-header {
+  background: $white;
+  padding: 30px 0;
+  border-bottom: 2px solid #f0f0f0;
+  margin-bottom: 30px;
+
+  .seller-avatar {
+    i {
+      color: $primary;
+    }
+  }
+
+  h2 {
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .seller-stats {
+    display: flex;
+    gap: 30px;
+    justify-content: flex-end;
+
+    @media (max-width: 768px) {
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .stat-item {
+      text-align: center;
+
+      .stat-number {
+        display: block;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: $primary;
+      }
+
+      .stat-label {
+        display: block;
+        font-size: 0.85rem;
+        color: #6c757d;
+      }
+    }
+  }
+}
+
+// Amélioration des tabs Bootstrap
+.nav-tabs {
+  border-bottom: 2px solid #dee2e6;
+
+  .nav-link {
+    border: none;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: $primary;
+      border-bottom: 2px solid $primary;
+    }
+
+    &.active {
+      color: $primary;
+      border-bottom: 2px solid $primary;
+      background: none;
+    }
+  }
+}
