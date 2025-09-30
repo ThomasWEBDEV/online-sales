@@ -79,4 +79,46 @@
   </div>
 </div>
 
+<!-- Section Produits Similaires -->
+<% if @similar_products.any? %>
+  <div class="similar-products-section mt-5">
+    <div class="section-header">
+      <h3><i class="fas fa-lightbulb"></i> Produits similaires qui pourraient vous intéresser</h3>
+      <p class="text-muted">Découvrez d'autres produits du même vendeur ou dans la même gamme de prix</p>
+    </div>
+
+    <div class="cards mt-4">
+      <% @similar_products.each do |product| %>
+        <div class="card-product">
+          <% if product.photo.attached? %>
+            <%= cl_image_tag product.photo.key, height: 150, width: 200, crop: :fill %>
+          <% else %>
+            <%= image_tag "https://picsum.photos/seed/#{product.id}/200/150" %>
+          <% end %>
+
+          <% if user_signed_in? %>
+            <%= favorite_button(product) %>
+          <% end %>
+
+          <% if product.created_at > 7.days.ago %>
+            <span class="badge bg-success">Nouveau</span>
+          <% end %>
+
+          <% if product.user_id == @product.user_id %>
+            <span class="badge bg-info" style="position: absolute; top: 50px; right: 8px;">
+              <i class="fas fa-user"></i> Même vendeur
+            </span>
+          <% end %>
+
+          <div class="card-product-infos">
+            <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
+            <p><%= truncate(product.description, length: 80) %></p>
+            <p class="text-primary fw-bold"><%= product.price %>€</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <%= link_to "← Retour aux produits", products_path, class: "btn btn-secondary mt-4" %>
