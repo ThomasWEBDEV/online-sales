@@ -1,51 +1,127 @@
-// ===== CARDS COMPONENT =====
+// ===== CARDS COMPONENT - AIRBNB STYLE =====
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-gap: 24px;
+
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    grid-gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 16px;
   }
+
   @media (max-width: 576px) {
-    grid-gap: 8px;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
   }
 }
 
 .card-product {
-  overflow: hidden;
-  min-height: 150px;
   background: $white;
-  box-shadow: $shadow-md;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
   display: flex;
-  align-items: flex-start;
-  margin-bottom: 16px;
-  border-radius: $radius;
-  transition: all 0.3s ease;
-  position: relative; // AJOUTÉ pour les boutons favoris
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid transparent;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-lg;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.04);
   }
 
-  img {
-    height: 150px;
-    width: 150px;
+  // Image container
+  .card-product-image {
+    position: relative;
+    width: 100%;
+    padding-top: 66.67%; // Ratio 3:2 comme Airbnb
+    overflow: hidden;
+    background: #f7f7f7;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  // Si image directe sans wrapper
+  > img {
+    width: 100%;
+    height: 200px;
     object-fit: cover;
-    flex-shrink: 0;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover > img {
+    transform: scale(1.05);
+  }
+
+  // Badges
+  .badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    &.bg-success {
+      background: $success !important;
+    }
+
+    &.bg-danger {
+      background: $danger !important;
+    }
+
+    &.bg-info {
+      background: $primary !important;
+    }
+  }
+
+  // Info section
+  .card-product-infos {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
   }
 
   h2 {
     font-size: 16px;
-    font-weight: bold;
-    margin: 0 0 8px 0;
+    font-weight: 600;
+    margin: 0;
     line-height: 1.3;
-    max-height: 2.6em;
+    color: #222;
+
+    // Limiter à 2 lignes
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
     overflow: hidden;
+
     a {
       color: inherit;
       text-decoration: none;
+      transition: color 0.2s ease;
+
       &:hover {
         color: $primary;
       }
@@ -53,88 +129,85 @@
   }
 
   p {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.4;
-    opacity: .7;
-    margin-bottom: 8px;
-    margin-top: 0;
-    max-height: 4.2em;
+    color: #717171;
+    margin: 0;
+
+    // Limiter à 2 lignes
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
     overflow: hidden;
   }
 
-  .card-product-infos {
-    padding: 16px;
-    flex-grow: 1;
+  .card-product-footer {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    min-height: 150px;
-  }
-
-  .card-product-content {
-    flex-grow: 1;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 8px;
   }
 
   .card-product-pricing {
-    color: $primary;
-    font-weight: bold;
     font-size: 16px;
-    margin-top: auto;
-    align-self: flex-end;
-  }
+    font-weight: 600;
+    color: #222;
 
-  // NOUVEAU: Support pour l'overlay sur l'image
-  .card-product-image {
-    position: relative;
-    flex-shrink: 0;
-
-    img {
-      height: 150px;
-      width: 150px;
-      object-fit: cover;
-    }
-
-    // Overlay gradient pour mieux voir les boutons
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.1) 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    &:hover::after {
-      opacity: 1;
+    .currency {
+      font-weight: 400;
+      color: #717171;
+      font-size: 14px;
     }
   }
 
-  // Responsive
-  @media (max-width: 768px) {
+  .card-product-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #717171;
+    font-size: 13px;
+
+    i {
+      font-size: 12px;
+    }
+  }
+
+  // Overlay pour index avec fond gradient (optionnel)
+  .card-product-overlay {
+    padding: 16px;
+    display: flex;
     flex-direction: column;
-    min-height: auto;
+    gap: 8px;
+    flex-grow: 1;
 
-    img, .card-product-image img {
-      width: 100%;
-      height: 200px;
+    h2 {
+      color: #222;
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
     }
 
-    .card-product-infos {
-      min-height: auto;
+    p {
+      color: #717171;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .card-product-pricing {
+      margin-top: auto;
+      font-size: 18px;
+      font-weight: 600;
+      color: #222;
     }
   }
 }
 
-// ===== BADGES COMPONENT =====
-.badge {
-  font-size: 10px;
-  padding: 3px 8px;
-  border-radius: $radius-lg;
-  margin-right: 6px;
-  display: inline-block;
-  position: relative;
-  z-index: 5; // Pour être au-dessus de l'overlay
+// Favoris button position
+.btn-favorite {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
 }
