@@ -1,23 +1,41 @@
 <div class="card-product">
-  <% if product.photo.attached? %>
-    <%= cl_image_tag product.photo.key, height: 150, width: 200, crop: :fill %>
-  <% else %>
-    <%= image_tag "https://picsum.photos/seed/#{product.id}/200/150" %>
-  <% end %>
+  <!-- Image -->
+  <div class="card-product-image">
+    <% if product.photo.attached? %>
+      <%= cl_image_tag product.photo.key, height: 300, width: 400, crop: :fill, quality: :auto %>
+    <% else %>
+      <%= image_tag "https://picsum.photos/seed/#{product.id}/400/300" %>
+    <% end %>
+  </div>
 
+  <!-- Bouton favori -->
   <% if user_signed_in? %>
     <%= favorite_button(product) %>
   <% end %>
 
+  <!-- Badges -->
   <% if product.sold %>
     <span class="badge bg-danger">Vendu</span>
   <% elsif product.created_at > 7.days.ago %>
     <span class="badge bg-success">Nouveau</span>
   <% end %>
 
+  <!-- Infos produit -->
   <div class="card-product-infos">
     <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
     <p><%= truncate(product.description, length: 80) %></p>
-    <p class="text-primary fw-bold"><%= product.price %>€</p>
+
+    <div class="card-product-footer">
+      <div class="card-product-pricing">
+        <%= number_to_currency(product.price, unit: '', separator: ',', delimiter: ' ', format: '%n', precision: 0) %>
+        <span class="currency">€</span>
+      </div>
+      <% if product.views_count > 0 %>
+        <div class="card-product-meta">
+          <i class="fas fa-eye"></i>
+          <%= product.views_count %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
