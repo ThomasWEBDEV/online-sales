@@ -1,0 +1,207 @@
+// ===== GLOBAL ANIMATIONS & TRANSITIONS =====
+
+// Smooth scroll
+html {
+  scroll-behavior: smooth;
+}
+
+// Transitions globales sur tous les éléments interactifs
+a, button, input, textarea, select {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Links avec underline animé
+a:not(.btn) {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+// Inputs avec focus élégant
+input:not([type="submit"]):not([type="button"]),
+textarea,
+select {
+  transition: all 0.3s ease;
+
+  &:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Boutons avec effet de presse
+.btn, button[type="submit"] {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Animation fade-in pour le contenu au chargement
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Appliquer fade-in aux sections principales
+.hero-marketplace,
+.cards,
+.similar-products-section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+// Stagger animation pour les cartes
+.cards > * {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+@for $i from 1 through 12 {
+  .cards > *:nth-child(#{$i}) {
+    animation-delay: #{$i * 0.05}s;
+  }
+}
+
+// Hover sur images avec zoom subtil
+img {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Badges avec animation d'apparition
+.badge {
+  animation: scaleIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Navigation sticky avec ombre animée
+.navbar.sticky-top {
+  transition: box-shadow 0.3s ease;
+}
+
+// Focus visible pour accessibilité
+*:focus-visible {
+  outline: 2px solid $primary;
+  outline-offset: 2px;
+  transition: outline 0.2s ease;
+}
+
+// Smooth page transitions avec Turbo
+.turbo-progress-bar {
+  background: linear-gradient(90deg, $primary, lighten($primary, 20%));
+  height: 3px;
+}
+
+// Animations pour états vides
+.empty-state {
+  animation: fadeInUp 0.6s ease-out;
+
+  i {
+    animation: float 3s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Form validation avec animation
+.form-control.is-invalid {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+// Loading shimmer pour images
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+// Dropdowns avec animation
+.dropdown-menu {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Stats counters avec animation
+.stat-number {
+  animation: countUp 1s ease-out;
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
