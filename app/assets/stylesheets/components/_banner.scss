@@ -1,0 +1,127 @@
+// ===== BANNER MODERNE ET ÉLÉGANTE =====
+
+.banner {
+  background-size: cover;
+  background-position: center;
+  padding: 120px 0;
+  margin-bottom: 48px;
+  position: relative;
+  border-radius: 0 0 $radius-xl $radius-xl;
+  overflow: hidden;
+
+  // Overlay gradient neutre et élégant
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $gradient-primary;
+    opacity: 0.92;
+    z-index: 1;
+  }
+
+  // Version alternative avec dégradé plus subtil
+  &.banner-light::before {
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.85), rgba(52, 73, 94, 0.75));
+  }
+
+  // Contenu
+  .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  h1 {
+    color: $white;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+      font-size: 2.5rem;
+    }
+
+    @media (max-width: 576px) {
+      font-size: 2rem;
+    }
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    line-height: 1.6;
+
+    @media (max-width: 768px) {
+      font-size: 1.1rem;
+    }
+  }
+
+  // Boutons dans le banner
+  .btn-flat {
+    background: $white;
+    color: $primary;
+    padding: 14px 36px;
+    font-size: 16px;
+    box-shadow: $shadow-md;
+
+    &:hover {
+      background: $light;
+      transform: translateY(-3px);
+      box-shadow: $shadow-lg;
+    }
+  }
+
+  .btn-ghost {
+    border-color: $white;
+    color: $white;
+
+    &:hover {
+      background: $white;
+      color: $primary;
+    }
+  }
+
+  // Motif décoratif optionnel
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(180deg, transparent 0%, $white 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+// Version compacte
+.banner-compact {
+  padding: 80px 0;
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+  }
+}
+
+// Version sans image (fond uni)
+.banner-solid {
+  background: $gradient-primary;
+
+  &::before {
+    display: none;
+  }
+}
