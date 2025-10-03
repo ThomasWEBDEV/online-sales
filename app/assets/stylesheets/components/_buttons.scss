@@ -1,0 +1,222 @@
+// ===== BOUTONS SYSTÈME MODERNE ET NEUTRE =====
+
+// Bouton principal (Call to Action)
+.btn-flat {
+  background: $accent;
+  color: $white;
+  padding: 12px 32px;
+  border-radius: $radius-pill;
+  border: none;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: $shadow-sm;
+  transition: all $transition-base;
+  cursor: pointer;
+
+  &:hover {
+    background: darken($accent, 8%);
+    color: $white;
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
+  }
+
+  &:disabled {
+    background: $gray-medium;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  i {
+    font-size: 16px;
+  }
+}
+
+// Bouton secondaire (Ghost/Outline)
+.btn-ghost {
+  background: transparent;
+  color: $primary;
+  padding: 12px 32px;
+  border: 2px solid $primary;
+  border-radius: $radius-pill;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all $transition-base;
+  cursor: pointer;
+
+  &:hover {
+    background: $primary;
+    color: $white;
+    transform: translateY(-2px);
+    box-shadow: $shadow-sm;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    border-color: $gray-medium;
+    color: $gray-medium;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// Bouton danger
+.btn-danger {
+  background: $danger;
+  color: $white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: $radius-pill;
+  font-weight: 600;
+  box-shadow: $shadow-sm;
+  transition: all $transition-base;
+
+  &:hover {
+    background: $danger-dark;
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+// Bouton success
+.btn-success {
+  background: $success;
+  color: $white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: $radius-pill;
+  font-weight: 600;
+  box-shadow: $shadow-sm;
+  transition: all $transition-base;
+
+  &:hover {
+    background: darken($success, 8%);
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+// Bouton link (texte simple)
+.btn-link {
+  background: transparent;
+  color: $accent;
+  border: none;
+  padding: 8px 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: darken($accent, 10%);
+    text-decoration: underline;
+  }
+}
+
+// Bouton icon only (rond)
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: $white;
+  color: $primary;
+  box-shadow: $shadow-sm;
+  transition: all $transition-base;
+  cursor: pointer;
+
+  &:hover {
+    background: $primary;
+    color: $white;
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  i {
+    font-size: 18px;
+  }
+
+  &.btn-icon-sm {
+    width: 36px;
+    height: 36px;
+
+    i {
+      font-size: 14px;
+    }
+  }
+
+  &.btn-icon-lg {
+    width: 52px;
+    height: 52px;
+
+    i {
+      font-size: 22px;
+    }
+  }
+}
+
+// Groupe de boutons
+.btn-group {
+  display: inline-flex;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  .btn {
+    margin: 0;
+  }
+
+  &.btn-group-vertical {
+    flex-direction: column;
+  }
+}
+
+// États Bootstrap override
+.btn-outline-secondary {
+  border: 2px solid $gray-medium;
+  color: $primary;
+  font-weight: 500;
+  transition: all $transition-base;
+
+  &:hover,
+  &.active {
+    background: $primary;
+    border-color: $primary;
+    color: $white;
+  }
+}
+
+.btn-secondary {
+  background: $secondary;
+  border: none;
+  color: $white;
+
+  &:hover {
+    background: darken($secondary, 8%);
+  }
+}
+
+// Bouton pleine largeur
+.btn-block {
+  width: 100%;
+  display: flex;
+}
