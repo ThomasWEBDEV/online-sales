@@ -1,4 +1,5 @@
-// ===== CARDS COMPONENT - AIRBNB STYLE =====
+// ===== CARDS AIRBNB STYLE - VERSION NEUTRE =====
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -17,28 +18,29 @@
 
 .card-product {
   background: $white;
-  border-radius: 12px;
+  border-radius: $radius-lg;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all $transition-base;
   position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
   border: 1px solid transparent;
+  box-shadow: $shadow-sm;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
-    border-color: rgba(0, 0, 0, 0.04);
+    box-shadow: $shadow-lg;
+    border-color: rgba(44, 62, 80, 0.08);
   }
 
   // Image container
   .card-product-image {
     position: relative;
     width: 100%;
-    padding-top: 66.67%; // Ratio 3:2 comme Airbnb
+    padding-top: 66.67%; // Ratio 3:2
     overflow: hidden;
-    background: #f7f7f7;
+    background: $gray-lightest;
 
     img {
       position: absolute;
@@ -47,7 +49,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform $transition-slow;
     }
 
     &:hover img {
@@ -55,46 +57,55 @@
     }
   }
 
-  // Si image directe sans wrapper
+  // Si image directe
   > img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform $transition-slow;
   }
 
   &:hover > img {
     transform: scale(1.05);
   }
 
-  // Badges
+  // Badges modernes
   .badge {
     position: absolute;
     top: 12px;
     left: 12px;
     font-size: 11px;
     font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 6px;
+    padding: 6px 14px;
+    border-radius: $radius;
     z-index: 2;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: $shadow-sm;
+    backdrop-filter: blur(10px);
 
     &.bg-success {
       background: $success !important;
+      color: $white;
     }
 
     &.bg-danger {
       background: $danger !important;
+      color: $white;
     }
 
     &.bg-info {
-      background: $primary !important;
+      background: $accent !important;
+      color: $white;
+    }
+
+    &.bg-warning {
+      background: $warning !important;
+      color: $white;
     }
   }
 
-  // Info section
+  // Section infos
   .card-product-infos {
     padding: 16px;
     display: flex;
@@ -107,74 +118,84 @@
     font-size: 16px;
     font-weight: 600;
     margin: 0;
-    line-height: 1.3;
-    color: #222;
+    line-height: 1.4;
+    color: $primary;
 
     // Limiter à 2 lignes
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    line-clamp: 2;
     overflow: hidden;
 
     a {
       color: inherit;
       text-decoration: none;
-      transition: color 0.2s ease;
+      transition: color $transition-fast;
 
       &:hover {
-        color: $primary;
+        color: $accent;
       }
     }
   }
 
   p {
     font-size: 14px;
-    line-height: 1.4;
-    color: #717171;
+    line-height: 1.5;
+    color: $gray-text;
     margin: 0;
 
     // Limiter à 2 lignes
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    line-clamp: 2;
     overflow: hidden;
   }
 
+  // Footer de la carte
   .card-product-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: auto;
-    padding-top: 8px;
+    padding-top: 12px;
+    border-top: 1px solid $gray-light;
   }
 
+  // Prix
   .card-product-pricing {
-    font-size: 16px;
-    font-weight: 600;
-    color: #222;
+    font-size: 18px;
+    font-weight: 700;
+    color: $primary;
 
     .currency {
       font-weight: 400;
-      color: #717171;
+      color: $gray-text;
       font-size: 14px;
+      margin-left: 2px;
     }
   }
 
+  // Métadonnées (vues, date, etc.)
   .card-product-meta {
     display: flex;
     align-items: center;
-    gap: 8px;
-    color: #717171;
+    gap: 12px;
+    color: $gray-text;
     font-size: 13px;
 
     i {
       font-size: 12px;
+      margin-right: 4px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
   }
 
-  // Overlay pour index avec fond gradient (optionnel)
+  // Overlay pour design alternatif
   .card-product-overlay {
     padding: 16px;
     display: flex;
@@ -183,14 +204,14 @@
     flex-grow: 1;
 
     h2 {
-      color: #222;
+      color: $primary;
       font-size: 16px;
       font-weight: 600;
       margin: 0;
     }
 
     p {
-      color: #717171;
+      color: $gray-text;
       font-size: 14px;
       margin: 0;
     }
@@ -198,16 +219,67 @@
     .card-product-pricing {
       margin-top: auto;
       font-size: 18px;
-      font-weight: 600;
-      color: #222;
+      font-weight: 700;
+      color: $primary;
     }
   }
 }
 
-// Favoris button position
+// Bouton favoris
 .btn-favorite {
   position: absolute;
   top: 12px;
   right: 12px;
   z-index: 3;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $shadow-sm;
+  transition: all $transition-fast;
+  backdrop-filter: blur(10px);
+
+  i {
+    font-size: 16px;
+    color: $primary;
+    transition: all $transition-fast;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: $shadow-md;
+  }
+
+  &.active {
+    background: $danger;
+
+    i {
+      color: $white;
+    }
+  }
+}
+
+// État sold out
+.card-product.sold {
+  opacity: 0.7;
+
+  &::after {
+    content: 'VENDU';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    background: $danger;
+    color: $white;
+    padding: 12px 36px;
+    font-size: 24px;
+    font-weight: 700;
+    border-radius: $radius;
+    box-shadow: $shadow-xl;
+    z-index: 10;
+  }
 }
