@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_26_141109) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_04_120002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,39 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_26_141109) do
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
+  create_table "orders", force: :cascade do |t|
+    t.bigint "buyer_id", null: false
+    t.bigint "seller_id", null: false
+    t.bigint "product_id", null: false
+    t.string "stripe_session_id"
+    t.string "stripe_payment_intent_id"
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.decimal "shipping_cost", precision: 10, scale: 2, default: "0.0"
+    t.decimal "total_amount", precision: 10, scale: 2, null: false
+    t.string "status", default: "pending", null: false
+    t.string "shipping_name"
+    t.string "shipping_address_line1"
+    t.string "shipping_address_line2"
+    t.string "shipping_city"
+    t.string "shipping_postal_code"
+    t.string "shipping_country", default: "FR"
+    t.string "shipping_phone"
+    t.string "shipping_method", default: "standard"
+    t.string "tracking_number"
+    t.datetime "shipped_at"
+    t.datetime "delivered_at"
+    t.text "buyer_notes"
+    t.text "seller_notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["buyer_id"], name: "index_orders_on_buyer_id"
+    t.index ["created_at"], name: "index_orders_on_created_at"
+    t.index ["product_id"], name: "index_orders_on_product_id"
+    t.index ["seller_id"], name: "index_orders_on_seller_id"
+    t.index ["status"], name: "index_orders_on_status"
+    t.index ["stripe_session_id"], name: "index_orders_on_stripe_session_id", unique: true
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -80,5 +113,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_26_141109) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "favorites", "products"
   add_foreign_key "favorites", "users"
+  add_foreign_key "orders", "products"
+  add_foreign_key "orders", "users", column: "buyer_id"
+  add_foreign_key "orders", "users", column: "seller_id"
   add_foreign_key "products", "users"
 end
