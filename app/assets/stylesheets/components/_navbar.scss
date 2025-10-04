@@ -1,84 +1,186 @@
-// ===== NAVBAR COMPONENT =====
-// Migration de votre navbar existante + améliorations
+// ===== NAVBAR NEUTRE ET PROFESSIONNELLE =====
 
 .navbar-lewagon {
-  // Upgrade: gradient au lieu de background blanc
-  background: $gradient-primary;
+  // Fond blanc élégant au lieu du gradient
+  background: $white;
   box-shadow: $shadow-sm;
-  padding: 12px 0;
+  padding: 16px 0;
+  border-bottom: 1px solid $gray-light;
+  transition: all $transition-base;
+
+  // Navbar sticky avec ombre renforcée
+  &.sticky-top {
+    box-shadow: $shadow-md;
+  }
 
   .navbar-brand {
-    color: $white !important; // Adapté au nouveau background
-    font-weight: bold;
+    color: $primary !important;
+    font-weight: 700;
     text-decoration: none !important;
     display: flex;
     align-items: center;
+    transition: all $transition-base;
 
-    // Nouveau: icône stylée
+    &:hover {
+      color: $accent !important;
+      transform: translateY(-1px);
+    }
+
+    // Icône stylée
     .brand-icon {
-      background: $white;
+      background: $gradient-primary;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: 12px;
       box-shadow: $shadow-sm;
+      transition: all $transition-base;
 
       i {
-        color: $primary;
+        color: $white;
         font-size: 18px;
       }
     }
 
+    &:hover .brand-icon {
+      transform: rotate(5deg) scale(1.05);
+      box-shadow: $shadow-md;
+    }
+
     .brand-text {
-      color: $white;
-      font-weight: bold;
+      color: $primary;
+      font-weight: 700;
       font-size: 20px;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      letter-spacing: -0.5px;
     }
   }
 
-  // Améliorations des liens nav
+  // Navigation links
   .navbar-nav .nav-link {
-    color: rgba(255,255,255,0.9) !important;
+    color: $primary !important;
     font-weight: 500;
-    padding: 8px 16px;
+    padding: 10px 16px;
     border-radius: $radius;
-    transition: all 0.3s ease;
+    transition: all $transition-base;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 8px;
+      left: 16px;
+      right: 16px;
+      height: 2px;
+      background: $accent;
+      transform: scaleX(0);
+      transition: transform $transition-base;
+    }
 
     &:hover {
-      color: $white !important;
-      background: rgba(255,255,255,0.1);
+      color: $accent !important;
+      background: rgba(52, 152, 219, 0.05);
+
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+
+    &.active {
+      color: $accent !important;
+      background: rgba(52, 152, 219, 0.08);
     }
   }
 
+  // Bouton "Vendre"
   .btn-sell {
-    background: rgba(255,255,255,0.2) !important;
-    border: 1px solid rgba(255,255,255,0.3);
+    background: $accent !important;
+    border: none;
+    color: $white !important;
+    padding: 10px 24px;
+    border-radius: $radius-pill;
+    font-weight: 600;
+    box-shadow: $shadow-sm;
+    transition: all $transition-base;
 
     &:hover {
-      background: rgba(255,255,255,0.3) !important;
-      transform: translateY(-1px);
+      background: darken($accent, 8%) !important;
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
 
+  // Dropdown
   .dropdown-menu {
     border-radius: $radius-lg;
-    border: none;
+    border: 1px solid $gray-light;
     box-shadow: $shadow-lg;
-  }
+    padding: 8px 0;
+    margin-top: 8px;
 
-  .btn-outline-primary {
-    border-color: $white !important;
-    color: $white !important;
-    border-radius: $radius-pill;
-    padding: 6px 16px;
+    .dropdown-item {
+      padding: 10px 20px;
+      color: $primary;
+      font-weight: 500;
+      transition: all $transition-fast;
 
-    &:hover {
-      background: $white !important;
-      color: $primary !important;
+      &:hover {
+        background: rgba(52, 152, 219, 0.05);
+        color: $accent;
+      }
+
+      &:active {
+        background: rgba(52, 152, 219, 0.1);
+      }
+    }
+
+    .dropdown-divider {
+      margin: 8px 0;
+      border-color: $gray-light;
     }
   }
+
+  // Boutons outline
+  .btn-outline-primary {
+    border: 2px solid $primary !important;
+    color: $primary !important;
+    border-radius: $radius-pill;
+    padding: 8px 20px;
+    font-weight: 600;
+    background: transparent;
+    transition: all $transition-base;
+
+    &:hover {
+      background: $primary !important;
+      color: $white !important;
+      transform: translateY(-2px);
+      box-shadow: $shadow-sm;
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    .navbar-collapse {
+      background: $white;
+      border-radius: $radius-lg;
+      padding: 16px;
+      margin-top: 12px;
+      box-shadow: $shadow-md;
+    }
+
+    .nav-link {
+      margin: 4px 0;
+    }
+  }
+}
+
+// Version alternative: navbar avec fond légèrement grisé
+.navbar-lewagon.navbar-light-bg {
+  background: $gray-lightest;
 }
