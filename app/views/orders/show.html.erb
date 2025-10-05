@@ -1,0 +1,134 @@
+<div class="container my-5">
+  <h1><i class="fas fa-receipt"></i> Commande #<%= @order.id %></h1>
+
+  <div class="row mt-4">
+    <!-- Colonne gauche : Infos commande -->
+    <div class="col-md-8">
+      <!-- Statut -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5><%= order_status_icon(@order) %> Statut : <%= order_status_badge(@order) %></h5>
+          <p class="text-muted mb-0">Commandé le <%= @order.created_at.strftime("%d/%m/%Y à %H:%M") %></p>
+        </div>
+      </div>
+
+      <!-- Produit -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5><i class="fas fa-box"></i> Produit</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-flex">
+            <% if @order.product.photo.attached? %>
+              <%= cl_image_tag @order.product.photo.key, height: 100, width: 100, crop: :fill, class: "me-3" %>
+            <% end %>
+            <div>
+              <h5><%= link_to @order.product.name, @order.product %></h5>
+              <p class="text-muted"><%= @order.product.description %></p>
+              <p><strong><%= format_price(@order.amount) %></strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Adresse de livraison -->
+      <% if @order.paid? %>
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5><i class="fas fa-map-marker-alt"></i> Adresse de livraison</h5>
+          </div>
+          <div class="card-body">
+            <p class="mb-1"><strong><%= @order.shipping_name %></strong></p>
+            <p class="mb-1"><%= @order.shipping_address_line1 %></p>
+            <% if @order.shipping_address_line2.present? %>
+              <p class="mb-1"><%= @order.shipping_address_line2 %></p>
+            <% end %>
+            <p class="mb-1"><%= @order.shipping_postal_code %> <%= @order.shipping_city %></p>
+            <p class="mb-1"><%= @order.shipping_country %></p>
+            <p class="mb-0"><i class="fas fa-phone"></i> <%= @order.shipping_phone %></p>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Tracking -->
+      <% if @order.shipped? && @order.tracking_number.present? %>
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5><i class="fas fa-truck"></i> Suivi de livraison</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>Numéro de suivi :</strong> <%= @order.tracking_number %></p>
+            <p class="text-muted">Expédié le <%= @order.shipped_at.strftime("%d/%m/%Y") %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Colonne droite : Résumé -->
+    <div class="col-md-4">
+      <!-- Récapitulatif -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5><i class="fas fa-file-invoice-dollar"></i> Récapitulatif</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Prix du produit</span>
+            <strong><%= format_price(@order.amount) %></strong>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Livraison (<%= @order.shipping_method_name %>)</span>
+            <strong><%= format_price(@order.shipping_cost) %></strong>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <strong>Total</strong>
+            <strong class="text-success"><%= format_price(@order.total_amount) %></strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vendeur/Acheteur -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5>
+            <% if @order.buyer == current_user %>
+              <i class="fas fa-user"></i> Vendeur
+            <% else %>
+              <i class="fas fa-user"></i> Acheteur
+            <% end %>
+          </h5>
+        </div>
+        <div class="card-body">
+          <% contact = @order.buyer == current_user ? @order.seller : @order.buyer %>
+          <p class="mb-1"><strong><%= contact.email.split('@').first %></strong></p>
+          <p class="text-muted mb-0"><%= contact.email %></p>
+        </div>
+      </div>
+
+      <!-- Actions vendeur -->
+      <% if @order.seller == current_user && @order.can_be_shipped? %>
+        <div class="card">
+          <div class="card-body">
+            <%= form_with url: mark_as_shipped_order_path(@order), method: :patch do |f| %>
+              <%= f.text_field :tracking_number, placeholder: "Numéro de suivi", class: "form-control mb-3" %>
+              <%= f.submit "Marquer comme expédié", class: "btn btn-success w-100" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Annulation -->
+      <% if @order.can_be_cancelled? %>
+        <div class="mt-3">
+          <%= button_to "Annuler la commande", cancel_order_path(@order),
+              method: :patch,
+              data: { turbo_confirm: "Êtes-vous sûr ?" },
+              class: "btn btn-outline-danger w-100" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%= link_to "← Retour", :back, class: "btn btn-secondary mt-4" %>
+</div>
