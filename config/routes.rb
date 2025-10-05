@@ -13,4 +13,16 @@ Rails.application.routes.draw do
 
   # Profils publics des vendeurs
   resources :users, only: [:show]
+
+  # Gestion des commandes
+  resources :orders, only: [:show] do
+    member do
+      patch :mark_as_shipped
+      patch :cancel
+    end
+  end
+
+  # Dashboards commandes
+  get '/my/purchases', to: 'orders#purchases', as: 'my_purchases'
+  get '/my/sales', to: 'orders#sales', as: 'my_sales'
 end
