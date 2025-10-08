@@ -79,7 +79,7 @@
       <div class="card bg-light mb-3">
         <div class="card-body">
           <h6><i class="fas fa-truck"></i> Livraison</h6>
-          <%= form_with url: product_checkouts_path(@product), method: :post do |f| %>
+          <%= form_with url: product_checkouts_path(@product), method: :post, data: { turbo: false } do |f| %>
             <div class="mb-3">
               <label class="form-label">Mode de livraison</label>
               <select name="shipping_method" class="form-select" required>
