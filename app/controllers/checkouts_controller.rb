@@ -30,12 +30,16 @@ class CheckoutsController < ApplicationController
     )
 
     if @order.save
+      Rails.logger.info "✅ Order ##{@order.id} created (pending)"
+
       # Créer la session Stripe Checkout
       session = create_stripe_session(@order)
 
       if session
         # Sauvegarder l'ID de session
         @order.update(stripe_session_id: session.id)
+        Rails.logger.info "✅ Stripe session created: #{session.id}"
+        Rails.logger.info "📦 Metadata order_id: #{@order.id}"
 
         # Rediriger vers Stripe Checkout
         redirect_to session.url, allow_other_host: true
@@ -115,15 +119,16 @@ class CheckoutsController < ApplicationController
       success_url: checkout_success_url(session_id: '{CHECKOUT_SESSION_ID}'),
       cancel_url: checkout_cancel_url,
       customer_email: current_user.email,
+      # ⭐ CRITIQUE : metadata pour retrouver la commande
       metadata: {
-        order_id: order.id
+        order_id: order.id.to_s  # IMPORTANT : convertir en string
       },
       shipping_address_collection: {
         allowed_countries: ['FR', 'BE', 'CH', 'LU', 'MC']
       }
     )
   rescue Stripe::StripeError => e
-    Rails.logger.error "Stripe error: #{e.message}"
+    Rails.logger.error "❌ Stripe error: #{e.message}"
     nil
   end
 end
