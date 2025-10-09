@@ -4,17 +4,16 @@ class Order < ApplicationRecord
   belongs_to :seller, class_name: 'User'
   belongs_to :product
 
-  # Validations
+  # Validations de base
   validates :amount, presence: true, numericality: { greater_than: 0 }
   validates :total_amount, presence: true, numericality: { greater_than: 0 }
   validates :status, presence: true, inclusion: {
     in: %w[pending paid processing shipped delivered cancelled refunded]
   }
-  validates :shipping_name, presence: true, if: :paid?
-  validates :shipping_address_line1, presence: true, if: :paid?
-  validates :shipping_city, presence: true, if: :paid?
-  validates :shipping_postal_code, presence: true, if: :paid?
-  validates :shipping_phone, presence: true, if: :paid?
+
+  # CORRECTION FINALE: Pas de validation obligatoire sur l'adresse
+  # Stripe peut ne pas fournir toutes les infos, on accepte tout
+  # L'adresse sera complétée par le webhook Stripe après paiement
 
   # Scopes
   scope :pending, -> { where(status: 'pending') }
@@ -26,7 +25,8 @@ class Order < ApplicationRecord
 
   # Callbacks
   before_validation :calculate_total, if: :new_record?
-  after_create :mark_product_as_sold, if: :paid?
+  # CORRECTION: Ne pas marquer comme vendu automatiquement
+  # Le webhook Stripe s'en chargera après paiement confirmé
 
   # États
   def pending?
@@ -70,12 +70,12 @@ class Order < ApplicationRecord
       tracking_number: tracking_number
     )
     # Ici on pourrait envoyer un email au buyer
-    OrderMailer.shipped_notification(self).deliver_later
+    # OrderMailer.shipped_notification(self).deliver_later
   end
 
   def mark_as_delivered!
     update!(status: 'delivered', delivered_at: Time.current)
-    OrderMailer.delivered_notification(self).deliver_later
+    # OrderMailer.delivered_notification(self).deliver_later
   end
 
   def cancel!
@@ -117,14 +117,18 @@ class Order < ApplicationRecord
     pending? || (paid? && !shipped?)
   end
 
+  # Vérifier si l'adresse est complète
+  def has_complete_address?
+    shipping_name.present? &&
+      shipping_address_line1.present? &&
+      shipping_city.present? &&
+      shipping_postal_code.present?
+  end
+
   private
 
   def calculate_total
     self.total_amount = amount + (shipping_cost || 0)
-  end
-
-  def mark_product_as_sold
-    product.update!(sold: true)
   end
 
   def initiate_refund
