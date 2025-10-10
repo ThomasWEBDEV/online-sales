@@ -3,22 +3,18 @@ class CheckoutsController < ApplicationController
   before_action :set_product, only: [:create]
 
   def create
-    # Vérifier que le produit est disponible
     unless @product.can_be_purchased?
       redirect_to @product, alert: "Ce produit n'est plus disponible."
       return
     end
 
-    # Vérifier que l'acheteur n'est pas le vendeur
     if @product.user == current_user
       redirect_to @product, alert: "Vous ne pouvez pas acheter votre propre produit."
       return
     end
 
-    # Calculer les frais de livraison
     shipping_cost = calculate_shipping_cost(params[:shipping_method] || 'standard')
 
-    # Créer la commande en pending
     @order = Order.new(
       buyer: current_user,
       seller: @product.user,
@@ -31,17 +27,14 @@ class CheckoutsController < ApplicationController
 
     if @order.save
       Rails.logger.info "✅ Order ##{@order.id} created (pending)"
-
-      # Créer la session Stripe Checkout
+      
       session = create_stripe_session(@order)
 
       if session
-        # Sauvegarder l'ID de session
         @order.update(stripe_session_id: session.id)
         Rails.logger.info "✅ Stripe session created: #{session.id}"
         Rails.logger.info "📦 Metadata order_id: #{@order.id}"
 
-        # Rediriger vers Stripe Checkout
         redirect_to session.url, allow_other_host: true
       else
         @order.destroy
@@ -53,22 +46,26 @@ class CheckoutsController < ApplicationController
   end
 
   def success
-    # Page de confirmation après paiement réussi
+    # Stripe remplace {CHECKOUT_SESSION_ID} dans l'URL
     session_id = params[:session_id]
 
-    if session_id.present?
+    if session_id.present? && session_id != '{CHECKOUT_SESSION_ID}'
       @order = Order.find_by(stripe_session_id: session_id)
 
-      unless @order
-        redirect_to root_path, alert: "Commande introuvable."
+      if @order
+        # Commande trouvée, afficher la page de succès
+        render :success
+      else
+        # Commande pas encore mise à jour par le webhook, rediriger vers les achats
+        redirect_to my_purchases_path, notice: "Paiement réussi ! Votre commande est en cours de traitement."
       end
     else
-      redirect_to root_path, alert: "Session invalide."
+      # Session ID invalide, rediriger vers les achats
+      redirect_to my_purchases_path, notice: "Paiement réussi ! Retrouvez votre commande dans vos achats."
     end
   end
 
   def cancel
-    # Page si l'utilisateur annule le paiement
     redirect_to root_path, notice: "Paiement annulé. Vous pouvez réessayer quand vous le souhaitez."
   end
 
@@ -83,7 +80,7 @@ class CheckoutsController < ApplicationController
     when 'express' then 9.90
     when 'colissimo' then 7.50
     when 'mondial_relay' then 4.90
-    else 5.90 # standard
+    else 5.90
     end
   end
 
@@ -96,7 +93,7 @@ class CheckoutsController < ApplicationController
             name: order.product.name,
             description: order.product.description.truncate(500)
           },
-          unit_amount: (order.amount * 100).to_i # Stripe utilise les centimes
+          unit_amount: (order.amount * 100).to_i
         },
         quantity: 1
       },
@@ -116,12 +113,11 @@ class CheckoutsController < ApplicationController
       payment_method_types: ['card'],
       line_items: line_items,
       mode: 'payment',
-      success_url: checkout_success_url(session_id: '{CHECKOUT_SESSION_ID}'),
+      success_url: my_purchases_url,
       cancel_url: checkout_cancel_url,
       customer_email: current_user.email,
-      # ⭐ CRITIQUE : metadata pour retrouver la commande
       metadata: {
-        order_id: order.id.to_s  # IMPORTANT : convertir en string
+        order_id: order.id.to_s
       },
       shipping_address_collection: {
         allowed_countries: ['FR', 'BE', 'CH', 'LU', 'MC']
