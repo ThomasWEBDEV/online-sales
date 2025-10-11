@@ -4,15 +4,19 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_order, only: [:show, :mark_as_shipped, :cancel]
 
-  # Liste des achats de l'utilisateur
+  # Liste des achats - SANS les annulées
   def purchases
-    @orders = current_user.purchases.recent
+    @orders = current_user.purchases
+                          .where.not(status: ['pending', 'cancelled'])
+                          .recent
     @stats = current_user.buyer_stats
   end
 
-  # Liste des ventes de l'utilisateur
+  # Liste des ventes - SANS les annulées
   def sales
-    @orders = current_user.sales.recent
+    @orders = current_user.sales
+                          .where.not(status: ['pending', 'cancelled'])
+                          .recent
     @stats = current_user.seller_stats
   end
 
@@ -37,7 +41,7 @@ class OrdersController < ApplicationController
     authorize @order, :cancel?
 
     if @order.cancel!
-      redirect_to order_path(@order), notice: "Commande annulée avec succès."
+      redirect_to my_purchases_path, notice: "Commande annulée avec succès."
     else
       redirect_to order_path(@order), alert: "Impossible d'annuler cette commande."
     end
