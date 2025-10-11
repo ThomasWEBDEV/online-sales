@@ -1,14 +1,12 @@
 // ===== NAVBAR NEUTRE ET PROFESSIONNELLE =====
 
 .navbar-lewagon {
-  // Fond blanc élégant au lieu du gradient
   background: $white;
   box-shadow: $shadow-sm;
   padding: 16px 0;
   border-bottom: 1px solid $gray-light;
   transition: all $transition-base;
 
-  // Navbar sticky avec ombre renforcée
   &.sticky-top {
     box-shadow: $shadow-md;
   }
@@ -26,7 +24,6 @@
       transform: translateY(-1px);
     }
 
-    // Icône stylée
     .brand-icon {
       background: $gradient-primary;
       border-radius: 50%;
@@ -58,7 +55,7 @@
     }
   }
 
-  // Navigation links
+  // Navigation links - CORRECTION ICI
   .navbar-nav .nav-link {
     color: $primary !important;
     font-weight: 500;
@@ -66,26 +63,13 @@
     border-radius: $radius;
     transition: all $transition-base;
     position: relative;
+    text-decoration: none !important; // ← AJOUT
 
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 8px;
-      left: 16px;
-      right: 16px;
-      height: 2px;
-      background: $accent;
-      transform: scaleX(0);
-      transition: transform $transition-base;
-    }
-
+    // SUPPRESSION de la barre ::after
     &:hover {
       color: $accent !important;
       background: rgba(52, 152, 219, 0.05);
-
-      &::after {
-        transform: scaleX(1);
-      }
+      text-decoration: none !important; // ← AJOUT
     }
 
     &.active {
@@ -94,7 +78,6 @@
     }
   }
 
-  // Bouton "Vendre"
   .btn-sell {
     background: $accent !important;
     border: none;
@@ -104,11 +87,13 @@
     font-weight: 600;
     box-shadow: $shadow-sm;
     transition: all $transition-base;
+    text-decoration: none !important; // ← AJOUT
 
     &:hover {
       background: darken($accent, 8%) !important;
       transform: translateY(-2px);
       box-shadow: $shadow-md;
+      text-decoration: none !important; // ← AJOUT
     }
 
     &:active {
@@ -116,7 +101,6 @@
     }
   }
 
-  // Dropdown
   .dropdown-menu {
     border-radius: $radius-lg;
     border: 1px solid $gray-light;
@@ -129,10 +113,12 @@
       color: $primary;
       font-weight: 500;
       transition: all $transition-fast;
+      text-decoration: none !important; // ← AJOUT
 
       &:hover {
         background: rgba(52, 152, 219, 0.05);
         color: $accent;
+        text-decoration: none !important; // ← AJOUT
       }
 
       &:active {
@@ -146,7 +132,6 @@
     }
   }
 
-  // Boutons outline
   .btn-outline-primary {
     border: 2px solid $primary !important;
     color: $primary !important;
@@ -155,16 +140,17 @@
     font-weight: 600;
     background: transparent;
     transition: all $transition-base;
+    text-decoration: none !important; // ← AJOUT
 
     &:hover {
       background: $primary !important;
       color: $white !important;
       transform: translateY(-2px);
       box-shadow: $shadow-sm;
+      text-decoration: none !important; // ← AJOUT
     }
   }
 
-  // Responsive
   @media (max-width: 768px) {
     .navbar-collapse {
       background: $white;
@@ -180,7 +166,6 @@
   }
 }
 
-// Version alternative: navbar avec fond légèrement grisé
 .navbar-lewagon.navbar-light-bg {
   background: $gray-lightest;
 }
