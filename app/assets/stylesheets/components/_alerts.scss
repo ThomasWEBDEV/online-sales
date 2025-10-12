@@ -1,29 +1,36 @@
-// ===== ALERTS COMPONENT =====
+// ===== ALERTS FLASH MODERNES =====
 .alert-flash {
   position: fixed;
   top: 80px;
   right: 20px;
   z-index: 1050;
-  min-width: 300px;
-  max-width: 400px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  animation: slideIn 0.3s ease-out;
+  min-width: 320px;
+  max-width: 420px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  backdrop-filter: blur(10px);
 
   &.alert-success {
-    background: linear-gradient(135deg, #28a745, #20c997);
+    background: linear-gradient(135deg, #10b981, #059669);
     border: none;
     color: white;
   }
 
   &.alert-danger {
-    background: linear-gradient(135deg, #dc3545, #fd7e14);
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     border: none;
     color: white;
   }
 
   &.alert-warning {
-    background: linear-gradient(135deg, #ffc107, #fd7e14);
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border: none;
+    color: white;
+  }
+
+  &.alert-info {
+    background: linear-gradient(135deg, $accent, darken($accent, 10%));
     border: none;
     color: white;
   }
@@ -34,24 +41,57 @@
     padding: 16px 20px;
 
     i {
-      font-size: 20px;
-      margin-right: 12px;
+      font-size: 24px;
+      margin-right: 14px;
+      animation: iconBounce 0.6s ease-out;
     }
 
     .alert-text {
       flex-grow: 1;
       font-weight: 500;
+      font-size: 15px;
+      line-height: 1.4;
     }
+  }
+
+  @media (max-width: 576px) {
+    right: 10px;
+    left: 10px;
+    min-width: auto;
+    max-width: none;
+    top: 70px;
   }
 }
 
-@keyframes slideIn {
+@keyframes slideInRight {
   from {
-    transform: translateX(100%);
+    transform: translateX(120%);
     opacity: 0;
   }
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+@keyframes iconBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+// Auto-dismiss après 4 secondes
+.alert-flash {
+  animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+             fadeOut 0.5s ease-in 4s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(120%);
   }
 }
