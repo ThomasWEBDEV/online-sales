@@ -1,4 +1,4 @@
-<div class="card-product">
+<div class="card-product <%= 'sold' if product.sold %>">
   <!-- Image -->
   <div class="card-product-image">
     <% if product.photo.attached? %>
