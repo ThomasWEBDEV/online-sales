@@ -4,7 +4,10 @@
     <% if product.photo.attached? %>
       <%= cl_image_tag product.photo.key, height: 300, width: 400, crop: :fill, quality: :auto %>
     <% else %>
-      <%= image_tag "https://picsum.photos/seed/#{product.id}/400/300" %>
+      <div class="placeholder-image">
+        <i class="fas fa-image"></i>
+        <p>Aucune photo</p>
+      </div>
     <% end %>
   </div>
 
