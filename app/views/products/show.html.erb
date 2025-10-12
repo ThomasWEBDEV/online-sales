@@ -64,13 +64,14 @@
         <%= link_to "Modifier", edit_product_path(@product), class: "btn btn-ghost w-100 mb-2" %>
         <% if policy(@product).destroy? %>
           <%= button_to "Supprimer", @product, method: :delete,
-              data: { turbo_confirm: "Êtes-vous sûr ?" },
+              data: { turbo_confirm: "⚠️ Êtes-vous sûr de vouloir supprimer ce produit ?\n\nCette action est irréversible." },
               class: "btn btn-danger w-100 mb-2" %>
         <% end %>
         <% if !@product.sold %>
           <%= button_to "Marquer comme vendu", @product,
                         method: :patch,
                         params: { product: { sold: true } },
+                        data: { turbo_confirm: "Marquer ce produit comme vendu ?" },
                         class: "btn btn-success w-100" %>
         <% end %>
       </div>
@@ -114,33 +115,7 @@
 
     <div class="cards mt-4">
       <% @similar_products.each do |product| %>
-        <div class="card-product">
-          <% if product.photo.attached? %>
-            <%= cl_image_tag product.photo.key, height: 150, width: 200, crop: :fill %>
-          <% else %>
-            <%= image_tag "https://picsum.photos/seed/#{product.id}/200/150" %>
-          <% end %>
-
-          <% if user_signed_in? %>
-            <%= favorite_button(product) %>
-          <% end %>
-
-          <% if product.created_at > 7.days.ago %>
-            <span class="badge bg-success">Nouveau</span>
-          <% end %>
-
-          <% if product.user_id == @product.user_id %>
-            <span class="badge bg-info" style="position: absolute; top: 50px; right: 8px;">
-              <i class="fas fa-user"></i> Même vendeur
-            </span>
-          <% end %>
-
-          <div class="card-product-infos">
-            <h2><%= link_to product.name, product, class: "text-decoration-none" %></h2>
-            <p><%= truncate(product.description, length: 80) %></p>
-            <p class="text-primary fw-bold"><%= product.price %>€</p>
-          </div>
-        </div>
+        <%= render partial: 'shared/product_card', locals: { product: product } %>
       <% end %>
     </div>
   </div>
