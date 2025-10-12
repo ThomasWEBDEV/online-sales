@@ -307,3 +307,29 @@
     font-weight: 500;
   }
 }
+
+// Placeholder pour produits sans photo - VERSION CORRIGÉE
+.placeholder-image {
+  width: 100%;
+  height: 200px; // Hauteur fixe identique aux vraies images
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  border-radius: 12px 12px 0 0; // Arrondi en haut seulement
+
+  i {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.6;
+  }
+}

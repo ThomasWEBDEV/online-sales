@@ -1,15 +1,15 @@
 <div class="card-product <%= 'sold' if product.sold %>">
   <!-- Image -->
-  <div class="card-product-image">
-    <% if product.photo.attached? %>
+  <% if product.photo.attached? %>
+    <div class="card-product-image">
       <%= cl_image_tag product.photo.key, height: 300, width: 400, crop: :fill, quality: :auto %>
-    <% else %>
-      <div class="placeholder-image">
-        <i class="fas fa-image"></i>
-        <p>Aucune photo</p>
-      </div>
-    <% end %>
-  </div>
+    </div>
+  <% else %>
+    <div class="placeholder-image">
+      <i class="fas fa-image"></i>
+      <p>Aucune photo</p>
+    </div>
+  <% end %>
 
   <!-- Bouton favori -->
   <% if user_signed_in? %>
