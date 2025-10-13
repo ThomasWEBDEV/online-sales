@@ -90,6 +90,15 @@ class WebhooksController < ApplicationController
       if order.product.update(sold: true)
         Rails.logger.info "✅ Order ##{order.id} marked as PAID"
         Rails.logger.info "✅ Product ##{order.product.id} marked as SOLD"
+        
+        # 📧 ENVOI DES EMAILS
+        begin
+          OrderMailer.purchase_confirmation(order).deliver_later
+          OrderMailer.sale_notification(order).deliver_later
+          Rails.logger.info "📧 Emails sent for Order ##{order.id}"
+        rescue => e
+          Rails.logger.error "❌ Email error: #{e.message}"
+        end
       else
         Rails.logger.error "❌ Failed to mark product as sold: #{order.product.errors.full_messages.join(', ')}"
       end
