@@ -30,7 +30,10 @@ class OrdersController < ApplicationController
     authorize @order, :mark_as_shipped?
 
     if @order.mark_as_shipped!(params[:tracking_number])
-      redirect_to order_path(@order), notice: "Commande marquée comme expédiée !"
+      # 📧 ENVOI EMAIL EXPÉDITION
+      OrderMailer.shipping_confirmation(@order).deliver_later
+      
+      redirect_to order_path(@order), notice: "Commande marquée comme expédiée ! L'acheteur a reçu un email."
     else
       redirect_to order_path(@order), alert: "Erreur lors de la mise à jour."
     end
