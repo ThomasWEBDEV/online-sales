@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+    .content { background: #fff; padding: 30px; border: 1px solid #e0e0e0; }
+    .product-box { background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; }
+    .price { font-size: 24px; font-weight: bold; color: #27AE60; }
+    .button { display: inline-block; background: #27AE60; color: white; padding: 12px 30px; text-decoration: none; border-radius: 25px; margin: 20px 0; }
+    .footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>💰 Félicitations ! Nouvelle vente</h1>
+    </div>
+    
+    <div class="content">
+      <p>Bonjour <strong><%= @seller.email.split('@').first.capitalize %></strong>,</p>
+      
+      <p>Excellente nouvelle ! Votre produit vient d'être vendu et le paiement a été validé.</p>
+      
+      <div class="product-box">
+        <h3><%= @product.name %></h3>
+        <p class="price"><%= number_to_currency(@order.amount, unit: '€', format: '%n %u') %></p>
+        <p><small>+ <%= number_to_currency(@order.shipping_cost, unit: '€', format: '%n %u') %> de frais de port</small></p>
+        <p><strong>Total :</strong> <%= number_to_currency(@order.total_amount, unit: '€', format: '%n %u') %></p>
+      </div>
+      
+      <p><strong>Numéro de commande :</strong> #<%= @order.id %></p>
+      
+      <p><strong>Acheteur :</strong> <%= @buyer.email.split('@').first %></p>
+      
+      <p><strong>Adresse de livraison :</strong><br>
+      <%= @order.shipping_name %><br>
+      <%= @order.shipping_address_line1 %><br>
+      <% if @order.shipping_address_line2.present? %>
+        <%= @order.shipping_address_line2 %><br>
+      <% end %>
+      <%= @order.shipping_postal_code %> <%= @order.shipping_city %><br>
+      <%= @order.shipping_country %><br>
+      Tél : <%= @order.shipping_phone %>
+      </p>
+      
+      <p><strong>Mode de livraison choisi :</strong> <%= @order.shipping_method_name %></p>
+      
+      <p>⚠️ <strong>Prochaine étape :</strong> Préparez le colis et indiquez le numéro de suivi dans votre espace vendeur.</p>
+      
+      <center>
+        <a href="<%= order_url(@order) %>" class="button">Gérer cette commande</a>
+      </center>
+    </div>
+    
+    <div class="footer">
+      <p>MarketPlace - Plateforme de vente en ligne<br>
+      Cet email a été envoyé automatiquement, merci de ne pas y répondre.</p>
+    </div>
+  </div>
+</body>
+</html>
