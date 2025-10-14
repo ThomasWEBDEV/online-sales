@@ -78,3 +78,5 @@ group :test do
 end
 
 gem "letter_opener_web", "~> 3.0", group: :development
+
+gem "pagy", "~> 9.4"
