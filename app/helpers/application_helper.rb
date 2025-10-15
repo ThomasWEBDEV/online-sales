@@ -27,9 +27,9 @@ module ApplicationHelper
     end
   end
 
-  # Pagy avec scroll automatique vers #produits
+  # Pagy avec ancre et désactivation Turbo
   def pagy_nav_with_anchor(pagy)
     html = pagy_nav(pagy)
-    html.gsub(/href="([^"]*)"/, 'href="\1#produits" data-scroll="true"').html_safe
+    html.gsub(/href="([^"]*)"/, 'href="\1#produits" data-turbo="false"').html_safe
   end
 end
