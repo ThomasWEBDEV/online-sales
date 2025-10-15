@@ -7,12 +7,31 @@ class ProductsController < ApplicationController
   def index
     @products = policy_scope(Product)
 
-    # Recherche existante
+    # Recherche
     if params[:query].present?
       @products = @products.where("name ILIKE ?", "%#{params[:query]}%")
     end
 
-    # Nouveau : Tri
+    # Filtres prix
+    if params[:min_price].present?
+      @products = @products.where("price >= ?", params[:min_price])
+    end
+
+    if params[:max_price].present?
+      @products = @products.where("price <= ?", params[:max_price])
+    end
+
+    # Filtre statut
+    if params[:status].present?
+      case params[:status]
+      when 'available'
+        @products = @products.where("sold IS NULL OR sold = false")
+      when 'sold'
+        @products = @products.where(sold: true)
+      end
+    end
+
+    # Tri
     case params[:sort]
     when 'price_asc'
       @products = @products.order(price: :asc)
@@ -21,15 +40,16 @@ class ProductsController < ApplicationController
     when 'popular'
       @products = @products.order(views_count: :desc)
     else
-      @products = @products.order(created_at: :desc) # Plus récents par défaut
+      @products = @products.order(created_at: :desc)
     end
+
+    # PAGINATION
+    @pagy, @products = pagy(@products, items: 24)
   end
 
   def show
     authorize @product
     @product.increment!(:views_count)
-
-    # Produits similaires : logique intelligente
     @similar_products = find_similar_products(@product)
   end
 
@@ -67,7 +87,6 @@ class ProductsController < ApplicationController
     redirect_to products_path, notice: 'Produit supprimé avec succès.'
   end
 
-  # NOUVELLES ACTIONS POUR LES FAVORIS
   def favorite
     @favorite = current_user.favorites.build(product: @product)
     if @favorite.save
@@ -93,16 +112,12 @@ class ProductsController < ApplicationController
     params.require(:product).permit(:name, :description, :price, :photo, :sold)
   end
 
-  # Logique pour trouver des produits similaires
   def find_similar_products(product)
-    # Exclure le produit actuel et les produits vendus
     similar = Product.where.not(id: product.id)
                     .where("sold IS NULL OR sold = false")
 
-    # Stratégie 1 : Même vendeur (priorité)
     same_seller = similar.where(user_id: product.user_id).limit(3)
 
-    # Stratégie 2 : Prix similaire (±30%)
     price_min = product.price * 0.7
     price_max = product.price * 1.3
     similar_price = similar.where(price: price_min..price_max)
@@ -110,7 +125,6 @@ class ProductsController < ApplicationController
                           .order(views_count: :desc)
                           .limit(3)
 
-    # Combiner et limiter à 4 produits
     (same_seller + similar_price).uniq.first(4)
   end
 end
