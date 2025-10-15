@@ -64,7 +64,7 @@
   <div class="container mt-4 mb-3">
     <%= form_with url: products_path, method: :get, local: true, class: "search-filters" do |f| %>
       <%= f.hidden_field :anchor, value: 'produits' %>
-      
+
       <!-- Recherche principale -->
       <div class="search-main mb-3">
         <%= f.text_field :query,
@@ -165,7 +165,7 @@
 
       <!-- PAGINATION avec ancre -->
       <div class="text-center mt-4" id="pagination-section">
-        <%= pagy_nav(@pagy, anchor: '#produits').html_safe if @pagy.pages > 1 %>
+        <%= pagy_nav_with_anchor(@pagy) if @pagy.pages > 1 %>
       </div>
 
     <% else %>
