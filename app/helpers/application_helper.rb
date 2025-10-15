@@ -1,6 +1,6 @@
 module ApplicationHelper
   include ActionView::Helpers::TextHelper
-  include Pagy::Frontend  # Pagination frontend
+  include Pagy::Frontend
 
   def breadcrumbs(*links)
     content_tag :nav, class: "breadcrumbs" do
@@ -25,5 +25,12 @@ module ApplicationHelper
     else
       text
     end
+  end
+
+  # Surcharge pagy_nav pour ajouter #produits automatiquement
+  def pagy_nav_with_anchor(pagy)
+    html = pagy_nav(pagy)
+    # Remplacer tous les liens par des liens avec #produits
+    html.gsub(/href="([^"]*)"/, 'href="\1#produits"').html_safe
   end
 end
