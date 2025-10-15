@@ -1,5 +1,6 @@
 module ApplicationHelper
   include ActionView::Helpers::TextHelper
+  include Pagy::Frontend  # Pagination frontend
 
   def breadcrumbs(*links)
     content_tag :nav, class: "breadcrumbs" do
