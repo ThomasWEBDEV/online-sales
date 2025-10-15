@@ -1,4 +1,5 @@
 # Pagy initializer
+require 'pagy'
 require 'pagy/extras/overflow'
 
 Pagy::DEFAULT[:items] = 24  # Produits par page
