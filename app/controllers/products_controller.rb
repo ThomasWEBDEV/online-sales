@@ -43,8 +43,14 @@ class ProductsController < ApplicationController
       @products = @products.order(created_at: :desc)
     end
 
-    # PAGINATION
-    @pagy, @products = pagy(@products, items: 24)
+    # PAGINATION avec params
+    @pagy, @products = pagy(@products, items: 24, params: { 
+      query: params[:query],
+      min_price: params[:min_price],
+      max_price: params[:max_price],
+      status: params[:status],
+      sort: params[:sort]
+    }.compact)
   end
 
   def show
