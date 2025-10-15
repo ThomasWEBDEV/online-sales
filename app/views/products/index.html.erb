@@ -63,6 +63,8 @@
   <!-- Barre de recherche et filtres -->
   <div class="container mt-4 mb-3">
     <%= form_with url: products_path, method: :get, local: true, class: "search-filters" do |f| %>
+      <%= f.hidden_field :anchor, value: 'produits' %>
+      
       <!-- Recherche principale -->
       <div class="search-main mb-3">
         <%= f.text_field :query,
@@ -104,7 +106,7 @@
           </div>
           <div class="col-md-3 d-flex align-items-end">
             <%= f.submit "Filtrer", class: "btn btn-outline-primary me-2" %>
-            <%= link_to "Effacer", products_path, class: "btn btn-outline-secondary" %>
+            <%= link_to "Effacer", products_path(anchor: 'produits'), class: "btn btn-outline-secondary" %>
           </div>
         </div>
       </div>
@@ -115,13 +117,13 @@
   <div class="container mb-3">
     <div class="d-flex justify-content-between align-items-center">
       <div class="btn-group" role="group">
-        <%= link_to "Plus récents", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: nil),
+        <%= link_to "Plus récents", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: nil, anchor: 'produits'),
                     class: "btn btn-outline-secondary #{'active' unless params[:sort]}" %>
-        <%= link_to "Prix croissant", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'price_asc'),
+        <%= link_to "Prix croissant", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'price_asc', anchor: 'produits'),
                     class: "btn btn-outline-secondary #{'active' if params[:sort] == 'price_asc'}" %>
-        <%= link_to "Prix décroissant", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'price_desc'),
+        <%= link_to "Prix décroissant", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'price_desc', anchor: 'produits'),
                     class: "btn btn-outline-secondary #{'active' if params[:sort] == 'price_desc'}" %>
-        <%= link_to "Populaires", products_path(query: params[:query], min_price: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'popular'),
+        <%= link_to "Populaires", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'popular', anchor: 'produits'),
                     class: "btn btn-outline-secondary #{'active' if params[:sort] == 'popular'}" %>
       </div>
       <span class="text-muted">
@@ -161,9 +163,9 @@
         <% end %>
       </div>
 
-      <!-- PAGINATION -->
-      <div class="text-center mt-4">
-        <%= pagy_nav(@pagy).html_safe if @pagy.pages > 1 %>
+      <!-- PAGINATION avec ancre -->
+      <div class="text-center mt-4" id="pagination-section">
+        <%= pagy_nav(@pagy, anchor: '#produits').html_safe if @pagy.pages > 1 %>
       </div>
 
     <% else %>
@@ -175,7 +177,7 @@
         <p class="text-muted">
           <% if params[:query].present? || params[:min_price].present? || params[:max_price].present? || params[:status].present? %>
             Essayez de modifier vos critères de recherche ou
-            <%= link_to "voir tous les produits", products_path, class: "text-primary" %>
+            <%= link_to "voir tous les produits", products_path(anchor: 'produits'), class: "text-primary" %>
           <% else %>
             Soyez le premier à <%= link_to "mettre un produit en vente", new_product_path, class: "text-primary" if user_signed_in? %>
           <% end %>
@@ -183,20 +185,4 @@
       </div>
     <% end %>
   </div>
-  <!-- PAGINATION -->
-<div class="text-center mt-4">
-  <%= pagy_nav(@pagy).html_safe if @pagy.pages > 1 %>
-</div>
-
-<script>
-  // Ajouter ancre #produits aux liens de pagination
-  document.addEventListener('DOMContentLoaded', function() {
-    const paginationLinks = document.querySelectorAll('nav.pagy a');
-    paginationLinks.forEach(link => {
-      const url = new URL(link.href);
-      url.hash = 'produits';
-      link.href = url.toString();
-    });
-  });
-</script>
 </div>
