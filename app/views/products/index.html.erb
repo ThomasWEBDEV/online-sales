@@ -161,10 +161,9 @@
         <% end %>
       </div>
 
+      <!-- PAGINATION -->
       <div class="text-center mt-4">
-        <% if @products.count == 12 %>
-          <%= link_to "Voir plus de produits", products_path(page: 2), class: "btn btn-outline-primary" %>
-        <% end %>
+        <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
       </div>
 
     <% else %>
