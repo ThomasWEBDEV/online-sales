@@ -183,4 +183,20 @@
       </div>
     <% end %>
   </div>
+  <!-- PAGINATION -->
+<div class="text-center mt-4">
+  <%= pagy_nav(@pagy).html_safe if @pagy.pages > 1 %>
+</div>
+
+<script>
+  // Ajouter ancre #produits aux liens de pagination
+  document.addEventListener('DOMContentLoaded', function() {
+    const paginationLinks = document.querySelectorAll('nav.pagy a');
+    paginationLinks.forEach(link => {
+      const url = new URL(link.href);
+      url.hash = 'produits';
+      link.href = url.toString();
+    });
+  });
+</script>
 </div>
