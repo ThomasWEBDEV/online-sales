@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
+  include Pagy::Backend  # Pagination backend
 
-  # Gestion des erreurs Pundit
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
