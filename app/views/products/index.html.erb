@@ -163,10 +163,27 @@
         <% end %>
       </div>
 
-      <!-- PAGINATION avec ancre -->
+      <!-- PAGINATION avec ancre et scroll -->
       <div class="text-center mt-4" id="pagination-section">
         <%= pagy_nav_with_anchor(@pagy) if @pagy.pages > 1 %>
       </div>
+
+      <script>
+        // Smooth scroll vers #produits lors du clic pagination
+        document.addEventListener('DOMContentLoaded', function() {
+          const paginationLinks = document.querySelectorAll('nav.pagy a[data-scroll="true"]');
+          paginationLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+              setTimeout(() => {
+                document.getElementById('produits').scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start'
+                });
+              }, 100);
+            });
+          });
+        });
+      </script>
 
     <% else %>
       <div class="empty-state text-center py-5">
