@@ -121,7 +121,7 @@
                     class: "btn btn-outline-secondary #{'active' if params[:sort] == 'price_asc'}" %>
         <%= link_to "Prix décroissant", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'price_desc'),
                     class: "btn btn-outline-secondary #{'active' if params[:sort] == 'price_desc'}" %>
-        <%= link_to "Populaires", products_path(query: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'popular'),
+        <%= link_to "Populaires", products_path(query: params[:query], min_price: params[:query], min_price: params[:min_price], max_price: params[:max_price], status: params[:status], sort: 'popular'),
                     class: "btn btn-outline-secondary #{'active' if params[:sort] == 'popular'}" %>
       </div>
       <span class="text-muted">
@@ -163,7 +163,7 @@
 
       <!-- PAGINATION -->
       <div class="text-center mt-4">
-        <%= pagy_nav(@pagy) if @pagy.pages > 1 %>
+        <%= pagy_nav(@pagy).html_safe if @pagy.pages > 1 %>
       </div>
 
     <% else %>
