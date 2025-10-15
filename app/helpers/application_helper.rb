@@ -27,10 +27,9 @@ module ApplicationHelper
     end
   end
 
-  # Surcharge pagy_nav pour ajouter #produits automatiquement
+  # Pagy avec scroll automatique vers #produits
   def pagy_nav_with_anchor(pagy)
     html = pagy_nav(pagy)
-    # Remplacer tous les liens par des liens avec #produits
-    html.gsub(/href="([^"]*)"/, 'href="\1#produits"').html_safe
+    html.gsub(/href="([^"]*)"/, 'href="\1#produits" data-scroll="true"').html_safe
   end
 end
