@@ -5,7 +5,10 @@
     <% if @product.photo.attached? %>
       <%= cl_image_tag @product.photo.key, height: 400, width: 600, crop: :fill, class: "w-100 mb-3 rounded" %>
     <% else %>
-      <%= image_tag "https://picsum.photos/seed/#{@product.id}/600/400", class: "w-100 mb-3 rounded" %>
+      <div class="placeholder-image-large">
+        <i class="fas fa-image"></i>
+        <p>Aucune photo</p>
+      </div>
     <% end %>
   </div>
 
@@ -36,89 +39,57 @@
             <% end %>
           </div>
         </div>
+
         <p class="text-muted small mb-2">
           <i class="fas fa-calendar-alt"></i>
           Membre depuis <%= @product.user.created_at.strftime("%B %Y") %>
         </p>
+
         <p class="text-muted small mb-3">
           <i class="fas fa-box"></i>
           <%= @product.user.products.count %> produit<%= 's' if @product.user.products.count > 1 %> en vente
         </p>
+
         <%= link_to user_path(@product.user), class: "btn btn-outline-primary btn-sm w-100" do %>
           <i class="fas fa-store"></i> Voir tous ses produits
         <% end %>
       </div>
     </div>
 
-    <!-- Statut produit -->
     <% if @product.sold %>
-      <div class="alert alert-warning">
-        <strong>📦 PRODUIT VENDU</strong>
+      <div class="alert alert-danger">
+        <i class="fas fa-info-circle"></i> Ce produit est déjà vendu
       </div>
-    <% end %>
-
-    <!-- ACTIONS -->
-    <% if policy(@product).edit? %>
-      <!-- VENDEUR : actions de modification -->
-      <div class="mt-4">
-        <%= link_to "Modifier", edit_product_path(@product), class: "btn btn-ghost w-100 mb-2" %>
-        <% if policy(@product).destroy? %>
-          <%= button_to "Supprimer", @product, method: :delete,
-              data: { turbo_confirm: "⚠️ Êtes-vous sûr de vouloir supprimer ce produit ?\n\nCette action est irréversible." },
-              class: "btn btn-danger w-100 mb-2" %>
-        <% end %>
-        <% if !@product.sold %>
-          <%= button_to "Marquer comme vendu", @product,
-                        method: :patch,
-                        params: { product: { sold: true } },
-                        data: { turbo_confirm: "Marquer ce produit comme vendu ?" },
-                        class: "btn btn-success w-100" %>
-        <% end %>
+    <% elsif user_signed_in? && @product.user != current_user %>
+      <%= form_with url: product_checkouts_path(@product), method: :post do |f| %>
+        <%= f.submit "Acheter maintenant", class: "btn btn-primary btn-lg w-100" %>
+      <% end %>
+    <% elsif user_signed_in? && @product.user == current_user %>
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> C'est votre produit
       </div>
-    <% elsif user_signed_in? && !@product.sold %>
-      <!-- ACHETEUR : bouton acheter -->
-      <div class="card bg-light mb-3">
-        <div class="card-body">
-          <h6><i class="fas fa-truck"></i> Livraison</h6>
-          <%= form_with url: product_checkouts_path(@product), method: :post, data: { turbo: false } do |f| %>
-            <div class="mb-3">
-              <label class="form-label">Mode de livraison</label>
-              <select name="shipping_method" class="form-select" required>
-                <option value="standard">Standard (5-7 jours) - 5,90 €</option>
-                <option value="express">Express (2-3 jours) - 9,90 €</option>
-                <option value="colissimo">Colissimo Suivi - 7,50 €</option>
-                <option value="mondial_relay">Mondial Relay - 4,90 €</option>
-              </select>
-            </div>
-            <%= f.submit "Acheter maintenant", class: "btn btn-flat w-100" %>
-          <% end %>
-        </div>
-      </div>
-      <p class="text-muted small text-center">
-        <i class="fas fa-lock"></i> Paiement sécurisé via Stripe
-      </p>
-    <% elsif user_signed_in? && @product.sold %>
-      <p class="text-muted mt-4">Ce produit n'est plus disponible</p>
+      <%= link_to "Modifier", edit_product_path(@product), class: "btn btn-warning w-100 mb-2" %>
+      <%= button_to "Supprimer", 
+                    product_path(@product), 
+                    method: :delete,
+                    class: "btn btn-danger w-100",
+                    form: { data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce produit ?" } } %>
     <% else %>
-      <%= link_to "Se connecter pour acheter", new_user_session_path, class: "btn btn-flat w-100 mt-4" %>
+      <%= link_to "Connectez-vous pour acheter", new_user_session_path, class: "btn btn-primary btn-lg w-100" %>
     <% end %>
   </div>
 </div>
 
-<!-- Section Produits Similaires -->
+<!-- Produits similaires -->
 <% if @similar_products.any? %>
-  <div class="similar-products-section mt-5">
-    <div class="section-header">
-      <h3><i class="fas fa-lightbulb"></i> Produits similaires</h3>
-      <p class="text-muted">Découvrez d'autres produits du même vendeur ou dans la même gamme de prix</p>
-    </div>
-
-    <div class="cards mt-4">
-      <% @similar_products.each do |product| %>
-        <%= render partial: 'shared/product_card', locals: { product: product } %>
+  <div class="mt-5">
+    <h3 class="mb-4">Produits similaires</h3>
+    <div class="row">
+      <% @similar_products.each do |similar_product| %>
+        <div class="col-md-3 mb-4">
+          <%= render partial: 'shared/product_card', locals: { product: similar_product } %>
+        </div>
       <% end %>
     </div>
   </div>
 <% end %>
-
-<%= link_to "← Retour aux produits", products_path, class: "btn btn-secondary mt-4" %>
