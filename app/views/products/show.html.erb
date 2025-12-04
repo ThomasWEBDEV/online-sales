@@ -61,7 +61,7 @@
         <i class="fas fa-info-circle"></i> Ce produit est déjà vendu
       </div>
     <% elsif user_signed_in? && @product.user != current_user %>
-      <%= form_with url: product_checkouts_path(@product), method: :post do |f| %>
+      <%= form_with url: product_checkouts_path(@product), method: :post, remote: true, data: { turbo: false } do |f| %>
         <%= f.submit "Acheter maintenant", class: "btn btn-primary btn-lg w-100" %>
       <% end %>
     <% elsif user_signed_in? && @product.user == current_user %>
@@ -69,8 +69,8 @@
         <i class="fas fa-info-circle"></i> C'est votre produit
       </div>
       <%= link_to "Modifier", edit_product_path(@product), class: "btn btn-warning w-100 mb-2" %>
-      <%= button_to "Supprimer", 
-                    product_path(@product), 
+      <%= button_to "Supprimer",
+                    product_path(@product),
                     method: :delete,
                     class: "btn btn-danger w-100",
                     form: { data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce produit ?" } } %>
