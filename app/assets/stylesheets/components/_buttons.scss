@@ -1,222 +1,111 @@
-// ===== BOUTONS SYSTÈME MODERNE ET NEUTRE =====
+// ===== BOUTONS MODERNES =====
 
-// Bouton principal (Call to Action)
 .btn-flat {
-  background: $accent;
+  background: $gradient-primary;
   color: $white;
-  padding: 12px 32px;
+  padding: 14px 36px;
   border-radius: $radius-pill;
   border: none;
-  font-weight: 600;
-  font-size: 15px;
+  font-weight: 700;
+  font-size: 16px;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  box-shadow: $shadow-sm;
+  gap: 10px;
+  box-shadow: $shadow-lg;
   transition: all $transition-base;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+  }
 
   &:hover {
-    background: darken($accent, 8%);
     color: $white;
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: $shadow-2xl;
+
+    &::before {
+      left: 100%;
+    }
   }
 
   &:active {
-    transform: translateY(0);
-    box-shadow: $shadow-sm;
-  }
-
-  &:disabled {
-    background: $gray-medium;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-
-  i {
-    font-size: 16px;
-  }
-}
-
-// Bouton secondaire (Ghost/Outline)
-.btn-ghost {
-  background: transparent;
-  color: $primary;
-  padding: 12px 32px;
-  border: 2px solid $primary;
-  border-radius: $radius-pill;
-  font-weight: 600;
-  font-size: 15px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all $transition-base;
-  cursor: pointer;
-
-  &:hover {
-    background: $primary;
-    color: $white;
-    transform: translateY(-2px);
-    box-shadow: $shadow-sm;
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  &:disabled {
-    border-color: $gray-medium;
-    color: $gray-medium;
-    cursor: not-allowed;
-    transform: none;
-  }
-}
-
-// Bouton danger
-.btn-danger {
-  background: $danger;
-  color: $white;
-  border: none;
-  padding: 12px 32px;
-  border-radius: $radius-pill;
-  font-weight: 600;
-  box-shadow: $shadow-sm;
-  transition: all $transition-base;
-
-  &:hover {
-    background: $danger-dark;
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
-  }
-}
-
-// Bouton success
-.btn-success {
-  background: $success;
-  color: $white;
-  border: none;
-  padding: 12px 32px;
-  border-radius: $radius-pill;
-  font-weight: 600;
-  box-shadow: $shadow-sm;
-  transition: all $transition-base;
-
-  &:hover {
-    background: darken($success, 8%);
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
-  }
-}
-
-// Bouton link (texte simple)
-.btn-link {
-  background: transparent;
-  color: $accent;
-  border: none;
-  padding: 8px 16px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all $transition-fast;
-
-  &:hover {
-    color: darken($accent, 10%);
-    text-decoration: underline;
-  }
-}
-
-// Bouton icon only (rond)
-.btn-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: $white;
-  color: $primary;
-  box-shadow: $shadow-sm;
-  transition: all $transition-base;
-  cursor: pointer;
-
-  &:hover {
-    background: $primary;
-    color: $white;
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
+    transform: translateY(-1px) scale(1.02);
   }
 
   i {
     font-size: 18px;
   }
-
-  &.btn-icon-sm {
-    width: 36px;
-    height: 36px;
-
-    i {
-      font-size: 14px;
-    }
-  }
-
-  &.btn-icon-lg {
-    width: 52px;
-    height: 52px;
-
-    i {
-      font-size: 22px;
-    }
-  }
 }
 
-// Groupe de boutons
-.btn-group {
-  display: inline-flex;
-  gap: 12px;
-  flex-wrap: wrap;
-
-  .btn {
-    margin: 0;
-  }
-
-  &.btn-group-vertical {
-    flex-direction: column;
-  }
-}
-
-// États Bootstrap override
-.btn-outline-secondary {
-  border: 2px solid $gray-medium;
+.btn-ghost {
+  background: transparent;
   color: $primary;
-  font-weight: 500;
+  padding: 14px 36px;
+  border: 2px solid $primary;
+  border-radius: $radius-pill;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   transition: all $transition-base;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 
-  &:hover,
-  &.active {
-    background: $primary;
-    border-color: $primary;
-    color: $white;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: $gradient-primary;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+    z-index: -1;
   }
-}
-
-.btn-secondary {
-  background: $secondary;
-  border: none;
-  color: $white;
 
   &:hover {
-    background: darken($secondary, 8%);
+    color: $white;
+    border-color: transparent;
+    transform: translateY(-3px);
+    box-shadow: $shadow-lg;
+
+    &::before {
+      width: 300px;
+      height: 300px;
+    }
   }
 }
 
-// Bouton pleine largeur
-.btn-block {
-  width: 100%;
-  display: flex;
+.btn-danger {
+  background: $gradient-secondary;
+  color: $white;
+  border: none;
+  padding: 14px 36px;
+  border-radius: $radius-pill;
+  font-weight: 700;
+  box-shadow: $shadow-lg;
+  transition: all $transition-base;
+
+  &:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: $shadow-2xl;
+  }
 }
