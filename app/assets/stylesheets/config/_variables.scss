@@ -1,48 +1,64 @@
-// ===== PALETTE NEUTRE PROFESSIONNELLE =====
+// ===== PALETTE MODERNE PREMIUM =====
 
-// Couleurs principales - Tons neutres et élégants
-$primary: #2C3E50;        // Bleu-gris profond (remplace #167FFB)
-$primary-dark: #1A252F;   // Version plus sombre
-$primary-light: #34495E;  // Version plus claire
+// Couleurs principales - Gradient moderne
+$primary: #6366F1;        // Indigo moderne
+$primary-dark: #4F46E5;   // Indigo foncé
+$primary-light: #818CF8;  // Indigo clair
 
-$secondary: #95A5A6;      // Gris moyen neutre
-$accent: #3498DB;         // Bleu moderne pour les CTAs
+$secondary: #8B5CF6;      // Violet élégant
+$accent: #EC4899;         // Rose vibrant
 
 // Couleurs fonctionnelles
-$danger: #E74C3C;         // Rouge subtil
-$danger-dark: #C0392B;    // Rouge foncé
-$success: #27AE60;        // Vert professionnel
-$warning: #F39C12;        // Orange élégant
-$info: #3498DB;           // Bleu information
+$success: #10B981;        // Vert émeraude
+$danger: #EF4444;         // Rouge vif
+$warning: #F59E0B;        // Orange ambré
+$info: #3B82F6;           // Bleu moderne
 
-// Gradient moderne et sobre
-$gradient-primary: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
-$gradient-accent: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);
+// Gradients premium
+$gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+$gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+$gradient-success: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+$gradient-dark: linear-gradient(135deg, #1f1c2c 0%, #928DAB 100%);
 
-// Nuances de gris et blanc
+// Nuances élégantes
 $white: #FFFFFF;
-$light: #ECF0F1;          // Gris très clair
-$gray-lightest: #F8F9FA;  // Fond clair
-$gray-light: rgba(0, 0, 0, 0.08);
-$gray-medium: rgba(0, 0, 0, 0.15);
-$gray-strong: rgba(0, 0, 0, 0.25);
-$gray-text: #7F8C8D;      // Texte secondaire
-$black: #2C3E50;          // Noir légèrement bleuté
+$light: #F9FAFB;
+$gray-lightest: #F3F4F6;
+$gray-light: #E5E7EB;
+$gray-medium: #9CA3AF;
+$gray-dark: #4B5563;
+$gray-darker: #1F2937;
+$black: #111827;
 
-// Ombres élégantes
-$shadow-sm: 0 2px 8px rgba(44, 62, 80, 0.06);
-$shadow-md: 0 4px 16px rgba(44, 62, 80, 0.08);
-$shadow-lg: 0 8px 24px rgba(44, 62, 80, 0.12);
-$shadow-xl: 0 12px 40px rgba(44, 62, 80, 0.15);
+// Ombres premium
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.04);
+$shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+
+// Glassmorphism
+$glass-bg: rgba(255, 255, 255, 0.25);
+$glass-border: rgba(255, 255, 255, 0.18);
 
 // Border radius
-$radius-sm: 6px;
-$radius: 8px;
-$radius-lg: 12px;
-$radius-xl: 16px;
-$radius-pill: 24px;
+$radius-sm: 8px;
+$radius: 12px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+$radius-2xl: 32px;
+$radius-pill: 999px;
 
-// Transitions
-$transition-fast: 0.2s ease;
+// Transitions fluides
+$transition-fast: 0.15s ease;
 $transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 $transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Espacements
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
