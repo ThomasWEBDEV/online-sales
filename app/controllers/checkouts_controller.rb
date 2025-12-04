@@ -27,7 +27,7 @@ class CheckoutsController < ApplicationController
 
     if @order.save
       Rails.logger.info "✅ Order ##{@order.id} created (pending)"
-      
+
       session = create_stripe_session(@order)
 
       if session
@@ -35,7 +35,12 @@ class CheckoutsController < ApplicationController
         Rails.logger.info "✅ Stripe session created: #{session.id}"
         Rails.logger.info "📦 Metadata order_id: #{@order.id}"
 
-        redirect_to session.url, allow_other_host: true
+        # ✅ MODIFICATION ICI : On rend du JS au lieu de redirect_to
+        @stripe_url = session.url
+        respond_to do |format|
+          format.html { redirect_to session.url, allow_other_host: true }
+          format.js # Va chercher create.js.erb
+        end
       else
         @order.destroy
         redirect_to @product, alert: "Erreur lors de la création de la session de paiement."
@@ -46,21 +51,17 @@ class CheckoutsController < ApplicationController
   end
 
   def success
-    # Stripe remplace {CHECKOUT_SESSION_ID} dans l'URL
     session_id = params[:session_id]
 
     if session_id.present? && session_id != '{CHECKOUT_SESSION_ID}'
       @order = Order.find_by(stripe_session_id: session_id)
 
       if @order
-        # Commande trouvée, afficher la page de succès
         render :success
       else
-        # Commande pas encore mise à jour par le webhook, rediriger vers les achats
         redirect_to my_purchases_path, notice: "Paiement réussi ! Votre commande est en cours de traitement."
       end
     else
-      # Session ID invalide, rediriger vers les achats
       redirect_to my_purchases_path, notice: "Paiement réussi ! Retrouvez votre commande dans vos achats."
     end
   end
