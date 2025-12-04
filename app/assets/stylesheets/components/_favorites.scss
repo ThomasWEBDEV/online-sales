@@ -1,61 +1,59 @@
-// ===== FAVORITES COMPONENT =====
+// ===== FAVORITES COMPONENT PREMIUM =====
 
 .btn-favorite {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba($white, 0.95);
-  border: none;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: $shadow-sm;
-  z-index: 10;
-  backdrop-filter: blur(8px);
-
-  &:hover {
-    background: $white;
-    transform: scale(1.15);
-    box-shadow: $shadow-md;
-  }
+  box-shadow: $shadow-lg;
+  transition: all $transition-base;
 
   i {
-    color: #999;
-    font-size: 16px;
-    transition: all 0.3s ease;
+    font-size: 18px;
+    color: $gray-medium;
+    transition: all $transition-fast;
   }
 
-  &:hover i {
-    color: $danger;
-    transform: scale(1.1);
-  }
+  &:hover {
+    transform: scale(1.15);
+    box-shadow: $shadow-xl;
+    background: $gradient-secondary;
 
-  // État favorisé
-  &.favorited {
     i {
-      color: $danger;
+      color: $white;
+    }
+  }
+
+  &.favorited {
+    background: $gradient-secondary;
+
+    i {
+      color: $white;
       animation: heartBeat 0.6s ease-in-out;
     }
 
-    &:hover i {
-      color: $danger-dark;
+    &:hover {
+      background: $gradient-accent;
     }
   }
 
-  // Version mobile
   @media (max-width: 768px) {
-    width: 32px;
-    height: 32px;
-    top: 8px;
-    right: 8px;
+    width: 38px;
+    height: 38px;
+    top: 12px;
+    right: 12px;
 
     i {
-      font-size: 14px;
+      font-size: 16px;
     }
   }
 }
@@ -81,13 +79,12 @@
 
 // Amélioration des cartes pour les favoris
 .card-product {
-  position: relative; // Important pour le positionnement absolu du bouton
+  position: relative;
 
-  // Overlay au hover pour mieux voir le bouton
   &:hover {
     .btn-favorite {
-      background: $white;
-      box-shadow: $shadow-lg;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: $shadow-2xl;
     }
   }
 }
