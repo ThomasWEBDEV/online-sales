@@ -1,5 +1,5 @@
-// ===== FOOTER COMPONENT =====
-// Footer normal qui reste en bas de la page
+// ===== FOOTER PREMIUM =====
+
 html, body {
   height: 100%;
   margin: 0;
@@ -17,46 +17,72 @@ main {
 }
 
 footer.footer-normal {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  background: $gradient-dark;
   color: white;
   flex-shrink: 0;
   width: 100%;
   margin-top: auto;
-  padding: 40px 0 20px;
+  padding: 60px 0 30px;
+  position: relative;
+  overflow: hidden;
+
+  // Effet de fond
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.3;
+  }
 
   .footer-content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
+    z-index: 1;
   }
 
   .footer-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 40px;
-    margin-bottom: 30px;
+    gap: 60px;
+    margin-bottom: 40px;
 
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
-      gap: 30px;
+      gap: 40px;
     }
   }
 
   .footer-section {
     h4 {
       color: white;
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-      border-bottom: 2px solid $primary;
-      padding-bottom: 8px;
-      display: inline-block;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      position: relative;
+      padding-bottom: 12px;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: $gradient-accent;
+        border-radius: 2px;
+      }
     }
 
     p {
-      color: #bdc3c7;
-      line-height: 1.6;
-      margin-bottom: 15px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.8;
+      margin-bottom: 20px;
     }
 
     ul {
@@ -65,24 +91,29 @@ footer.footer-normal {
       margin: 0;
 
       li {
-        margin-bottom: 12px;
+        margin-bottom: 14px;
 
         a {
-          color: #ecf0f1;
+          color: rgba(255, 255, 255, 0.85);
           text-decoration: none;
-          transition: all 0.3s ease;
+          transition: all $transition-fast;
           display: flex;
           align-items: center;
+          font-weight: 500;
 
           i {
-            margin-right: 8px;
-            width: 16px;
-            color: $primary;
+            margin-right: 10px;
+            width: 20px;
+            opacity: 0.7;
           }
 
           &:hover {
-            color: $primary;
+            color: white;
             transform: translateX(5px);
+
+            i {
+              opacity: 1;
+            }
           }
         }
       }
@@ -93,39 +124,46 @@ footer.footer-normal {
     .brand-logo {
       display: flex;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
 
       i {
-        font-size: 1.5rem;
-        color: $primary;
-        margin-right: 10px;
+        font-size: 2rem;
+        background: $gradient-accent;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-right: 12px;
       }
 
       span {
-        font-size: 1.3rem;
-        font-weight: 700;
+        font-size: 1.5rem;
+        font-weight: 800;
         color: white;
       }
     }
 
     .stats-mini {
       display: flex;
-      gap: 20px;
-      margin-top: 20px;
+      gap: 24px;
+      margin-top: 24px;
 
       .stat {
         text-align: center;
 
         .number {
           display: block;
-          font-size: 1.2rem;
-          font-weight: 700;
-          color: $primary;
+          font-size: 1.5rem;
+          font-weight: 800;
+          background: $gradient-accent;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
         .label {
           font-size: 0.85rem;
-          color: #bdc3c7;
+          color: rgba(255, 255, 255, 0.7);
+          font-weight: 500;
         }
       }
     }
@@ -134,28 +172,32 @@ footer.footer-normal {
   .footer-social {
     .social-links {
       display: flex;
-      gap: 15px;
-      margin-top: 15px;
+      gap: 12px;
+      margin-top: 20px;
 
       a {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
         border-radius: 50%;
         color: white;
         text-decoration: none;
-        transition: all 0.3s ease;
+        transition: all $transition-base;
+        border: 1px solid rgba(255, 255, 255, 0.2);
 
         &:hover {
-          background: $primary;
-          transform: translateY(-3px);
+          background: $gradient-accent;
+          transform: translateY(-5px) scale(1.1);
+          box-shadow: $shadow-lg;
+          border-color: transparent;
         }
 
         i {
-          font-size: 1.1rem;
+          font-size: 1.2rem;
         }
       }
     }
@@ -163,7 +205,7 @@ footer.footer-normal {
 
   .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 20px;
+    padding-top: 30px;
     text-align: center;
 
     .footer-bottom-content {
@@ -171,7 +213,7 @@ footer.footer-normal {
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 20px;
 
       @media (max-width: 768px) {
         flex-direction: column;
@@ -180,26 +222,24 @@ footer.footer-normal {
     }
 
     .copyright {
-      color: #bdc3c7;
-      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.95rem;
+      font-weight: 500;
     }
 
     .footer-links {
       display: flex;
-      gap: 20px;
-
-      @media (max-width: 768px) {
-        justify-content: center;
-      }
+      gap: 24px;
 
       a {
-        color: #ecf0f1;
+        color: rgba(255, 255, 255, 0.85);
         text-decoration: none;
-        font-size: 0.9rem;
-        transition: color 0.3s ease;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: color $transition-fast;
 
         &:hover {
-          color: $primary;
+          color: white;
         }
       }
     }
