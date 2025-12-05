@@ -3,16 +3,48 @@ class CheckoutsController < ApplicationController
   before_action :set_product, only: [:create]
 
   def create
-    unless @product.can_be_purchased?
-      redirect_to @product, alert: "Ce produit n'est plus disponible."
-      return
-    end
+  unless @product.can_be_purchased?
+    redirect_to @product, alert: "Ce produit n'est plus disponible."
+    return
+  end
 
-    if @product.user == current_user
-      redirect_to @product, alert: "Vous ne pouvez pas acheter votre propre produit."
-      return
-    end
+  if @product.user == current_user
+    redirect_to @product, alert: "Vous ne pouvez pas acheter votre propre produit."
+    return
+  end
 
+  shipping_cost = calculate_shipping_cost(params[:shipping_method] || 'standard')
+
+  @order = Order.new(
+    buyer: current_user,
+    seller: @product.user,
+    product: @product,
+    amount: @product.price,
+    shipping_cost: shipping_cost,
+    shipping_method: params[:shipping_method] || 'standard',
+    status: 'pending'
+  )
+
+  if @order.save
+    Rails.logger.info "✅ Order ##{@order.id} created (pending)"
+
+    session = create_stripe_session(@order)
+
+    if session
+      @order.update(stripe_session_id: session.id)
+      Rails.logger.info "✅ Stripe session created: #{session.id}"
+      Rails.logger.info "📦 Metadata order_id: #{@order.id}"
+
+      # IMPORTANT : Redirection complète forcée vers Stripe
+      redirect_to session.url, allow_other_host: true, status: :see_other
+    else
+      @order.destroy
+      redirect_to @product, alert: "Erreur lors de la création de la session de paiement."
+    end
+  else
+    redirect_to @product, alert: "Erreur lors de la création de la commande."
+  end
+end
     shipping_cost = calculate_shipping_cost(params[:shipping_method] || 'standard')
 
     @order = Order.new(
