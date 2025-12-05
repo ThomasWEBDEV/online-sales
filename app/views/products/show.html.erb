@@ -61,9 +61,11 @@
         <i class="fas fa-info-circle"></i> Ce produit est déjà vendu
       </div>
     <% elsif user_signed_in? && @product.user != current_user %>
-      <%= form_with url: product_checkouts_path(@product), method: :post, remote: true, data: { turbo: false } do |f| %>
-        <%= f.submit "Acheter maintenant", class: "btn btn-primary btn-lg w-100" %>
-      <% end %>
+    <%= form_with url: product_checkouts_path(@product),
+                  method: :post,
+                  data: { turbo: false } do |f| %>
+      <%= f.submit "Acheter maintenant", class: "btn btn-primary btn-lg w-100" %>
+    <% end %>
     <% elsif user_signed_in? && @product.user == current_user %>
       <div class="alert alert-info">
         <i class="fas fa-info-circle"></i> C'est votre produit
