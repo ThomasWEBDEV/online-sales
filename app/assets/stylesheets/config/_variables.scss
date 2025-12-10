@@ -1,46 +1,45 @@
-// ===== PALETTE MODERNE PREMIUM =====
+// ===== PALETTE 60-30-10 PERSONNALISÉE (SANS GRADIENTS) =====
 
-// Couleurs principales - Gradient moderne
-$primary: #6366F1;        // Indigo moderne
-$primary-dark: #4F46E5;   // Indigo foncé
-$primary-light: #818CF8;  // Indigo clair
+// 60% - Couleur dominante (backgrounds, éléments principaux)
+$primary: #75DDDD;           // Turquoise clair
+$primary-light: #A3EBEB;     // Turquoise très clair
+$primary-lighter: #D1F5F5;   // Turquoise pastel
 
-$secondary: #8B5CF6;      // Violet élégant
-$accent: #EC4899;         // Rose vibrant
+// 30% - Couleur secondaire (éléments secondaires, cartes)
+$secondary: #508991;         // Turquoise foncé
+$secondary-dark: #3D6B72;    // Turquoise très foncé
+$secondary-light: #6BA5AD;   // Turquoise moyen
+
+// 10% - Couleur d'accent (CTA, highlights, hover)
+$accent: #172A3A;            // Bleu nuit
+$accent-light: #2C4454;      // Bleu nuit clair
 
 // Couleurs fonctionnelles
-$success: #10B981;        // Vert émeraude
-$danger: #EF4444;         // Rouge vif
-$warning: #F59E0B;        // Orange ambré
-$info: #3B82F6;           // Bleu moderne
+$success: #10B981;           // Vert émeraude
+$danger: #EF4444;            // Rouge vif
+$warning: #F59E0B;           // Orange ambré
+$info: #3B82F6;              // Bleu moderne
 
-// Gradients premium
-$gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-$gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-$gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-$gradient-success: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-$gradient-dark: linear-gradient(135deg, #1f1c2c 0%, #928DAB 100%);
-
-// Nuances élégantes
+// Nuances de gris pour les textes
 $white: #FFFFFF;
 $light: #F9FAFB;
 $gray-lightest: #F3F4F6;
 $gray-light: #E5E7EB;
-$gray-medium: #9CA3AF;
-$gray-dark: #4B5563;
-$gray-darker: #1F2937;
+$gray-medium: #6B7280;       // Gris moyen pour textes
+$gray-dark: #4B5563;         // Gris foncé pour textes
+$gray-darker: #374151;       // Gris très foncé
 $black: #111827;
 
 // Ombres premium
-$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
-$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
-$shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.04);
-$shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+$shadow-sm: 0 1px 3px rgba(23, 42, 58, 0.12), 0 1px 2px rgba(23, 42, 58, 0.08);
+$shadow-md: 0 4px 6px rgba(23, 42, 58, 0.1), 0 2px 4px rgba(23, 42, 58, 0.06);
+$shadow-lg: 0 10px 15px rgba(23, 42, 58, 0.1), 0 4px 6px rgba(23, 42, 58, 0.05);
+$shadow-xl: 0 20px 25px rgba(23, 42, 58, 0.15), 0 10px 10px rgba(23, 42, 58, 0.04);
+$shadow-2xl: 0 25px 50px rgba(23, 42, 58, 0.25);
 
-// Glassmorphism
-$glass-bg: rgba(255, 255, 255, 0.25);
-$glass-border: rgba(255, 255, 255, 0.18);
+// Glassmorphism avec ta palette
+$glass-bg: rgba(117, 221, 221, 0.1);
+$glass-border: rgba(117, 221, 221, 0.2);
 
 // Border radius
 $radius-sm: 8px;
