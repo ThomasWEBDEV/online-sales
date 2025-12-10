@@ -1,4 +1,4 @@
-// ===== BANNER MODERNE ET ÉLÉGANTE =====
+// ===== BANNER PLATE ET ÉLÉGANTE =====
 
 .banner {
   background-size: cover;
@@ -9,7 +9,7 @@
   border-radius: 0 0 $radius-xl $radius-xl;
   overflow: hidden;
 
-  // Overlay gradient neutre et élégant
+  // Overlay uni avec couleur secondaire
   &::before {
     content: '';
     position: absolute;
@@ -17,14 +17,15 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: $gradient-primary;
+    background: $secondary;
     opacity: 0.92;
     z-index: 1;
   }
 
-  // Version alternative avec dégradé plus subtil
+  // Version alternative avec accent
   &.banner-light::before {
-    background: linear-gradient(135deg, rgba(44, 62, 80, 0.85), rgba(52, 73, 94, 0.75));
+    background: $accent;
+    opacity: 0.85;
   }
 
   // Contenu
@@ -67,7 +68,7 @@
   // Boutons dans le banner
   .btn-flat {
     background: $white;
-    color: $primary;
+    color: $accent;
     padding: 14px 36px;
     font-size: 16px;
     box-shadow: $shadow-md;
@@ -85,7 +86,7 @@
 
     &:hover {
       background: $white;
-      color: $primary;
+      color: $secondary;
     }
   }
 
@@ -119,7 +120,7 @@
 
 // Version sans image (fond uni)
 .banner-solid {
-  background: $gradient-primary;
+  background: $secondary;
 
   &::before {
     display: none;
