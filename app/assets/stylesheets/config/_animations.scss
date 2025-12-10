@@ -10,8 +10,8 @@ a, button, input, textarea, select {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-// Links avec underline animé
-a:not(.btn) {
+// Links avec underline animé - EXCLURE LES BOUTONS !
+a:not(.btn):not(.btn-flat):not(.btn-outline-primary):not(.btn-sell):not(.nav-link):not(.navbar-brand) {
   position: relative;
 
   &::after {
@@ -125,83 +125,6 @@ img {
 
 // Smooth page transitions avec Turbo
 .turbo-progress-bar {
-  background: linear-gradient(90deg, $primary, lighten($primary, 20%));
+  background: $primary;
   height: 3px;
-}
-
-// Animations pour états vides
-.empty-state {
-  animation: fadeInUp 0.6s ease-out;
-
-  i {
-    animation: float 3s ease-in-out infinite;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-// Form validation avec animation
-.form-control.is-invalid {
-  animation: shake 0.5s;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-10px); }
-  75% { transform: translateX(10px); }
-}
-
-// Loading shimmer pour images
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-.loading-shimmer {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite;
-}
-
-// Dropdowns avec animation
-.dropdown-menu {
-  animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// Stats counters avec animation
-.stat-number {
-  animation: countUp 1s ease-out;
-}
-
-@keyframes countUp {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
