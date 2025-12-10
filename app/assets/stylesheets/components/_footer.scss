@@ -1,4 +1,4 @@
-// ===== FOOTER PREMIUM =====
+// ===== FOOTER PLAT PREMIUM =====
 
 html, body {
   height: 100%;
@@ -17,7 +17,7 @@ main {
 }
 
 footer.footer-normal {
-  background: $gradient-dark;
+  background: $accent;
   color: white;
   flex-shrink: 0;
   width: 100%;
@@ -26,7 +26,7 @@ footer.footer-normal {
   position: relative;
   overflow: hidden;
 
-  // Effet de fond
+  // Effet de fond avec couleur primaire
   &::before {
     content: '';
     position: absolute;
@@ -34,8 +34,8 @@ footer.footer-normal {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.3;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2375DDDD' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.4;
   }
 
   .footer-content {
@@ -74,7 +74,7 @@ footer.footer-normal {
         left: 0;
         width: 40px;
         height: 3px;
-        background: $gradient-accent;
+        background: $primary;
         border-radius: 2px;
       }
     }
@@ -105,10 +105,11 @@ footer.footer-normal {
             margin-right: 10px;
             width: 20px;
             opacity: 0.7;
+            color: $primary;
           }
 
           &:hover {
-            color: white;
+            color: $primary;
             transform: translateX(5px);
 
             i {
@@ -128,10 +129,7 @@ footer.footer-normal {
 
       i {
         font-size: 2rem;
-        background: $gradient-accent;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: $primary;
         margin-right: 12px;
       }
 
@@ -154,10 +152,7 @@ footer.footer-normal {
           display: block;
           font-size: 1.5rem;
           font-weight: 800;
-          background: $gradient-accent;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: $primary;
         }
 
         .label {
@@ -181,18 +176,18 @@ footer.footer-normal {
         justify-content: center;
         width: 44px;
         height: 44px;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba($secondary, 0.3);
         backdrop-filter: blur(10px);
         border-radius: 50%;
         color: white;
         text-decoration: none;
         transition: all $transition-base;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba($primary, 0.3);
 
         &:hover {
-          background: $gradient-accent;
+          background: $primary;
           transform: translateY(-5px) scale(1.1);
-          box-shadow: $shadow-lg;
+          box-shadow: 0 10px 30px rgba($primary, 0.4);
           border-color: transparent;
         }
 
@@ -204,7 +199,7 @@ footer.footer-normal {
   }
 
   .footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba($primary, 0.15);
     padding-top: 30px;
     text-align: center;
 
@@ -239,7 +234,7 @@ footer.footer-normal {
         transition: color $transition-fast;
 
         &:hover {
-          color: white;
+          color: $primary;
         }
       }
     }
