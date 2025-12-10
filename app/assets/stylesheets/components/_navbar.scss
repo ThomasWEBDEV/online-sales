@@ -1,10 +1,10 @@
-// ===== NAVBAR NEUTRE ET PROFESSIONNELLE =====
+// ===== NAVBAR 60-30-10 PLATE =====
 
 .navbar-lewagon {
   background: $white;
   box-shadow: $shadow-sm;
   padding: 16px 0;
-  border-bottom: 1px solid $gray-light;
+  border-bottom: 1px solid rgba($secondary, 0.15);
   transition: all $transition-base;
 
   &.sticky-top {
@@ -12,7 +12,7 @@
   }
 
   .navbar-brand {
-    color: $primary !important;
+    color: $accent !important;
     font-weight: 700;
     text-decoration: none !important;
     display: flex;
@@ -20,12 +20,12 @@
     transition: all $transition-base;
 
     &:hover {
-      color: $accent !important;
+      color: $secondary !important;
       transform: translateY(-1px);
     }
 
     .brand-icon {
-      background: $gradient-primary;
+      background: $primary;
       border-radius: 50%;
       width: 42px;
       height: 42px;
@@ -45,36 +45,36 @@
     &:hover .brand-icon {
       transform: rotate(5deg) scale(1.05);
       box-shadow: $shadow-md;
+      background: $secondary;
     }
 
     .brand-text {
-      color: $primary;
+      color: $gray-darker;
       font-weight: 700;
       font-size: 20px;
       letter-spacing: -0.5px;
     }
   }
 
-  // Navigation links - CORRECTION ICI
+  // Navigation links avec palette 60-30-10
   .navbar-nav .nav-link {
-    color: $primary !important;
+    color: $gray-dark !important;
     font-weight: 500;
     padding: 10px 16px;
     border-radius: $radius;
     transition: all $transition-base;
     position: relative;
-    text-decoration: none !important; // ← AJOUT
+    text-decoration: none !important;
 
-    // SUPPRESSION de la barre ::after
     &:hover {
       color: $accent !important;
-      background: rgba(52, 152, 219, 0.05);
-      text-decoration: none !important; // ← AJOUT
+      background: rgba($primary, 0.1);
+      text-decoration: none !important;
     }
 
     &.active {
       color: $accent !important;
-      background: rgba(52, 152, 219, 0.08);
+      background: rgba($primary, 0.15);
     }
   }
 
@@ -87,13 +87,13 @@
     font-weight: 600;
     box-shadow: $shadow-sm;
     transition: all $transition-base;
-    text-decoration: none !important; // ← AJOUT
+    text-decoration: none !important;
 
     &:hover {
-      background: darken($accent, 8%) !important;
+      background: $secondary !important;
       transform: translateY(-2px);
       box-shadow: $shadow-md;
-      text-decoration: none !important; // ← AJOUT
+      text-decoration: none !important;
     }
 
     &:active {
@@ -103,51 +103,83 @@
 
   .dropdown-menu {
     border-radius: $radius-lg;
-    border: 1px solid $gray-light;
+    border: 1px solid rgba($secondary, 0.2);
     box-shadow: $shadow-lg;
     padding: 8px 0;
     margin-top: 8px;
 
     .dropdown-item {
       padding: 10px 20px;
-      color: $primary;
+      color: $gray-dark;
       font-weight: 500;
       transition: all $transition-fast;
-      text-decoration: none !important; // ← AJOUT
+      text-decoration: none !important;
 
       &:hover {
-        background: rgba(52, 152, 219, 0.05);
+        background: rgba($primary, 0.1);
         color: $accent;
-        text-decoration: none !important; // ← AJOUT
+        text-decoration: none !important;
       }
 
       &:active {
-        background: rgba(52, 152, 219, 0.1);
+        background: rgba($primary, 0.15);
       }
     }
 
     .dropdown-divider {
       margin: 8px 0;
-      border-color: $gray-light;
+      border-color: rgba($secondary, 0.15);
     }
   }
 
+  // ===== HARMONISATION DES BOUTONS CONNEXION / INSCRIPTION =====
   .btn-outline-primary {
-    border: 2px solid $primary !important;
-    color: $primary !important;
+    border: 2px solid $secondary !important;
+    color: $secondary !important;
     border-radius: $radius-pill;
-    padding: 8px 20px;
+    padding: 10px 24px !important; // ← MÊME PADDING QUE btn-flat
     font-weight: 600;
     background: transparent;
     transition: all $transition-base;
-    text-decoration: none !important; // ← AJOUT
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
-      background: $primary !important;
+      background: $secondary !important;
       color: $white !important;
       transform: translateY(-2px);
       box-shadow: $shadow-sm;
-      text-decoration: none !important; // ← AJOUT
+      text-decoration: none !important;
+    }
+  }
+
+  // Bouton inscription harmonisé
+  .btn-flat {
+    background: $primary;
+    color: $accent;
+    border: none;
+    padding: 10px 24px !important; // ← MÊME PADDING
+    border-radius: $radius-pill;
+    font-weight: 600;
+    box-shadow: $shadow-sm;
+    transition: all $transition-base;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: $primary-light;
+      color: $accent;
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+      text-decoration: none !important;
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
 
@@ -167,5 +199,5 @@
 }
 
 .navbar-lewagon.navbar-light-bg {
-  background: $gray-lightest;
+  background: rgba($primary-lighter, 0.3);
 }
