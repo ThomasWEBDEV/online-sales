@@ -1,4 +1,4 @@
-// ===== CARTES PRODUITS PREMIUM =====
+// ===== CARTES PRODUITS PLATES =====
 
 .cards {
   display: grid;
@@ -25,13 +25,13 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  border: 1px solid $gray-light;
+  border: 1px solid rgba($secondary, 0.15);
   box-shadow: $shadow-md;
 
   &:hover {
     transform: translateY(-10px) scale(1.02);
-    box-shadow: $shadow-2xl;
-    border-color: transparent;
+    box-shadow: 0 20px 40px rgba($secondary, 0.2);
+    border-color: rgba($primary, 0.4);
 
     .card-product-image img {
       transform: scale(1.1);
@@ -43,7 +43,7 @@
     width: 100%;
     padding-top: 75%;
     overflow: hidden;
-    background: $gray-lightest;
+    background: rgba($primary-lighter, 0.2);
 
     img {
       position: absolute;
@@ -55,7 +55,7 @@
       transition: transform $transition-slow;
     }
 
-    // Overlay gradient au hover
+    // Overlay au hover avec couleur accent
     &::after {
       content: '';
       position: absolute;
@@ -63,7 +63,7 @@
       left: 0;
       right: 0;
       height: 50%;
-      background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+      background: linear-gradient(to top, rgba($accent, 0.4), transparent);
       opacity: 0;
       transition: opacity $transition-base;
     }
@@ -73,7 +73,7 @@
     opacity: 1;
   }
 
-  // Badges modernes
+  // Badges plates
   .badge {
     position: absolute;
     top: 16px;
@@ -89,13 +89,13 @@
     backdrop-filter: blur(10px);
 
     &.bg-success {
-      background: $gradient-success !important;
+      background: $success !important;
       color: $white;
       border: none;
     }
 
     &.bg-danger {
-      background: $gradient-secondary !important;
+      background: $danger !important;
       color: $white;
       border: none;
     }
@@ -128,10 +128,7 @@
       transition: color $transition-fast;
 
       &:hover {
-        background: $gradient-primary;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: $primary;
       }
     }
   }
@@ -154,16 +151,13 @@
     align-items: center;
     margin-top: auto;
     padding-top: 16px;
-    border-top: 2px solid $gray-lightest;
+    border-top: 2px solid rgba($primary, 0.2);
   }
 
   .card-product-pricing {
     font-size: 24px;
     font-weight: 900;
-    background: $gradient-primary;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: $secondary;
 
     .currency {
       font-weight: 700;
@@ -182,11 +176,12 @@
 
     i {
       font-size: 14px;
+      color: $primary;
     }
   }
 }
 
-// Bouton favoris moderne
+// Bouton favoris plat
 .btn-favorite {
   position: absolute;
   top: 16px;
@@ -212,8 +207,8 @@
 
   &:hover {
     transform: scale(1.1);
-    box-shadow: $shadow-xl;
-    background: $gradient-secondary;
+    box-shadow: 0 10px 30px rgba($primary, 0.3);
+    background: $primary;
 
     i {
       color: $white;
@@ -221,7 +216,7 @@
   }
 
   &.favorited {
-    background: $gradient-secondary;
+    background: $danger;
 
     i {
       color: $white;
