@@ -1,4 +1,4 @@
-// ===== ALERTS FLASH MODERNES =====
+// ===== ALERTS PLATES MODERNES =====
 .alert-flash {
   position: fixed;
   top: 80px;
@@ -12,25 +12,25 @@
   backdrop-filter: blur(10px);
 
   &.alert-success {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: $success;
     border: none;
     color: white;
   }
 
   &.alert-danger {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+    background: $danger;
     border: none;
     color: white;
   }
 
   &.alert-warning {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
+    background: $warning;
     border: none;
     color: white;
   }
 
   &.alert-info {
-    background: linear-gradient(135deg, $accent, darken($accent, 10%));
+    background: $info;
     border: none;
     color: white;
   }
