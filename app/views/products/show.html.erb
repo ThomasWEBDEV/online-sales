@@ -2,8 +2,65 @@
 
 <div class="row">
   <div class="col-md-8">
-    <% if @product.photo.attached? %>
-      <%= cl_image_tag @product.photo.key, height: 400, width: 600, crop: :fill, class: "w-100 mb-3 rounded" %>
+    <% if @product.photos.attached? %>
+      <!-- Carrousel Bootstrap pour plusieurs photos -->
+      <div id="productCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <% @product.photos.each_with_index do |photo, index| %>
+            <button type="button"
+                    data-bs-target="#productCarousel"
+                    data-bs-slide-to="<%= index %>"
+                    class="<%= 'active' if index == 0 %>"
+                    aria-current="<%= 'true' if index == 0 %>"
+                    aria-label="Slide <%= index + 1 %>">
+            </button>
+          <% end %>
+        </div>
+
+        <div class="carousel-inner rounded">
+          <% @product.photos.each_with_index do |photo, index| %>
+            <div class="carousel-item <%= 'active' if index == 0 %>">
+              <%= cl_image_tag photo.key,
+                               height: 500,
+                               width: 800,
+                               crop: :fill,
+                               class: "d-block w-100",
+                               alt: "#{@product.name} - Photo #{index + 1}" %>
+            </div>
+          <% end %>
+        </div>
+
+        <% if @product.photos.count > 1 %>
+          <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+          </button>
+        <% end %>
+      </div>
+
+      <!-- Miniatures -->
+      <% if @product.photos.count > 1 %>
+        <div class="d-flex gap-2 mb-3 overflow-auto">
+          <% @product.photos.each_with_index do |photo, index| %>
+            <button type="button"
+                    data-bs-target="#productCarousel"
+                    data-bs-slide-to="<%= index %>"
+                    class="border-0 p-0 <%= 'opacity-75' unless index == 0 %>"
+                    style="min-width: 80px; height: 80px; cursor: pointer;">
+              <%= cl_image_tag photo.key,
+                               height: 80,
+                               width: 80,
+                               crop: :fill,
+                               class: "rounded",
+                               alt: "Miniature #{index + 1}" %>
+            </button>
+          <% end %>
+        </div>
+      <% end %>
     <% else %>
       <div class="placeholder-image-large">
         <i class="fas fa-image"></i>
