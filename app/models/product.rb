@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
   belongs_to :user
   has_many :orders, dependent: :restrict_with_error
-  has_one_attached :photo
+  has_many_attached :photos
 
   validates :name, presence: true, length: { minimum: 2, maximum: 100 }
   validates :description, presence: true, length: { minimum: 10, maximum: 500 }
@@ -30,5 +30,10 @@ class Product < ApplicationRecord
   # Obtenir la commande payée (s'il y en a une)
   def paid_order
     orders.paid.first
+  end
+
+  # Méthode helper pour la photo principale
+  def main_photo
+    photos.first
   end
 end
