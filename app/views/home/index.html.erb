@@ -70,8 +70,8 @@
   <div class="cards">
     <% Product.order(views_count: :desc).limit(6).each do |product| %>
       <div class="card-product">
-        <% if product.photo.attached? %>
-          <%= cl_image_tag product.photo.key, height: 320, width: 400, crop: :fill %>
+        <% if product.photos.attached? %>
+          <%= cl_image_tag product.photos.first.key, height: 320, width: 400, crop: :fill %>
         <% else %>
           <%= image_tag "https://picsum.photos/seed/#{product.id}/400/320" %>
         <% end %>
