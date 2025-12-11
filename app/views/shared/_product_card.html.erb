@@ -1,8 +1,8 @@
 <div class="card-product <%= 'sold' if product.sold %>">
   <!-- Image -->
-  <% if product.photo.attached? %>
+  <% if product.photos.attached? %>
     <div class="card-product-image">
-      <%= cl_image_tag product.photo.key, height: 300, width: 400, crop: :fill, quality: :auto %>
+      <%= cl_image_tag product.photos.first.key, height: 300, width: 400, crop: :fill, quality: :auto %>
     </div>
   <% else %>
     <div class="placeholder-image">
