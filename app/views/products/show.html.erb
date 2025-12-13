@@ -3,24 +3,30 @@
 <div class="row">
   <div class="col-md-8">
     <% if @product.photos.attached? %>
-      <!-- Galerie d'images simple -->
-      <div class="product-gallery">
+  <!-- Galerie d'images avec Stimulus -->
+      <div class="product-gallery" data-controller="product-gallery" data-product-gallery-total-photos-value="<%= @product.photos.count %>">
         <!-- Image principale -->
         <div class="main-image-container">
           <% @product.photos.each_with_index do |photo, index| %>
             <%= cl_image_tag photo.key,
-                             quality: :auto,
-                             fetch_format: :auto,
-                             class: "main-image #{'active' if index == 0}",
-                             id: "photo-#{index}",
-                             data: { index: index } %>
+                            quality: :auto,
+                            fetch_format: :auto,
+                            class: "main-image #{'active' if index == 0}",
+                            data: {
+                              product_gallery_target: "mainImage",
+                              index: index
+                            } %>
           <% end %>
 
           <% if @product.photos.count > 1 %>
-            <button class="gallery-nav prev" onclick="changePhoto(-1)">
+            <button class="gallery-nav prev"
+                    data-action="click->product-gallery#changePhoto"
+                    data-direction="-1">
               <i class="fas fa-chevron-left"></i>
             </button>
-            <button class="gallery-nav next" onclick="changePhoto(1)">
+            <button class="gallery-nav next"
+                    data-action="click->product-gallery#changePhoto"
+                    data-direction="1">
               <i class="fas fa-chevron-right"></i>
             </button>
           <% end %>
@@ -30,18 +36,20 @@
         <% if @product.photos.count > 1 %>
           <div class="thumbnails-container">
             <% @product.photos.each_with_index do |photo, index| %>
-              <div class="thumbnail <%= 'active' if index == 0 %>" onclick="showPhoto(<%= index %>)">
+              <div class="thumbnail <%= 'active' if index == 0 %>"
+                  data-action="click->product-gallery#showPhoto"
+                  data-index="<%= index %>"
+                  data-product-gallery-target="thumbnail">
                 <%= cl_image_tag photo.key,
-                                 height: 80,
-                                 width: 80,
-                                 crop: :fill,
-                                 quality: :auto %>
+                                height: 80,
+                                width: 80,
+                                crop: :fill,
+                                quality: :auto %>
               </div>
             <% end %>
           </div>
         <% end %>
       </div>
-
       <style>
         .product-gallery {
           background: #f8f9fa;
@@ -139,35 +147,6 @@
         }
       </style>
 
-      <script>
-        let currentPhotoIndex = 0;
-        const totalPhotos = <%= @product.photos.count %>;
-
-        function showPhoto(index) {
-          // Retirer active de toutes les images
-          document.querySelectorAll('.main-image').forEach(img => img.classList.remove('active'));
-          document.querySelectorAll('.thumbnail').forEach(thumb => thumb.classList.remove('active'));
-
-          // Ajouter active à l'image sélectionnée
-          document.getElementById('photo-' + index).classList.add('active');
-          document.querySelectorAll('.thumbnail')[index].classList.add('active');
-
-          currentPhotoIndex = index;
-        }
-
-        function changePhoto(direction) {
-          currentPhotoIndex += direction;
-
-          // Boucler
-          if (currentPhotoIndex < 0) {
-            currentPhotoIndex = totalPhotos - 1;
-          } else if (currentPhotoIndex >= totalPhotos) {
-            currentPhotoIndex = 0;
-          }
-
-          showPhoto(currentPhotoIndex);
-        }
-      </script>
     <% else %>
       <div class="placeholder-image-large">
         <i class="fas fa-image"></i>
