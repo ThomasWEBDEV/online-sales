@@ -83,7 +83,7 @@
     border: none;
     color: $white !important;
     padding: 10px 24px;
-    border-radius: $radius-pill;
+    border-radius: 6px;
     font-weight: 600;
     box-shadow: $shadow-sm;
     transition: all $transition-base;
@@ -136,8 +136,8 @@
   .btn-outline-primary {
     border: 2px solid $secondary !important;
     color: $secondary !important;
-    border-radius: $radius-pill;
-    padding: 10px 24px !important; // ← MÊME PADDING QUE btn-flat
+    border-radius: 6px;
+    padding: 10px 24px !important;
     font-weight: 600;
     background: transparent;
     transition: all $transition-base;
@@ -160,8 +160,8 @@
     background: $primary;
     color: $accent;
     border: none;
-    padding: 10px 24px !important; // ← MÊME PADDING
-    border-radius: $radius-pill;
+    padding: 10px 24px !important;
+    border-radius: 6px;
     font-weight: 600;
     box-shadow: $shadow-sm;
     transition: all $transition-base;
@@ -183,6 +183,78 @@
     }
   }
 
+  // ===== BOUTON VENDRE POUR VISITEURS =====
+  .btn-sell-guest {
+    background: $primary;
+    color: $accent !important;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid transparent;
+    transition: all $transition-base;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    i {
+      font-size: 14px;
+    }
+
+    &:hover {
+      background: $primary-light;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba($primary, 0.2);
+      text-decoration: none !important;
+    }
+  }
+
+  // ===== BOUTON FUSIONNÉ CONNEXION | INSCRIPTION =====
+  .auth-buttons-split {
+    display: flex;
+    align-items: center;
+    gap: 0;
+
+    .auth-btn {
+      padding: 10px 20px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none !important;
+      transition: all $transition-fast;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid $secondary;
+      height: 34px;
+
+      &:hover {
+        text-decoration: none !important;
+      }
+
+      &.auth-btn-left {
+        color: $secondary !important;
+        background: $white;
+        border-radius: 6px 0 0 6px;
+        border-right: none;
+
+        &:hover {
+          background: rgba($secondary, 0.05);
+        }
+      }
+
+      &.auth-btn-right {
+        background: $secondary;
+        color: $white !important;
+        border-radius: 0 6px 6px 0;
+        border-left: 1px solid rgba(255, 255, 255, 0.2);
+
+        &:hover {
+          background: $accent;
+        }
+      }
+    }
+  }
+
   @media (max-width: 768px) {
     .navbar-collapse {
       background: $white;
@@ -194,6 +266,21 @@
 
     .nav-link {
       margin: 4px 0;
+    }
+
+    .auth-buttons-split {
+      width: 100%;
+      margin-top: 8px;
+
+      .auth-btn {
+        flex: 1;
+        justify-content: center;
+      }
+    }
+
+    .btn-sell-guest {
+      width: 100%;
+      justify-content: center;
     }
   }
 }
