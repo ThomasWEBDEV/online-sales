@@ -24,7 +24,7 @@
   <body>
     <!-- Navbar -->
     <nav class="navbar-lewagon sticky-top">
-      <div class="container-fluid">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
         <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
           <div class="brand-icon">
             <i class="fas fa-store"></i>
@@ -32,7 +32,7 @@
           <span class="brand-text">MarketPlace</span>
         <% end %>
 
-        <div class="d-flex align-items-center" style="gap: 1rem;">
+        <div class="d-flex align-items-center" style="gap: 12px;">
           <% if user_signed_in? %>
             <%= link_to new_product_path, class: "btn-sell" do %>
               <i class="fas fa-plus-circle"></i> Vendre
@@ -57,8 +57,16 @@
 
             <%= link_to "Déconnexion", destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-outline-secondary btn-sm" %>
           <% else %>
-            <%= link_to "Connexion", new_user_session_path, class: "btn btn-outline-primary" %>
-            <%= link_to "Inscription", new_user_registration_path, class: "btn-flat" %>
+            <!-- Bouton Vendre (pour non connectés) -->
+            <%= link_to new_user_registration_path, class: "btn-sell-guest" do %>
+              <i class="fas fa-tag"></i> Vendre vos articles
+            <% end %>
+
+            <!-- Bouton fusionné Connexion | Inscription -->
+            <div class="auth-buttons-split">
+              <%= link_to "Connexion", new_user_session_path, class: "auth-btn auth-btn-left" %>
+              <%= link_to "Inscription", new_user_registration_path, class: "auth-btn auth-btn-right" %>
+            </div>
           <% end %>
         </div>
       </div>
