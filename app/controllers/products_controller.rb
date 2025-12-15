@@ -9,7 +9,7 @@ class ProductsController < ApplicationController
 
     # Recherche
     if params[:query].present?
-      @products = @products.where("name ILIKE ?", "%#{params[:query]}%")
+      @products = @products.where("name ILIKE ? OR description ILIKE ?", "%#{params[:query]}%", "%#{params[:query]}%")
     end
 
     # Filtres prix
@@ -44,7 +44,7 @@ class ProductsController < ApplicationController
     end
 
     # PAGINATION avec params
-    @pagy, @products = pagy(@products, items: 24, params: { 
+    @pagy, @products = pagy(@products, items: 24, params: {
       query: params[:query],
       min_price: params[:min_price],
       max_price: params[:max_price],
