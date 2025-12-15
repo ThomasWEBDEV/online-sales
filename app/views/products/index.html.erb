@@ -62,7 +62,7 @@
 
   <!-- Barre de recherche et filtres -->
   <div class="container mt-4 mb-3">
-    <%= form_with url: products_path, method: :get, local: true, class: "search-filters" do |f| %>
+    <%= form_with url: products_path, method: :get, data: { turbo_frame: "products_list" }, class: "search-filters" do |f| %>
       <%= f.hidden_field :anchor, value: 'produits' %>
 
       <!-- Recherche principale -->
@@ -157,33 +157,17 @@
   <!-- Grille des produits avec cartes modernes -->
   <div class="container mt-4">
     <% if @products.any? %>
-      <div class="cards">
-        <% @products.each do |product| %>
-          <%= render partial: 'shared/product_card', locals: { product: product } %>
-        <% end %>
-      </div>
-
-      <!-- PAGINATION avec ancre et scroll -->
-      <div class="text-center mt-4" id="pagination-section">
-        <%= pagy_nav_with_anchor(@pagy) if @pagy.pages > 1 %>
-      </div>
-
-      <script>
-        // Smooth scroll vers #produits lors du clic pagination
-        document.addEventListener('DOMContentLoaded', function() {
-          const paginationLinks = document.querySelectorAll('nav.pagy a[data-scroll="true"]');
-          paginationLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-              setTimeout(() => {
-                document.getElementById('produits').scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start'
-                });
-              }, 100);
-            });
-          });
-        });
-      </script>
+      <%= turbo_frame_tag "products_list" do %>
+        <div class="cards">
+          <% @products.each do |product| %>
+            <%= render partial: 'shared/product_card', locals: { product: product } %>
+          <% end %>
+        </div>
+        <!-- PAGINATION avec ancre et scroll -->
+        <div class="text-center mt-4" id="pagination-section">
+          <%= pagy_nav_with_anchor(@pagy) if @pagy.pages > 1 %>
+        </div>
+      <% end %>
 
     <% else %>
       <div class="empty-state text-center py-5">
