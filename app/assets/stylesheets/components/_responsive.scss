@@ -469,3 +469,46 @@ $tablet: 1024px;
     min-width: 0 !important;
   }
 }
+
+// ============================================
+// FIX MARGE NOIRE MENU BURGER
+// ============================================
+
+@media (max-width: 768px) {
+  .mobile-menu-overlay {
+    background: rgba(0, 0, 0, 0.95) !important;
+  }
+
+  .mobile-menu-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 80px 1.5rem 2rem !important;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+  }
+}
+
+// ============================================
+// FIX TEXTE VERTICAL "20 produits"
+// ============================================
+
+@media (max-width: 768px) {
+  // Le texte produits dans le header
+  .text-muted {
+    display: block !important;
+    white-space: nowrap !important;
+    font-size: 0.8rem !important;
+  }
+
+  // Si c'est dans un container flex qui force vertical
+  .d-flex .text-muted,
+  .justify-content-between .text-muted {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+  }
+
+  // Réduire la taille si nécessaire
+  span.text-muted i {
+    font-size: 0.9rem !important;
+  }
+}
