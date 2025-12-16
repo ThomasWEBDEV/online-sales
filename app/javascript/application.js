@@ -21,3 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+// Mobile menu
+import "./mobile_menu"
