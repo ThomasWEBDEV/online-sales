@@ -1,6 +1,7 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+// Configure your import map in config/importmap.rb
 import "@hotwired/turbo-rails"
 import "controllers"
+import "mobile_menu"
 
 // Loading spinner pour tous les formulaires
 document.addEventListener('DOMContentLoaded', function() {
@@ -9,9 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function() {
       const submitBtn = form.querySelector('input[type="submit"], button[type="submit"]');
       if (submitBtn) {
-        // Ajouter la classe loading
         submitBtn.classList.add('btn-loading');
-        // Wrap le texte et ajouter le spinner
         const originalText = submitBtn.value || submitBtn.textContent;
         submitBtn.innerHTML = `
           <span class="btn-text">${originalText}</span>
@@ -21,6 +20,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
-
-// Mobile menu
-import "./mobile_menu"
