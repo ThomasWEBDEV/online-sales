@@ -583,3 +583,26 @@ $tablet: 1024px;
     overflow-y: auto !important;
   }
 }
+
+// ============================================
+// FIX MENU BURGER - VERSION SIMPLE
+// ============================================
+
+@media (max-width: 768px) {
+  .mobile-menu-overlay {
+    right: -100% !important;
+    left: auto !important;
+    width: 100% !important;
+    
+    &.active {
+      right: 0 !important;
+    }
+  }
+
+  .mobile-menu-content {
+    width: 80% !important;
+    max-width: 320px !important;
+    margin-left: auto !important;
+    padding: 80px 1.5rem 2rem !important;
+  }
+}
