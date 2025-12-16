@@ -435,3 +435,24 @@ body {
     -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
   }
 }
+
+// ============================================
+// FIX FINAL : SUPPRIMER BARRE NOIRE
+// ============================================
+
+@media (max-width: 768px) {
+  .mobile-menu-overlay {
+    background: transparent !important;
+    
+    &.active {
+      background: rgba(0, 0, 0, 0.75) !important;
+      backdrop-filter: blur(5px) !important;
+    }
+  }
+
+  .mobile-menu-content {
+    width: 85% !important;
+    max-width: 350px !important;
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.8) !important;
+  }
+}
