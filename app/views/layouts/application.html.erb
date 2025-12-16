@@ -227,3 +227,16 @@
     </script>
   </body>
 </html>
+
+    <!-- DEBUG SCROLL HORIZONTAL -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const elements = document.querySelectorAll('*');
+        elements.forEach(el => {
+          if (el.scrollWidth > window.innerWidth) {
+            console.error('DÉBORDE:', el, 'Width:', el.scrollWidth);
+            el.style.border = '2px solid red'; // Marquer en rouge
+          }
+        });
+      });
+    </script>
