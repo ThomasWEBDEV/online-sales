@@ -223,3 +223,36 @@
     }
   }
 }
+
+// ===== FIX SOULIGNEMENT LIENS =====
+.card-product > a {
+  text-decoration: none !important;
+  color: inherit;
+  display: block;
+
+  &:hover {
+    text-decoration: none !important;
+  }
+
+  h2, p {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+}
+
+// Garder les couleurs d'origine
+.card-product h2 {
+  color: #2c3e50 !important;
+}
+
+.card-product p {
+  color: #6c757d !important;
+}
+
+.card-product-pricing {
+  color: #667eea !important;
+}
+
+.card-product-meta {
+  color: #6c757d !important;
+}
