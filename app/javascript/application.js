@@ -20,3 +20,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+// Auto-scroll to search results
+document.addEventListener('turbo:load', function() {
+  if (window.location.hash === '#produits' || window.location.search.includes('query') || window.location.search.includes('sort')) {
+    setTimeout(function() {
+      const target = document.getElementById('produits');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
+});
