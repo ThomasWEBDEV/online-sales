@@ -2,9 +2,33 @@
 // RESPONSIVE MOBILE STYLES
 // ============================================
 
-// Breakpoints
 $mobile: 768px;
 $tablet: 1024px;
+
+// ============================================
+// FIX DÉBORDEMENT HORIZONTAL
+// ============================================
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  max-width: 100vw;
+}
+
+.container, .container-fluid, .row {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
 
 // ============================================
 // BURGER MENU
@@ -147,21 +171,20 @@ $tablet: 1024px;
 }
 
 // ============================================
-// RESPONSIVE NAVBAR
+// RESPONSIVE MEDIA QUERIES
 // ============================================
 
 @media (max-width: $mobile) {
-  // Cacher le menu desktop
+  // Cacher menu desktop / Afficher burger
   .desktop-menu {
     display: none !important;
   }
 
-  // Afficher le burger
   .mobile-burger {
     display: flex;
   }
 
-  // Ajuster le logo
+  // Navbar
   .navbar-brand {
     .brand-text {
       font-size: 1.2rem;
@@ -174,29 +197,21 @@ $tablet: 1024px;
     }
   }
 
-  // Navbar responsive
   .navbar-lewagon {
     padding: 0.8rem 1rem;
   }
-}
 
-// ============================================
-// RESPONSIVE FOOTER
-// ============================================
-
-@media (max-width: $mobile) {
+  // Footer
   .footer-grid {
     grid-template-columns: 1fr !important;
     gap: 2rem;
     text-align: center;
   }
 
-  .footer-section {
-    ul {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+  .footer-section ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .stats-mini {
@@ -206,20 +221,13 @@ $tablet: 1024px;
   .social-links {
     justify-content: center;
   }
-}
 
-// ============================================
-// RESPONSIVE CONTENT
-// ============================================
-
-@media (max-width: $mobile) {
-  // Container padding
+  // Content
   .container, .container-fluid {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  // Titres
   h1 {
     font-size: 2rem !important;
   }
@@ -232,29 +240,24 @@ $tablet: 1024px;
     font-size: 1.2rem !important;
   }
 
-  // Cartes produits
   .card {
     margin-bottom: 1rem;
   }
 
-  // Boutons
   .btn {
     padding: 0.6rem 1rem;
     font-size: 0.95rem;
   }
 
-  // Images
   img {
     max-width: 100%;
     height: auto;
   }
 
-  // Forms
   .form-control {
-    font-size: 16px; // Évite le zoom iOS
+    font-size: 16px;
   }
 
-  // Grilles Bootstrap
   .row {
     margin-left: -0.5rem;
     margin-right: -0.5rem;
@@ -264,46 +267,8 @@ $tablet: 1024px;
       padding-right: 0.5rem;
     }
   }
-}
 
-// ============================================
-// TABLET RESPONSIVE
-// ============================================
-
-@media (min-width: 769px) and (max-width: $tablet) {
-  .desktop-menu {
-    gap: 8px !important;
-
-    .nav-link, .btn-sell {
-      font-size: 0.9rem;
-      padding: 0.5rem 0.8rem;
-    }
-  }
-}
-
-// ============================================
-// TOUCH IMPROVEMENTS
-// ============================================
-
-@media (hover: none) and (pointer: coarse) {
-  // Augmenter les zones de clic sur mobile
-  a, button {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  // Améliorer les cartes cliquables
-  .card {
-    cursor: pointer;
-    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
-  }
-}
-
-// ============================================
-// RESPONSIVE HERO
-// ============================================
-
-@media (max-width: $mobile) {
+  // Hero responsive
   .hero-marketplace {
     padding: 2rem 1rem;
     min-height: auto;
@@ -314,31 +279,36 @@ $tablet: 1024px;
     gap: 2rem;
   }
 
-  .hero-text {
-    h1 {
-      font-size: 1.8rem !important;
-      line-height: 1.3;
-    }
+  .hero-text h1 {
+    font-size: 1.8rem !important;
+    line-height: 1.3;
+  }
 
-    .hero-subtitle {
-      font-size: 1rem;
-    }
+  .hero-subtitle {
+    font-size: 1rem;
   }
 
   .hero-features {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.8rem;
+    width: 100%;
+    padding: 0;
+    margin: 0;
 
     .feature {
       flex-direction: column;
       text-align: center;
       gap: 0.5rem;
-      font-size: 0.85rem;
-      padding: 0.8rem;
+      font-size: 0.75rem;
+      padding: 0.5rem;
 
       i {
         font-size: 1.5rem;
+      }
+
+      span {
+        word-break: break-word;
       }
     }
   }
@@ -346,6 +316,7 @@ $tablet: 1024px;
   .hero-actions {
     flex-direction: column;
     width: 100%;
+    padding: 0;
 
     .btn {
       width: 100%;
@@ -374,13 +345,8 @@ $tablet: 1024px;
       }
     }
   }
-}
 
-// ============================================
-// RESPONSIVE CARDS PRODUITS
-// ============================================
-
-@media (max-width: $mobile) {
+  // Cards produits
   .cards {
     grid-template-columns: 1fr !important;
     gap: 1rem;
@@ -400,251 +366,72 @@ $tablet: 1024px;
     }
   }
 
-  .text-center {
-    h2 {
-      font-size: 1.5rem;
-    }
-
-    .text-muted {
-      font-size: 0.95rem;
-    }
-  }
-}
-
-// FIX HERO FEATURES QUI DÉBORDE
-@media (max-width: 768px) {
-  .hero-features {
-    width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    
-    .feature {
-      font-size: 0.75rem !important;
-      padding: 0.5rem !important;
-      
-      span {
-        word-break: break-word;
-      }
-    }
-  }
-
-  .hero-actions {
-    width: 100% !important;
-    padding: 0 !important;
-  }
-
-  .my-5 {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-}
-
-// ============================================
-// FIX TEXT OVERFLOW
-// ============================================
-
-@media (max-width: 768px) {
-  .text-muted {
-    word-wrap: break-word !important;
-    word-break: break-word !important;
-    white-space: normal !important;
-    max-width: 100% !important;
-    overflow-wrap: break-word !important;
-    
-    i {
-      margin-right: 0.3rem;
-    }
-  }
-
-  // Fix pour les spans dans header/filtres
-  span.text-muted {
-    font-size: 0.85rem !important;
-    line-height: 1.3 !important;
-  }
-
-  // Si c'est dans un flex container
-  .d-flex .text-muted,
-  .justify-content-between .text-muted {
-    flex-shrink: 1 !important;
-    min-width: 0 !important;
-  }
-}
-
-// ============================================
-// FIX MARGE NOIRE MENU BURGER
-// ============================================
-
-@media (max-width: 768px) {
-  .mobile-menu-overlay {
-    background: rgba(0, 0, 0, 0.95) !important;
-  }
-
-  .mobile-menu-content {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 80px 1.5rem 2rem !important;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
-  }
-}
-
-// ============================================
-// FIX TEXTE VERTICAL "20 produits"
-// ============================================
-
-@media (max-width: 768px) {
-  // Le texte produits dans le header
-  .text-muted {
-    display: block !important;
-    white-space: nowrap !important;
-    font-size: 0.8rem !important;
-  }
-
-  // Si c'est dans un container flex qui force vertical
-  .d-flex .text-muted,
-  .justify-content-between .text-muted {
-    writing-mode: horizontal-tb !important;
-    text-orientation: mixed !important;
-  }
-
-  // Réduire la taille si nécessaire
-  span.text-muted i {
-    font-size: 0.9rem !important;
-  }
-}
-
-// ============================================
-// FIX HEADER PRODUITS (tri + compteur)
-// ============================================
-
-@media (max-width: 768px) {
+  // Header produits (tri + compteur)
   .container.mb-3 .d-flex.justify-content-between {
-    flex-direction: column !important;
-    gap: 1rem !important;
-    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
   }
 
-  // Boutons de tri en grille 2x2
   .btn-group {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 0.5rem !important;
-    width: 100% !important;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    width: 100%;
 
     .btn {
-      font-size: 0.85rem !important;
-      padding: 0.5rem 0.3rem !important;
-      white-space: nowrap !important;
+      font-size: 0.85rem;
+      padding: 0.5rem 0.3rem;
+      white-space: nowrap;
     }
   }
 
-  // Compteur produits en bas
   .text-muted {
-    width: 100% !important;
-    text-align: left !important;
-    font-size: 0.9rem !important;
-    display: block !important;
-    white-space: normal !important;
-    word-wrap: break-word !important;
+    width: 100%;
+    text-align: left;
+    font-size: 0.9rem;
+    display: block;
+    white-space: normal;
+    word-wrap: break-word;
 
     i {
       margin-right: 0.5rem;
     }
   }
-}
 
-// ============================================
-// FIX COMPLET MENU BURGER
-// ============================================
-
-@media (max-width: 768px) {
-  .mobile-menu-overlay {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: rgba(0, 0, 0, 0.95) !important;
-    z-index: 1999 !important;
+  // Éléments qui dépassent
+  main, section {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
-  .mobile-menu-content {
-    position: fixed !important;
-    top: 0 !important;
-    right: 0 !important;
-    width: 85vw !important;
-    max-width: 85vw !important;
-    height: 100vh !important;
-    margin: 0 !important;
-    padding: 80px 1.5rem 2rem !important;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
-    overflow-y: auto !important;
+  .my-5 {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
-// ============================================
-// FIX MENU BURGER - VERSION SIMPLE
-// ============================================
+// Tablet
+@media (min-width: 769px) and (max-width: $tablet) {
+  .desktop-menu {
+    gap: 8px;
 
-@media (max-width: 768px) {
-  .mobile-menu-overlay {
-    right: -100% !important;
-    left: auto !important;
-    width: 100% !important;
-    
-    &.active {
-      right: 0 !important;
+    .nav-link, .btn-sell {
+      font-size: 0.9rem;
+      padding: 0.5rem 0.8rem;
     }
   }
-
-  .mobile-menu-content {
-    width: 80% !important;
-    max-width: 320px !important;
-    margin-left: auto !important;
-    padding: 80px 1.5rem 2rem !important;
-  }
 }
 
-// ============================================
-// FIX : SUPPRIMER LA BARRE NOIRE
-// ============================================
-
-@media (max-width: 768px) {
-  .mobile-menu-overlay {
-    background: none !important;
-  }
-  
-  // Le menu slide depuis la droite sans fond noir
-  body.menu-open {
-    overflow: hidden;
-  }
-}
-
-// ============================================
-// ALT : MENU BURGER DEPUIS LE HAUT
-// ============================================
-
-@media (max-width: 768px) {
-  .mobile-menu-overlay {
-    background: rgba(0, 0, 0, 0.85) !important;
-    backdrop-filter: blur(5px) !important;
+// Touch improvements
+@media (hover: none) and (pointer: coarse) {
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
   }
 
-  .mobile-menu-content {
-    position: fixed !important;
-    top: 70px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    right: auto !important;
-    width: 90% !important;
-    max-width: 400px !important;
-    height: auto !important;
-    max-height: calc(100vh - 100px) !important;
-    margin: 0 !important;
-    padding: 1.5rem !important;
-    border-radius: 15px !important;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+  .card {
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
   }
 }
