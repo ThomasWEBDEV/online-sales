@@ -606,3 +606,18 @@ $tablet: 1024px;
     padding: 80px 1.5rem 2rem !important;
   }
 }
+
+// ============================================
+// FIX : SUPPRIMER LA BARRE NOIRE
+// ============================================
+
+@media (max-width: 768px) {
+  .mobile-menu-overlay {
+    background: none !important;
+  }
+  
+  // Le menu slide depuis la droite sans fond noir
+  body.menu-open {
+    overflow: hidden;
+  }
+}
