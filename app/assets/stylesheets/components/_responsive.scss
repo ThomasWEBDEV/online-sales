@@ -621,3 +621,30 @@ $tablet: 1024px;
     overflow: hidden;
   }
 }
+
+// ============================================
+// ALT : MENU BURGER DEPUIS LE HAUT
+// ============================================
+
+@media (max-width: 768px) {
+  .mobile-menu-overlay {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(5px) !important;
+  }
+
+  .mobile-menu-content {
+    position: fixed !important;
+    top: 70px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    width: 90% !important;
+    max-width: 400px !important;
+    height: auto !important;
+    max-height: calc(100vh - 100px) !important;
+    margin: 0 !important;
+    padding: 1.5rem !important;
+    border-radius: 15px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+  }
+}
