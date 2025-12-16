@@ -22,7 +22,7 @@
     <%= javascript_importmap_tags %>
   </head>
   <body>
-    <!-- Navbar -->
+    <!-- Navbar RESPONSIVE -->
     <nav class="navbar-lewagon sticky-top">
       <div class="container-fluid d-flex justify-content-between align-items-center">
         <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
@@ -32,7 +32,8 @@
           <span class="brand-text">MarketPlace</span>
         <% end %>
 
-        <div class="d-flex align-items-center" style="gap: 12px;">
+        <!-- DESKTOP MENU -->
+        <div class="desktop-menu d-flex align-items-center" style="gap: 12px;">
           <% if user_signed_in? %>
             <%= link_to new_product_path, class: "btn-sell" do %>
               <i class="fas fa-plus-circle"></i> Vendre
@@ -55,22 +56,69 @@
               <i class="fas fa-chart-line"></i> Ventes
             <% end %>
 
-            <%= link_to "Déconnexion", destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-outline-secondary btn-sm" %>
+            <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-outline-secondary btn-sm" %>
           <% else %>
-            <!-- Bouton Vendre (pour non connectés) -->
             <%= link_to new_user_registration_path, class: "btn-sell-guest" do %>
               <i class="fas fa-tag"></i> Vendre vos articles
             <% end %>
 
-            <!-- Bouton fusionné Connexion | Inscription -->
             <div class="auth-buttons-split">
               <%= link_to "Connexion", new_user_session_path, class: "auth-btn auth-btn-left" %>
               <%= link_to "Inscription", new_user_registration_path, class: "auth-btn auth-btn-right" %>
             </div>
           <% end %>
         </div>
+
+        <!-- BURGER BUTTON (mobile only) -->
+        <button class="mobile-burger" id="burgerBtn" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </nav>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+      <div class="mobile-menu-content">
+        <% if user_signed_in? %>
+          <%= link_to new_product_path, class: "mobile-menu-item btn-sell-mobile" do %>
+            <i class="fas fa-plus-circle"></i> Vendre un article
+          <% end %>
+
+          <%= link_to favorites_path, class: "mobile-menu-item" do %>
+            <i class="fas fa-heart"></i> Favoris
+            <% if current_user.favorites.count > 0 %>
+              <span class="badge bg-danger"><%= current_user.favorites.count %></span>
+            <% end %>
+          <% end %>
+
+          <%= link_to my_purchases_path, class: "mobile-menu-item" do %>
+            <i class="fas fa-shopping-bag"></i> Mes achats
+          <% end %>
+
+          <%= link_to my_sales_path, class: "mobile-menu-item" do %>
+            <i class="fas fa-chart-line"></i> Mes ventes
+          <% end %>
+
+          <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "mobile-menu-item btn-logout" do %>
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
+          <% end %>
+        <% else %>
+          <%= link_to new_user_registration_path, class: "mobile-menu-item btn-sell-mobile" do %>
+            <i class="fas fa-tag"></i> Vendre vos articles
+          <% end %>
+
+          <%= link_to new_user_session_path, class: "mobile-menu-item" do %>
+            <i class="fas fa-sign-in-alt"></i> Connexion
+          <% end %>
+
+          <%= link_to new_user_registration_path, class: "mobile-menu-item btn-register" do %>
+            <i class="fas fa-user-plus"></i> Inscription
+          <% end %>
+        <% end %>
+      </div>
+    </div>
 
     <!-- Messages flash -->
     <% if notice %>
@@ -137,7 +185,7 @@
       </div>
     </footer>
 
-    <!-- Bootstrap JS Bundle (inclut Popper) -->
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <script>
@@ -148,6 +196,34 @@
           setTimeout(() => el.remove(), 300);
         });
       }, 4000);
+
+      // Mobile menu toggle
+      const burgerBtn = document.getElementById('burgerBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      burgerBtn.addEventListener('click', () => {
+        burgerBtn.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+      });
+
+      // Close menu when clicking on overlay
+      mobileMenu.addEventListener('click', (e) => {
+        if (e.target === mobileMenu) {
+          burgerBtn.classList.remove('active');
+          mobileMenu.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+
+      // Close menu when clicking on a link
+      document.querySelectorAll('.mobile-menu-item').forEach(item => {
+        item.addEventListener('click', () => {
+          burgerBtn.classList.remove('active');
+          mobileMenu.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      });
     </script>
   </body>
 </html>
