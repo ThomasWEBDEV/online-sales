@@ -456,3 +456,27 @@ body {
     box-shadow: -20px 0 60px rgba(0, 0, 0, 0.8) !important;
   }
 }
+
+// ============================================
+// CENTRER LE MENU BURGER
+// ============================================
+
+@media (max-width: 768px) {
+  .mobile-menu-overlay {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .mobile-menu-content {
+    position: relative !important;
+    margin: 0 auto !important;
+    width: 90% !important;
+    max-width: 400px !important;
+    height: auto !important;
+    max-height: 85vh !important;
+    border-radius: 20px !important;
+    padding: 2rem 1.5rem !important;
+    overflow-y: auto !important;
+  }
+}
