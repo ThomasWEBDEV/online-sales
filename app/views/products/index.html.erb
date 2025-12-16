@@ -62,7 +62,7 @@
 
   <!-- Barre de recherche et filtres -->
   <div class="container mt-4 mb-3">
-    <%= form_with url: products_path, method: :get, data: { turbo_frame: "products_list" }, class: "search-filters" do |f| %>
+    <%= form_with url: products_path, method: :get, data: { turbo: false }, class: "search-filters" do |f| %>
       <%= f.hidden_field :anchor, value: 'produits' %>
 
       <!-- Recherche principale -->
