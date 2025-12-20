@@ -1,0 +1,60 @@
+<!-- app/views/devise/sessions/new.html.erb -->
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="auth-header">
+      <div class="auth-icon">
+        <i class="fas fa-lock"></i>
+      </div>
+      <h2>Connexion</h2>
+      <p>Bienvenue ! Connectez-vous pour continuer</p>
+    </div>
+
+    <!-- Formulaire -->
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'auth-form' }) do |f| %>
+
+      <!-- Email -->
+      <div class="form-group">
+        <%= f.label :email, class: 'form-label' %>
+        <div class="input-icon-wrapper">
+          <i class="fas fa-envelope input-icon"></i>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control-auth', placeholder: 'votre@email.com' %>
+        </div>
+      </div>
+
+      <!-- Mot de passe -->
+      <div class="form-group">
+        <%= f.label :password, "Mot de passe", class: 'form-label' %>
+        <div class="input-icon-wrapper">
+          <i class="fas fa-key input-icon"></i>
+          <%= f.password_field :password, autocomplete: "current-password", class: 'form-control-auth', placeholder: '••••••••' %>
+        </div>
+      </div>
+
+      <!-- Remember me -->
+      <% if devise_mapping.rememberable? %>
+        <div class="form-check-wrapper">
+          <%= f.check_box :remember_me, class: 'form-check-input' %>
+          <%= f.label :remember_me, "Se souvenir de moi", class: 'form-check-label' %>
+        </div>
+      <% end %>
+
+      <!-- Bouton submit -->
+      <div class="form-actions">
+        <%= f.submit "Se connecter", class: 'btn-auth-primary' %>
+      </div>
+    <% end %>
+
+    <!-- Liens alternatifs -->
+    <div class="auth-links">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+
+  <!-- Décoration visuelle -->
+  <div class="auth-decoration">
+    <div class="decoration-circle circle-1"></div>
+    <div class="decoration-circle circle-2"></div>
+    <div class="decoration-circle circle-3"></div>
+  </div>
+</div>
