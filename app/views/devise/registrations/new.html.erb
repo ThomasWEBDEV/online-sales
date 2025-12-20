@@ -1,0 +1,67 @@
+<!-- app/views/devise/registrations/new.html.erb -->
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="auth-header">
+      <div class="auth-icon">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <h2>Inscription</h2>
+      <p>Créez votre compte en quelques secondes</p>
+    </div>
+
+    <!-- Formulaire -->
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'auth-form' }) do |f| %>
+
+      <!-- Messages d'erreur -->
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <!-- Email -->
+      <div class="form-group">
+        <%= f.label :email, class: 'form-label' %>
+        <div class="input-icon-wrapper">
+          <i class="fas fa-envelope input-icon"></i>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control-auth', placeholder: 'votre@email.com' %>
+        </div>
+      </div>
+
+      <!-- Mot de passe -->
+      <div class="form-group">
+        <%= f.label :password, "Mot de passe", class: 'form-label' %>
+        <% if @minimum_password_length %>
+          <span class="password-hint">(<%= @minimum_password_length %> caractères minimum)</span>
+        <% end %>
+        <div class="input-icon-wrapper">
+          <i class="fas fa-key input-icon"></i>
+          <%= f.password_field :password, autocomplete: "new-password", class: 'form-control-auth', placeholder: '••••••••' %>
+        </div>
+      </div>
+
+      <!-- Confirmation mot de passe -->
+      <div class="form-group">
+        <%= f.label :password_confirmation, "Confirmation", class: 'form-label' %>
+        <div class="input-icon-wrapper">
+          <i class="fas fa-check-circle input-icon"></i>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control-auth', placeholder: '••••••••' %>
+        </div>
+      </div>
+
+      <!-- Bouton submit -->
+      <div class="form-actions">
+        <%= f.submit "Créer mon compte", class: 'btn-auth-primary' %>
+      </div>
+    <% end %>
+
+    <!-- Liens alternatifs -->
+    <div class="auth-links">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+
+  <!-- Décoration visuelle -->
+  <div class="auth-decoration">
+    <div class="decoration-circle circle-1"></div>
+    <div class="decoration-circle circle-2"></div>
+    <div class="decoration-circle circle-3"></div>
+  </div>
+</div>
