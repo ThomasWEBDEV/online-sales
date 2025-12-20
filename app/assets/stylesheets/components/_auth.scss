@@ -360,3 +360,89 @@
     }
   }
 }
+
+// ===== PAGE D'ÉDITION PROFIL =====
+.auth-card-large {
+  max-width: 550px;
+}
+
+.form-text {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: $gray-medium;
+}
+
+.form-actions-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+
+  .btn-auth-primary {
+    flex: 1;
+  }
+
+  .btn-auth-secondary {
+    flex: 1;
+    padding: 16px;
+    background: $white;
+    color: $gray-dark;
+    border: 2px solid $gray-light;
+    border-radius: $radius-pill;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    transition: all $transition-base;
+
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+      background: rgba($primary, 0.05);
+    }
+  }
+}
+
+// Zone de suppression
+.danger-zone {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 2px solid $gray-lightest;
+
+  .danger-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: $danger;
+    margin-bottom: 12px;
+
+    i {
+      margin-right: 8px;
+    }
+  }
+
+  .danger-text {
+    font-size: 14px;
+    color: $gray-medium;
+    margin-bottom: 16px;
+  }
+
+  .btn-danger-delete {
+    width: 100%;
+    padding: 14px;
+    background: $white;
+    color: $danger;
+    border: 2px solid $danger;
+    border-radius: $radius-lg;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all $transition-base;
+
+    &:hover {
+      background: $danger;
+      color: $white;
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+    }
+  }
+}
