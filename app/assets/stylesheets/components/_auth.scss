@@ -1,0 +1,362 @@
+// app/assets/stylesheets/components/_auth.scss
+
+// ===== AUTHENTICATION PAGES - DESIGN MODERNE =====
+
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $accent 0%, $secondary 100%);
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-card {
+  background: $white;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-2xl;
+  padding: 50px 40px;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  z-index: 2;
+  animation: slideUp 0.6s ease-out;
+
+  @media (max-width: 576px) {
+    padding: 40px 30px;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ===== HEADER =====
+.auth-header {
+  text-align: center;
+  margin-bottom: 40px;
+
+  .auth-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, $primary 0%, $secondary 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: $shadow-lg;
+
+    i {
+      font-size: 32px;
+      color: $white;
+    }
+  }
+
+  h2 {
+    font-size: 28px;
+    font-weight: 900;
+    color: $accent;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 16px;
+    color: $gray-medium;
+    margin: 0;
+  }
+}
+
+// ===== FORMULAIRE =====
+.auth-form {
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .form-label {
+    display: block;
+    font-weight: 600;
+    color: $gray-darker;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .password-hint {
+    font-size: 12px;
+    color: $gray-medium;
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
+  .input-icon-wrapper {
+    position: relative;
+
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $gray-medium;
+      font-size: 16px;
+      transition: color $transition-fast;
+    }
+
+    .form-control-auth {
+      width: 100%;
+      padding: 14px 16px 14px 48px;
+      border: 2px solid $gray-light;
+      border-radius: $radius-lg;
+      font-size: 15px;
+      transition: all $transition-base;
+      background: $white;
+
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 4px rgba($primary, 0.1);
+
+        ~ .input-icon {
+          color: $primary;
+        }
+      }
+
+      &::placeholder {
+        color: $gray-medium;
+      }
+    }
+  }
+
+  // Remember me checkbox
+  .form-check-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .form-check-input {
+      width: 20px;
+      height: 20px;
+      border: 2px solid $gray-light;
+      border-radius: 6px;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: all $transition-fast;
+
+      &:checked {
+        background-color: $primary;
+        border-color: $primary;
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba($primary, 0.1);
+      }
+    }
+
+    .form-check-label {
+      font-size: 14px;
+      color: $gray-dark;
+      cursor: pointer;
+      margin: 0;
+    }
+  }
+
+  // Bouton principal
+  .form-actions {
+    margin-top: 32px;
+  }
+
+  .btn-auth-primary {
+    width: 100%;
+    padding: 16px;
+    background: $primary;
+    color: $accent;
+    border: none;
+    border-radius: $radius-pill;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all $transition-base;
+    box-shadow: $shadow-lg;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &:hover {
+      background: $primary-light;
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba($primary, 0.4);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// ===== LIENS PARTAGÉS =====
+.auth-links {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid $gray-lightest;
+}
+
+.auth-shared-links {
+  .link-item {
+    text-align: center;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .link-text {
+      font-size: 14px;
+      color: $gray-dark;
+      margin-right: 6px;
+    }
+
+    .link-action {
+      color: $primary;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color $transition-fast;
+
+      &:hover {
+        color: $secondary;
+        text-decoration: underline;
+      }
+    }
+
+    .link-forgot {
+      color: $gray-medium;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color $transition-fast;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+
+    .btn-oauth {
+      width: 100%;
+      padding: 12px;
+      background: $white;
+      border: 2px solid $gray-light;
+      border-radius: $radius-lg;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all $transition-base;
+
+      &:hover {
+        border-color: $primary;
+        background: rgba($primary, 0.05);
+      }
+    }
+  }
+}
+
+// ===== MESSAGES D'ERREUR =====
+.auth-errors {
+  background: rgba($danger, 0.1);
+  border: 2px solid $danger;
+  border-radius: $radius-lg;
+  padding: 20px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 16px;
+  animation: shake 0.4s ease;
+
+  .error-icon {
+    flex-shrink: 0;
+
+    i {
+      font-size: 24px;
+      color: $danger;
+    }
+  }
+
+  .error-content {
+    flex: 1;
+
+    .error-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: $danger;
+      margin: 0 0 12px 0;
+    }
+
+    .error-list {
+      margin: 0;
+      padding-left: 20px;
+
+      li {
+        font-size: 14px;
+        color: darken($danger, 10%);
+        margin-bottom: 6px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+// ===== DÉCORATION VISUELLE =====
+.auth-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+
+  .decoration-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba($primary, 0.1);
+    backdrop-filter: blur(40px);
+
+    &.circle-1 {
+      width: 400px;
+      height: 400px;
+      top: -200px;
+      right: -200px;
+      background: rgba($primary, 0.15);
+    }
+
+    &.circle-2 {
+      width: 300px;
+      height: 300px;
+      bottom: -150px;
+      left: -150px;
+      background: rgba($secondary, 0.1);
+    }
+
+    &.circle-3 {
+      width: 200px;
+      height: 200px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba($primary-light, 0.08);
+    }
+  }
+}
