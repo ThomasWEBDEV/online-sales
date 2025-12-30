@@ -4,21 +4,25 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_product, only: [:show, :edit, :update, :destroy, :favorite, :unfavorite]
 
+  # 🔒 SÉCURITÉ : Gestion des erreurs Pundit
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   def index
     @products = policy_scope(Product)
 
-    # Recherche
+    # 🔒 SÉCURITÉ : Sanitize search query pour éviter injection SQL
     if params[:query].present?
-      @products = @products.where("name ILIKE ? OR description ILIKE ?", "%#{params[:query]}%", "%#{params[:query]}%")
+      sanitized_query = ActiveRecord::Base.sanitize_sql_like(params[:query])
+      @products = @products.where("name ILIKE ? OR description ILIKE ?", "%#{sanitized_query}%", "%#{sanitized_query}%")
     end
 
-    # Filtres prix
-    if params[:min_price].present?
-      @products = @products.where("price >= ?", params[:min_price])
+    # Filtres prix avec validation
+    if params[:min_price].present? && params[:min_price].to_f >= 0
+      @products = @products.where("price >= ?", params[:min_price].to_f)
     end
 
-    if params[:max_price].present?
-      @products = @products.where("price <= ?", params[:max_price])
+    if params[:max_price].present? && params[:max_price].to_f >= 0
+      @products = @products.where("price <= ?", params[:max_price].to_f)
     end
 
     # Filtre statut
@@ -31,8 +35,11 @@ class ProductsController < ApplicationController
       end
     end
 
-    # Tri
-    case params[:sort]
+    # Tri (whitelist des valeurs autorisées)
+    allowed_sorts = %w[price_asc price_desc popular recent]
+    sort_param = allowed_sorts.include?(params[:sort]) ? params[:sort] : 'recent'
+
+    case sort_param
     when 'price_asc'
       @products = @products.order(price: :asc)
     when 'price_desc'
@@ -55,7 +62,8 @@ class ProductsController < ApplicationController
 
   def show
     authorize @product
-    @product.increment!(:views_count)
+    # 🔒 SÉCURITÉ : Utilise update_column pour éviter callbacks et validations
+    @product.update_column(:views_count, (@product.views_count || 0) + 1)
     @similar_products = find_similar_products(@product)
   end
 
@@ -67,6 +75,7 @@ class ProductsController < ApplicationController
   def create
     @product = current_user.products.new(product_params)
     authorize @product
+
     if @product.save
       redirect_to @product, notice: 'Produit créé avec succès.'
     else
@@ -80,6 +89,13 @@ class ProductsController < ApplicationController
 
   def update
     authorize @product
+
+    # 🔒 SÉCURITÉ : Empêcher la modification du user_id
+    if product_params[:user_id].present? && product_params[:user_id] != @product.user_id
+      redirect_to @product, alert: 'Action non autorisée.'
+      return
+    end
+
     if @product.update(product_params)
       redirect_to @product, notice: 'Produit mis à jour avec succès.'
     else
@@ -89,12 +105,20 @@ class ProductsController < ApplicationController
 
   def destroy
     authorize @product
+
+    # 🔒 SÉCURITÉ : Vérifier qu'il n'y a pas de commandes avant suppression
+    if @product.has_orders?
+      redirect_to @product, alert: 'Impossible de supprimer un produit avec des commandes.'
+      return
+    end
+
     @product.destroy
     redirect_to products_path, notice: 'Produit supprimé avec succès.'
   end
 
   def favorite
     @favorite = current_user.favorites.build(product: @product)
+
     if @favorite.save
       redirect_back(fallback_location: @product, notice: 'Produit ajouté aux favoris!')
     else
@@ -112,10 +136,19 @@ class ProductsController < ApplicationController
 
   def set_product
     @product = Product.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to products_path, alert: 'Produit introuvable.'
   end
 
+  # 🔒 SÉCURITÉ : Strong parameters - photos pluriel car has_many_attached
   def product_params
-    params.require(:product).permit(:name, :description, :price, :photo, :sold)
+    params.require(:product).permit(:name, :description, :price, :sold, photos: [])
+  end
+
+  # 🔒 SÉCURITÉ : Gestion erreur Pundit
+  def user_not_authorized
+    flash[:alert] = "Vous n'êtes pas autorisé à effectuer cette action."
+    redirect_back(fallback_location: root_path)
   end
 
   def find_similar_products(product)
