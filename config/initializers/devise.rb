@@ -50,10 +50,6 @@ Devise.setup do |config|
   # 🔒 SÉCURITÉ : Clés pour reset password
   config.reset_password_keys = [:email]
 
-  # ==> Configuration for :encryptable
-  # Utilise bcrypt (le plus sécurisé)
-  config.encryptor = :bcrypt
-
   # ==> Scopes configuration
   config.scoped_views = false
   config.default_scope = :user
@@ -83,7 +79,4 @@ Devise.setup do |config|
   # 🔒 SÉCURITÉ : Envoie notification si password changé
   config.send_password_change_notification = true
 
-  # ==> Configuration for session
-  # 🔒 SÉCURITÉ : Expire les sessions après sign out
-  config.expire_auth_token_on_timeout = true
 end
