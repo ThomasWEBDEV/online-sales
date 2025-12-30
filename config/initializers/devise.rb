@@ -12,7 +12,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 13
 
   # 🔒 SÉCURITÉ : Utilise un pepper pour ajouter une couche de sécurité
-  config.pepper = ENV.fetch('DEVISE_PEPPER') { Rails.application.credentials.devise_pepper }
+  # config.pepper = ENV.fetch('DEVISE_PEPPER') { Rails.application.credentials.devise_pepper }
 
   # ==> Configuration for :confirmable
   # Temps avant expiration du token de confirmation
