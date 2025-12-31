@@ -17,8 +17,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
 
   # Ensures that a master key has been made available in ENV["RAILS_MASTER_KEY"], config/master.key, or an environment
-  # key such as config/credentials/production.key. This key is used to decrypt credentials (and other encrypted files).
-  # config.require_master_key = true
+  # key such as config.require_master_key = true
 
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
   # config.public_file_server.enabled = false
@@ -50,6 +49,14 @@ Rails.application.configure do
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
+
+  # 🔒 SECURITY HEADERS
+  config.action_dispatch.default_headers = {
+    'X-Frame-Options' => 'SAMEORIGIN',
+    'X-Content-Type-Options' => 'nosniff',
+    'X-XSS-Protection' => '1; mode=block',
+    'Referrer-Policy' => 'strict-origin-when-cross-origin'
+  }
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
