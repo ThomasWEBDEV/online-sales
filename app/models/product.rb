@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  attr_accessor :skip_photo_validation
+
   belongs_to :user
   has_many :orders, dependent: :restrict_with_error
   has_many_attached :photos
@@ -12,8 +14,8 @@ class Product < ApplicationRecord
   }
   validates :user_id, presence: true
 
-  # 🔒 VALIDATION : Au moins une photo requise
-  validate :must_have_at_least_one_photo, on: :create, if: :new_record?
+  # 🔒 VALIDATION : Au moins une photo requise (sauf si skip activé)
+  validate :must_have_at_least_one_photo, on: :create, if: -> { new_record? && !skip_photo_validation }
 
   # 🔒 VALIDATION : Ne peut pas modifier un produit vendu
   validate :cannot_modify_if_sold, on: :update
@@ -51,7 +53,7 @@ class Product < ApplicationRecord
   private
 
   def must_have_at_least_one_photo
-    if new_record? && !photos.attached?
+    unless photos.attached?
       errors.add(:photos, "Au moins une photo est requise")
     end
   end
