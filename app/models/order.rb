@@ -4,12 +4,35 @@ class Order < ApplicationRecord
   belongs_to :seller, class_name: 'User'
   belongs_to :product
 
-  # Validations de base
-  validates :amount, presence: true, numericality: { greater_than: 0 }
-  validates :total_amount, presence: true, numericality: { greater_than: 0 }
+  # 🔒 VALIDATIONS STRICTES
+  validates :amount, presence: true, numericality: {
+    greater_than: 0,
+    less_than_or_equal_to: 1_000_000
+  }
+  validates :total_amount, presence: true, numericality: {
+    greater_than: 0,
+    less_than_or_equal_to: 1_000_000
+  }
+  validates :shipping_cost, numericality: {
+    greater_than_or_equal_to: 0,
+    less_than_or_equal_to: 10_000,
+    allow_nil: true
+  }
   validates :status, presence: true, inclusion: {
     in: %w[pending paid processing shipped delivered cancelled refunded]
   }
+
+  # 🔒 VALIDATION : Buyer et Seller doivent être différents
+  validate :buyer_and_seller_must_be_different
+
+  # 🔒 VALIDATION : Produit ne peut pas déjà être vendu
+  validate :product_must_be_available, on: :create
+
+  # 🔒 VALIDATION : Montant doit correspondre au prix du produit
+  validate :amount_matches_product_price, on: :create
+
+  # 🔒 VALIDATION : Changement de statut cohérent
+  validate :status_transition_is_valid, on: :update, if: :status_changed?
 
   # Scopes
   scope :pending, -> { where(status: 'pending') }
@@ -75,12 +98,10 @@ class Order < ApplicationRecord
     transaction do
       update!(status: 'cancelled')
       product.update!(sold: false) if product.sold?
-      
       # Si déjà payé, initier un remboursement
       initiate_refund if paid?
     end
-    
-    true # IMPORTANT: Retourner true pour indiquer le succès
+    true
   rescue => e
     Rails.logger.error "Erreur annulation: #{e.message}"
     false
@@ -133,5 +154,46 @@ class Order < ApplicationRecord
     update!(status: 'refunded')
   rescue Stripe::StripeError => e
     Rails.logger.error "Refund failed: #{e.message}"
+  end
+
+  # 🔒 SÉCURITÉ : Empêcher qu'un user achète son propre produit
+  def buyer_and_seller_must_be_different
+    if buyer_id == seller_id
+      errors.add(:base, "Vous ne pouvez pas acheter votre propre produit")
+    end
+  end
+
+  # 🔒 SÉCURITÉ : Vérifier que le produit est disponible
+  def product_must_be_available
+    if product&.sold?
+      errors.add(:product, "n'est plus disponible à la vente")
+    end
+  end
+
+  # 🔒 SÉCURITÉ : Vérifier que le montant correspond au prix
+  def amount_matches_product_price
+    if product && amount != product.price
+      errors.add(:amount, "ne correspond pas au prix du produit")
+    end
+  end
+
+  # 🔒 SÉCURITÉ : Transitions de statut cohérentes
+  def status_transition_is_valid
+    valid_transitions = {
+      'pending' => %w[paid cancelled],
+      'paid' => %w[processing cancelled refunded],
+      'processing' => %w[shipped cancelled],
+      'shipped' => %w[delivered],
+      'delivered' => [],
+      'cancelled' => [],
+      'refunded' => []
+    }
+
+    old_status = status_was
+    new_status = status
+
+    if old_status && !valid_transitions[old_status]&.include?(new_status)
+      errors.add(:status, "transition invalide de #{old_status} vers #{new_status}")
+    end
   end
 end
