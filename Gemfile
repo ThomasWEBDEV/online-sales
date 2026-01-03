@@ -35,6 +35,8 @@ gem "sassc-rails"
 
 gem "stripe"
 
+gem "rack-attack"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
