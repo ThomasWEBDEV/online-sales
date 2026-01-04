@@ -58,6 +58,13 @@ Rails.application.configure do
     'Referrer-Policy' => 'strict-origin-when-cross-origin'
   }
 
+  # 🔒 SECURE COOKIES
+  config.session_store :cookie_store,
+    key: '_vente_en_ligne_session',
+    secure: true,           # Envoyer uniquement via HTTPS
+    httponly: true,         # Empêcher l'accès JavaScript (anti XSS)
+    same_site: :lax         # Protection CSRF
+
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
     .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
