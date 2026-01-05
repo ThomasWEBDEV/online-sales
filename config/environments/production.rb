@@ -58,6 +58,28 @@ Rails.application.configure do
     'Referrer-Policy' => 'strict-origin-when-cross-origin'
   }
 
+  # 🔒 CONTENT SECURITY POLICY (CSP)
+  config.content_security_policy do |policy|
+    policy.default_src :self, :https
+    policy.font_src    :self, :https, :data, 'https://cdnjs.cloudflare.com'
+    policy.img_src     :self, :https, :data, :blob, 'https://res.cloudinary.com'
+    policy.object_src  :none
+    policy.script_src  :self, :https, 'https://js.stripe.com', 'https://cdnjs.cloudflare.com'
+    policy.style_src   :self, :https, :unsafe_inline, 'https://cdnjs.cloudflare.com'
+    policy.connect_src :self, :https, 'https://api.stripe.com'
+    policy.frame_src   'https://js.stripe.com', 'https://hooks.stripe.com'
+
+    # Specify URI for violation reports (optional)
+    # policy.report_uri "/csp-violation-report-endpoint"
+  end
+
+  # Generate session nonces for permitted importmap and inline scripts
+  config.content_security_policy_nonce_generator = ->(request) { request.session.id.to_s }
+  config.content_security_policy_nonce_directives = %w[script-src]
+
+  # Report violations without enforcing policy (use for testing)
+  # config.content_security_policy_report_only = true
+
   # 🔒 SECURE COOKIES
   config.session_store :cookie_store,
     key: '_vente_en_ligne_session',
