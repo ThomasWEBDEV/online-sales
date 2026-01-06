@@ -123,11 +123,13 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  # 🔒 PROTECTION DNS REBINDING : Autoriser uniquement les domaines légitimes
+  config.hosts = [
+    "vente-en-ligne-thomas-33c780989c1d.herokuapp.com",  # Heroku
+    "innovaition.cloud",                                  # Domaine principal
+    /.*\.innovaition\.cloud/                              # Sous-domaines
+  ]
+
+  # Exclure le health check de la protection
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
