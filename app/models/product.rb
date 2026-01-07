@@ -1,3 +1,4 @@
+
 class Product < ApplicationRecord
   attr_accessor :skip_photo_validation
 
@@ -16,6 +17,11 @@ class Product < ApplicationRecord
 
   # 🔒 VALIDATION : Au moins une photo requise (sauf si skip activé)
   validate :must_have_at_least_one_photo, on: :create, if: -> { new_record? && !skip_photo_validation }
+
+  # 🔒 VALIDATION : Taille et type des fichiers uploadés
+  validate :validate_photo_size
+  validate :validate_photo_content_type
+  validate :validate_photos_count
 
   # 🔒 VALIDATION : Ne peut pas modifier un produit vendu
   validate :cannot_modify_if_sold, on: :update
@@ -55,6 +61,33 @@ class Product < ApplicationRecord
   def must_have_at_least_one_photo
     unless photos.attached?
       errors.add(:photos, "Au moins une photo est requise")
+    end
+  end
+
+  # 🔒 SÉCURITÉ : Valider la taille des photos (max 5 MB par photo)
+  def validate_photo_size
+    photos.each do |photo|
+      if photo.blob&.byte_size && photo.blob.byte_size > 5.megabytes
+        errors.add(:photos, "La taille de #{photo.filename} dépasse 5 MB")
+      end
+    end
+  end
+
+  # 🔒 SÉCURITÉ : Valider le type de contenu (images uniquement)
+  def validate_photo_content_type
+    acceptable_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
+
+    photos.each do |photo|
+      unless photo.blob&.content_type.in?(acceptable_types)
+        errors.add(:photos, "#{photo.filename} doit être une image (JPEG, PNG, GIF, WebP)")
+      end
+    end
+  end
+
+  # 🔒 SÉCURITÉ : Limiter le nombre de photos (max 10)
+  def validate_photos_count
+    if photos.length > 10
+      errors.add(:photos, "Vous ne pouvez pas uploader plus de 10 photos")
     end
   end
 
