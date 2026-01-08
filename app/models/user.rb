@@ -4,6 +4,19 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # 🔒 VALIDATIONS STRICTES EMAIL
+  validates :email,
+    presence: true,
+    length: { maximum: 255 },
+    format: {
+      with: /\A[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\z/,
+      message: "doit être une adresse email valide"
+    },
+    uniqueness: { case_sensitive: false }
+
+  # 🔒 NORMALISATION EMAIL : Conversion en minuscules et suppression espaces
+  before_validation :normalize_email
+
   # Associations produits
   has_many :products, dependent: :destroy
 
@@ -65,5 +78,12 @@ class User < ApplicationRecord
   # Vérifier si l'utilisateur a acheté un produit
   def purchased?(product)
     purchases.paid.exists?(product: product)
+  end
+
+  private
+
+  # 🔒 SÉCURITÉ : Normaliser l'email (minuscules et trim)
+  def normalize_email
+    self.email = email.to_s.downcase.strip if email.present?
   end
 end
