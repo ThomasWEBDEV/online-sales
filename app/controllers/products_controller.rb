@@ -77,8 +77,14 @@ class ProductsController < ApplicationController
     authorize @product
 
     if @product.save
+      # 📊 AUDIT LOG : Création de produit
+      Rails.logger.info "[AUDIT] Product created - ID: #{@product.id}, User: #{current_user.id} (#{current_user.email}), Name: '#{@product.name}', Price: #{@product.price}€, IP: #{request.remote_ip}"
+
       redirect_to @product, notice: 'Produit créé avec succès.'
     else
+      # ⚠️ AUDIT LOG : Échec création
+      Rails.logger.warn "[AUDIT] Product creation failed - User: #{current_user.id} (#{current_user.email}), Errors: #{@product.errors.full_messages.join(', ')}, IP: #{request.remote_ip}"
+
       render :new, status: :unprocessable_entity
     end
   end
@@ -92,11 +98,25 @@ class ProductsController < ApplicationController
 
     # 🔒 SÉCURITÉ : Empêcher la modification du user_id
     if product_params[:user_id].present? && product_params[:user_id] != @product.user_id
+      # 🚨 AUDIT LOG : Tentative modification user_id
+      Rails.logger.error "[SECURITY] Unauthorized user_id modification attempt - Product: #{@product.id}, User: #{current_user.id} (#{current_user.email}), IP: #{request.remote_ip}"
+
       redirect_to @product, alert: 'Action non autorisée.'
       return
     end
 
+    # Sauvegarder les anciennes valeurs pour le log
+    old_price = @product.price
+    old_name = @product.name
+
     if @product.update(product_params)
+      # 📊 AUDIT LOG : Mise à jour produit
+      changes = []
+      changes << "Price: #{old_price}€ → #{@product.price}€" if old_price != @product.price
+      changes << "Name: '#{old_name}' → '#{@product.name}'" if old_name != @product.name
+
+      Rails.logger.info "[AUDIT] Product updated - ID: #{@product.id}, User: #{current_user.id} (#{current_user.email}), Changes: #{changes.join(', ')}, IP: #{request.remote_ip}"
+
       redirect_to @product, notice: 'Produit mis à jour avec succès.'
     else
       render :edit, status: :unprocessable_entity
@@ -108,11 +128,23 @@ class ProductsController < ApplicationController
 
     # 🔒 SÉCURITÉ : Vérifier qu'il n'y a pas de commandes avant suppression
     if @product.has_orders?
+      # ⚠️ AUDIT LOG : Tentative suppression produit avec commandes
+      Rails.logger.warn "[AUDIT] Product deletion blocked (has orders) - Product: #{@product.id}, User: #{current_user.id} (#{current_user.email}), IP: #{request.remote_ip}"
+
       redirect_to @product, alert: 'Impossible de supprimer un produit avec des commandes.'
       return
     end
 
+    # Sauvegarder les infos avant destruction
+    product_id = @product.id
+    product_name = @product.name
+    product_price = @product.price
+
     @product.destroy
+
+    # 📊 AUDIT LOG : Suppression produit
+    Rails.logger.info "[AUDIT] Product deleted - ID: #{product_id}, Name: '#{product_name}', Price: #{product_price}€, User: #{current_user.id} (#{current_user.email}), IP: #{request.remote_ip}"
+
     redirect_to products_path, notice: 'Produit supprimé avec succès.'
   end
 
@@ -147,6 +179,9 @@ class ProductsController < ApplicationController
 
   # 🔒 SÉCURITÉ : Gestion erreur Pundit
   def user_not_authorized
+    # 🚨 AUDIT LOG : Tentative accès non autorisé
+    Rails.logger.warn "[SECURITY] Unauthorized access attempt - User: #{current_user&.id || 'Guest'} (#{current_user&.email || 'N/A'}), Action: #{action_name}, Product: #{@product&.id}, IP: #{request.remote_ip}"
+
     flash[:alert] = "Vous n'êtes pas autorisé à effectuer cette action."
     redirect_back(fallback_location: root_path)
   end
