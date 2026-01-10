@@ -6,19 +6,34 @@ class WebhooksController < ApplicationController
     sig_header = request.env['HTTP_STRIPE_SIGNATURE']
     endpoint_secret = ENV['STRIPE_WEBHOOK_SECRET']
 
+    # 🔒 SÉCURITÉ : Vérifier que le secret existe
+    unless endpoint_secret.present?
+      Rails.logger.error "[SECURITY] STRIPE_WEBHOOK_SECRET not configured!"
+      render json: { error: 'Server configuration error' }, status: 500
+      return
+    end
+
+    # 🔒 SÉCURITÉ : Log de la tentative de webhook
+    Rails.logger.info "[WEBHOOK] Stripe webhook received - IP: #{request.remote_ip}, Event: pending verification"
+
     begin
       event = Stripe::Webhook.construct_event(
         payload, sig_header, endpoint_secret
       )
     rescue JSON::ParserError => e
-      Rails.logger.error "❌ Webhook JSON error: #{e.message}"
+      # 🚨 AUDIT LOG : Payload JSON invalide
+      Rails.logger.error "[SECURITY] Webhook JSON error - IP: #{request.remote_ip}, Error: #{e.message}"
       render json: { error: 'Invalid payload' }, status: 400
       return
     rescue Stripe::SignatureVerificationError => e
-      Rails.logger.error "❌ Webhook signature error: #{e.message}"
+      # 🚨 AUDIT LOG : Signature invalide (potentielle attaque)
+      Rails.logger.error "[SECURITY] Webhook signature verification FAILED - IP: #{request.remote_ip}, Error: #{e.message}"
       render json: { error: 'Invalid signature' }, status: 400
       return
     end
+
+    # ✅ AUDIT LOG : Webhook vérifié avec succès
+    Rails.logger.info "[WEBHOOK] Signature verified - Event ID: #{event['id']}, Type: #{event['type']}, IP: #{request.remote_ip}"
 
     begin
       case event['type']
@@ -44,32 +59,40 @@ class WebhooksController < ApplicationController
 
   def handle_checkout_session_completed(event)
     session = event['data']['object']
-    
+
     Rails.logger.info "🔔 Processing checkout.session.completed"
     Rails.logger.info "Session ID: #{session['id']}"
-    
+
     order_id = session['metadata']['order_id']
 
     unless order_id
-      Rails.logger.error "❌ No order_id in session metadata"
+      # 🚨 AUDIT LOG : Metadata manquante (suspect)
+      Rails.logger.error "[SECURITY] No order_id in session metadata - Session: #{session['id']}, IP: #{request.remote_ip}"
       Rails.logger.error "Session metadata: #{session['metadata'].inspect}"
       return
     end
 
     Rails.logger.info "📦 Looking for Order ##{order_id}"
-    
+
     order = Order.find_by(id: order_id)
-    
+
     unless order
-      Rails.logger.error "❌ Order ##{order_id} not found in database"
+      # 🚨 AUDIT LOG : Order introuvable (potentielle manipulation)
+      Rails.logger.error "[SECURITY] Order ##{order_id} not found - Session: #{session['id']}, IP: #{request.remote_ip}"
+      return
+    end
+
+    # 🔒 SÉCURITÉ : Vérifier que la commande n'est pas déjà payée (protection double paiement)
+    if order.status == 'paid'
+      Rails.logger.warn "[SECURITY] Duplicate webhook detected - Order ##{order.id} already paid, Session: #{session['id']}, IP: #{request.remote_ip}"
       return
     end
 
     shipping_details = session['collected_information'] ? session['collected_information']['shipping_details'] : nil
     customer_details = session['customer_details']
-    
+
     address = shipping_details ? shipping_details['address'] : (customer_details ? customer_details['address'] : {})
-    
+
     Rails.logger.info "📍 Address data: #{address.inspect}"
 
     shipping_data = {
@@ -88,9 +111,12 @@ class WebhooksController < ApplicationController
 
     if order.update(shipping_data)
       if order.product.update(sold: true)
+        # 📊 AUDIT LOG : Paiement validé avec succès
+        Rails.logger.info "[AUDIT] Payment validated - Order ##{order.id}, Product ##{order.product.id}, Buyer: #{order.buyer.email}, Amount: #{order.total_amount}€, Session: #{session['id']}"
+
         Rails.logger.info "✅ Order ##{order.id} marked as PAID"
         Rails.logger.info "✅ Product ##{order.product.id} marked as SOLD"
-        
+
         # 📧 ENVOI DES EMAILS
         begin
           OrderMailer.purchase_confirmation(order).deliver_later
@@ -115,14 +141,18 @@ class WebhooksController < ApplicationController
 
   def handle_payment_failed(event)
     payment_intent = event['data']['object']
-    Rails.logger.warn "⚠️ Payment failed for PaymentIntent: #{payment_intent['id']}"
-    
+
+    # ⚠️ AUDIT LOG : Paiement échoué
+    Rails.logger.warn "[AUDIT] Payment failed - PaymentIntent: #{payment_intent['id']}, IP: #{request.remote_ip}"
+
     order = Order.find_by(stripe_payment_intent_id: payment_intent['id'])
 
     if order
       order.update(status: 'cancelled')
       order.product.update(sold: false)
-      Rails.logger.error "❌ Payment failed for Order ##{order.id} - Order cancelled"
+
+      # 📊 AUDIT LOG : Commande annulée suite échec paiement
+      Rails.logger.error "[AUDIT] Order cancelled due to payment failure - Order ##{order.id}, Buyer: #{order.buyer.email}, Amount: #{order.total_amount}€"
     end
   end
 end
