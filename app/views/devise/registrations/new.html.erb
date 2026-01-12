@@ -15,6 +15,11 @@
       <!-- Messages d'erreur -->
       <%= render "devise/shared/error_messages", resource: resource %>
 
+      <!-- 🔒 HONEYPOT : Champ invisible anti-bot (NE PAS SUPPRIMER) -->
+      <div style="position: absolute; left: -5000px;" aria-hidden="true">
+        <%= f.text_field :website, tabindex: "-1", autocomplete: "off", placeholder: "Leave this field blank" %>
+      </div>
+
       <!-- Email -->
       <div class="form-group">
         <%= f.label :email, class: 'form-label' %>
