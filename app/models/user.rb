@@ -1,10 +1,12 @@
 class User < ApplicationRecord
+  attr_accessor :website  # Honeypot anti-bot (champ virtuel)
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
        :recoverable, :rememberable, :validatable, :timeoutable
 
-  # 🔒 VALIDATIONS STRICTES EMAIL
+  # VALIDATIONS STRICTES EMAIL
   validates :email,
     presence: true,
     length: { maximum: 255 },
@@ -14,7 +16,7 @@ class User < ApplicationRecord
     },
     uniqueness: { case_sensitive: false }
 
-  # 🔒 NORMALISATION EMAIL : Conversion en minuscules et suppression espaces
+  # NORMALISATION EMAIL : Conversion en minuscules et suppression espaces
   before_validation :normalize_email
 
   # Associations produits
