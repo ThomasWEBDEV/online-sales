@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_11_143029) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_15_150737) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -83,18 +83,22 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_11_143029) do
     t.index ["seller_id"], name: "index_orders_on_seller_id"
     t.index ["status"], name: "index_orders_on_status"
     t.index ["stripe_session_id"], name: "index_orders_on_stripe_session_id", unique: true
+    t.check_constraint "amount <= 1000000::numeric", name: "check_orders_amount_max"
+    t.check_constraint "amount > 0::numeric", name: "check_orders_amount_positive"
   end
 
   create_table "products", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.decimal "price"
+    t.string "name", null: false
+    t.text "description", null: false
+    t.decimal "price", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "views_count", default: 0
     t.boolean "sold"
     t.index ["user_id"], name: "index_products_on_user_id"
+    t.check_constraint "price <= 1000000::numeric", name: "check_products_price_max"
+    t.check_constraint "price > 0::numeric", name: "check_products_price_positive"
   end
 
   create_table "users", force: :cascade do |t|
@@ -105,8 +109,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_11_143029) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
+    t.index "lower((email)::text)", name: "index_users_on_lower_email", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
