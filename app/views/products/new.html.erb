@@ -29,8 +29,9 @@
   </div>
 
   <div class="mb-3">
-    <%= form.label :photo, "Photo du produit", class: "form-label" %>
-    <%= form.file_field :photo, class: "form-control" %>
+    <%= form.label :photos, "Photos du produit (max 10)", class: "form-label" %>
+    <%= form.file_field :photos, multiple: true, accept: "image/*", class: "form-control" %>
+    <small class="form-text text-muted">Formats acceptés : JPEG, PNG, GIF, WebP - Max 5 MB par photo</small>
   </div>
 
   <%= form.submit "Mettre en vente", class: "btn btn-flat" %>
