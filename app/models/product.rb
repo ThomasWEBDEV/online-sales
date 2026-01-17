@@ -1,4 +1,3 @@
-
 class Product < ApplicationRecord
   attr_accessor :skip_photo_validation
 
@@ -6,7 +5,7 @@ class Product < ApplicationRecord
   has_many :orders, dependent: :restrict_with_error
   has_many_attached :photos
 
-  # 🔒 VALIDATIONS STRICTES
+  # VALIDATIONS STRICTES
   validates :name, presence: true, length: { minimum: 2, maximum: 100 }
   validates :description, presence: true, length: { minimum: 10, maximum: 1000 }
   validates :price, presence: true, numericality: {
@@ -15,15 +14,15 @@ class Product < ApplicationRecord
   }
   validates :user_id, presence: true
 
-  # 🔒 VALIDATION : Au moins une photo requise (sauf si skip activé)
+  # VALIDATION : Au moins une photo requise (sauf si skip activé)
   validate :must_have_at_least_one_photo, on: :create, if: -> { new_record? && !skip_photo_validation }
 
-  # 🔒 VALIDATION : Taille et type des fichiers uploadés
+  # VALIDATION : Taille et type des fichiers uploadés
   validate :validate_photo_size
   validate :validate_photo_content_type
   validate :validate_photos_count
 
-  # 🔒 VALIDATION : Ne peut pas modifier un produit vendu
+  # VALIDATION : Ne peut pas modifier un produit vendu
   validate :cannot_modify_if_sold, on: :update
 
   # Scopes
@@ -64,7 +63,7 @@ class Product < ApplicationRecord
     end
   end
 
-  # 🔒 SÉCURITÉ : Valider la taille des photos (max 5 MB par photo)
+  # SÉCURITÉ : Valider la taille des photos (max 5 MB par photo)
   def validate_photo_size
     photos.each do |photo|
       if photo.blob&.byte_size && photo.blob.byte_size > 5.megabytes
@@ -73,7 +72,7 @@ class Product < ApplicationRecord
     end
   end
 
-  # 🔒 SÉCURITÉ : Valider le type de contenu (images uniquement)
+  # SÉCURITÉ : Valider le type de contenu (images uniquement)
   def validate_photo_content_type
     acceptable_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
 
@@ -84,14 +83,54 @@ class Product < ApplicationRecord
     end
   end
 
-  # 🔒 SÉCURITÉ : Limiter le nombre de photos (max 10)
+  # SÉCURITÉ : Valider le contenu RÉEL du fichier (magic bytes)
+# SÉCURITÉ : Valider le contenu RÉEL du fichier (magic bytes)
+def validate_photo_actual_content
+  photos.each do |photo|
+    next unless photo.blob
+
+    begin
+      # Télécharger temporairement le fichier pour lire les magic bytes
+      photo.blob.download do |file_content|
+        # Lire les premiers octets du fichier
+        magic_bytes = file_content[0, 12]
+
+        # DEBUG : Logger les magic bytes
+        Rails.logger.info "[DEBUG] File: #{photo.filename}, Magic bytes: #{magic_bytes.bytes.map { |b| '%02X' % b }.join(' ')}"
+
+        # Signatures de fichiers images valides (magic bytes)
+        valid_signatures = [
+          "\xFF\xD8\xFF".force_encoding('ASCII-8BIT'),                    # JPEG
+          "\x89PNG\r\n\x1A\n".force_encoding('ASCII-8BIT'),               # PNG
+          "GIF87a".force_encoding('ASCII-8BIT'),                          # GIF
+          "GIF89a".force_encoding('ASCII-8BIT'),                          # GIF
+          "RIFF".force_encoding('ASCII-8BIT')                             # WebP (commence par RIFF)
+        ]
+
+        is_valid = valid_signatures.any? { |sig| magic_bytes.start_with?(sig) }
+
+        unless is_valid
+          # AUDIT LOG : Tentative upload fichier malveillant
+          Rails.logger.error "[SECURITY] Malicious file upload attempt - Filename: #{photo.filename}, Content-Type: #{photo.blob.content_type}, User: #{user&.id}"
+
+          errors.add(:photos, "#{photo.filename} n'est pas une image valide")
+        end
+      end
+    rescue => e
+      Rails.logger.error "[SECURITY] File validation error - #{e.message}"
+      errors.add(:photos, "Erreur lors de la validation de #{photo.filename}")
+    end
+  end
+end
+
+  # SÉCURITÉ : Limiter le nombre de photos (max 10)
   def validate_photos_count
     if photos.length > 10
       errors.add(:photos, "Vous ne pouvez pas uploader plus de 10 photos")
     end
   end
 
-  # 🔒 SÉCURITÉ : Empêcher la modification d'un produit vendu
+  # SÉCURITÉ : Empêcher la modification d'un produit vendu
   def cannot_modify_if_sold
     if sold_was && (name_changed? || price_changed? || description_changed?)
       errors.add(:base, "Impossible de modifier un produit vendu")
