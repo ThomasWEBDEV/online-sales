@@ -42,6 +42,12 @@ class Order < ApplicationRecord
   # VALIDATION : Changement de statut cohérent
   validate :status_transition_is_valid, on: :update, if: :status_changed?
 
+  # VALIDATIONS : Adresse de livraison requise si payé
+  validates :shipping_name, presence: true, if: :paid?
+  validates :shipping_address_line1, presence: true, if: :paid?
+  validates :shipping_city, presence: true, if: :paid?
+  validates :shipping_postal_code, presence: true, if: :paid?
+
   # Scopes
   scope :pending, -> { where(status: 'pending') }
   scope :paid, -> { where(status: 'paid') }
