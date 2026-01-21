@@ -4,6 +4,9 @@ class Order < ApplicationRecord
   belongs_to :seller, class_name: 'User'
   belongs_to :product
 
+  # Constantes pour statuts
+  STATUSES = %w[pending paid processing shipped delivered cancelled refunded].freeze
+
   # VALIDATIONS STRICTES
   validates :amount, presence: true, numericality: {
     greater_than: 0,
@@ -18,9 +21,7 @@ class Order < ApplicationRecord
     less_than_or_equal_to: 10_000,
     allow_nil: true
   }
-  validates :status, presence: true, inclusion: {
-    in: %w[pending paid processing shipped delivered cancelled refunded]
-  }
+  validates :status, presence: true, inclusion: { in: STATUSES }
 
   # VALIDATION : Format téléphone
   validates :shipping_phone, format: {
