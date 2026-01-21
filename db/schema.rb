@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_15_150737) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_21_183912) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -77,11 +77,14 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_15_150737) do
     t.text "seller_notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["buyer_id", "status"], name: "index_orders_on_buyer_id_and_status"
     t.index ["buyer_id"], name: "index_orders_on_buyer_id"
     t.index ["created_at"], name: "index_orders_on_created_at"
     t.index ["product_id"], name: "index_orders_on_product_id"
+    t.index ["seller_id", "status"], name: "index_orders_on_seller_id_and_status"
     t.index ["seller_id"], name: "index_orders_on_seller_id"
     t.index ["status"], name: "index_orders_on_status"
+    t.index ["stripe_payment_intent_id"], name: "index_orders_on_stripe_payment_intent_id", unique: true
     t.index ["stripe_session_id"], name: "index_orders_on_stripe_session_id", unique: true
     t.check_constraint "amount <= 1000000::numeric", name: "check_orders_amount_max"
     t.check_constraint "amount > 0::numeric", name: "check_orders_amount_positive"
@@ -96,6 +99,10 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_15_150737) do
     t.datetime "updated_at", null: false
     t.integer "views_count", default: 0
     t.boolean "sold"
+    t.index ["created_at"], name: "index_products_on_created_at"
+    t.index ["price"], name: "index_products_on_price"
+    t.index ["sold"], name: "index_products_on_sold"
+    t.index ["user_id", "sold"], name: "index_products_on_user_id_and_sold"
     t.index ["user_id"], name: "index_products_on_user_id"
     t.check_constraint "price <= 1000000::numeric", name: "check_products_price_max"
     t.check_constraint "price > 0::numeric", name: "check_products_price_positive"
