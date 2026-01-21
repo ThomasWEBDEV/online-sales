@@ -5,3 +5,7 @@ Rails.configuration.stripe = {
 }
 
 Stripe.api_key = Rails.configuration.stripe[:secret_key]
+
+# Timeouts pour éviter blocage si Stripe ne répond pas
+Stripe.open_timeout = 10  # secondes pour établir connexion
+Stripe.read_timeout = 30  # secondes pour lire réponse
