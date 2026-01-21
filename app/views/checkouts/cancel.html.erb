@@ -1,0 +1,32 @@
+<div class="container my-5 text-center">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-body p-5">
+          <div class="mb-4">
+            <i class="fas fa-times-circle text-warning" style="font-size: 80px;"></i>
+          </div>
+
+          <h1 class="mb-3">Paiement annulé</h1>
+
+          <p class="lead mb-4">
+            Votre paiement a été annulé. Aucun montant n'a été débité.
+          </p>
+
+          <div class="alert alert-info mb-4">
+            <i class="fas fa-info-circle me-2"></i>
+            Le produit reste disponible et vous pouvez réessayer votre achat.
+          </div>
+
+          <div class="d-grid gap-2">
+            <% if session[:attempted_product_id] %>
+              <%= link_to "Retour au produit", product_path(session[:attempted_product_id]), class: "btn btn-flat btn-lg" %>
+            <% end %>
+            <%= link_to "Continuer mes achats", products_path, class: "btn btn-outline-primary btn-lg" %>
+            <%= link_to "Retour à l'accueil", root_path, class: "btn btn-ghost btn-lg" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
