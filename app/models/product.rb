@@ -7,7 +7,7 @@ class Product < ApplicationRecord
 
   # VALIDATIONS STRICTES
   validates :name, presence: true, length: { minimum: 2, maximum: 100 }
-  validates :description, presence: true, length: { minimum: 10, maximum: 1000 }
+  validates :description, presence: true, length: { minimum: 10, maximum: 2000 }
   validates :price, presence: true, numericality: {
     greater_than: 0,
     less_than_or_equal_to: 1_000_000
