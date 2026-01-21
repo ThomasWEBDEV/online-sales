@@ -43,10 +43,10 @@ class Order < ApplicationRecord
   validate :status_transition_is_valid, on: :update, if: :status_changed?
 
   # VALIDATIONS : Adresse de livraison requise si payé
-  validates :shipping_name, presence: true, if: :paid?
-  validates :shipping_address_line1, presence: true, if: :paid?
-  validates :shipping_city, presence: true, if: :paid?
-  validates :shipping_postal_code, presence: true, if: :paid?
+  validates :shipping_name, presence: true, length: { maximum: 100 }, if: :paid?
+  validates :shipping_address_line1, presence: true, length: { maximum: 200 }, if: :paid?
+  validates :shipping_city, presence: true, length: { maximum: 100 }, if: :paid?
+  validates :shipping_postal_code, presence: true, length: { maximum: 20 }, if: :paid?
 
   # Scopes
   scope :pending, -> { where(status: 'pending') }
