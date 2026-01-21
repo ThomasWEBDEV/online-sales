@@ -4,7 +4,7 @@ class Order < ApplicationRecord
   belongs_to :seller, class_name: 'User'
   belongs_to :product
 
-  # 🔒 VALIDATIONS STRICTES
+  # VALIDATIONS STRICTES
   validates :amount, presence: true, numericality: {
     greater_than: 0,
     less_than_or_equal_to: 1_000_000
@@ -22,16 +22,23 @@ class Order < ApplicationRecord
     in: %w[pending paid processing shipped delivered cancelled refunded]
   }
 
-  # 🔒 VALIDATION : Buyer et Seller doivent être différents
+  # VALIDATION : Format téléphone
+  validates :shipping_phone, format: {
+    with: /\A(\+?\d{1,3}[\s.-]?)?\(?\d{1,4}\)?[\s.-]?\d{1,4}[\s.-]?\d{1,9}\z/,
+    message: "doit être un numéro de téléphone valide",
+    allow_blank: true
+  }
+
+  # VALIDATION : Buyer et Seller doivent être différents
   validate :buyer_and_seller_must_be_different
 
-  # 🔒 VALIDATION : Produit ne peut pas déjà être vendu
+  # VALIDATION : Produit ne peut pas déjà être vendu
   validate :product_must_be_available, on: :create
 
-  # 🔒 VALIDATION : Montant doit correspondre au prix du produit
+  # VALIDATION : Montant doit correspondre au prix du produit
   validate :amount_matches_product_price, on: :create
 
-  # 🔒 VALIDATION : Changement de statut cohérent
+  # VALIDATION : Changement de statut cohérent
   validate :status_transition_is_valid, on: :update, if: :status_changed?
 
   # Scopes
@@ -156,28 +163,28 @@ class Order < ApplicationRecord
     Rails.logger.error "Refund failed: #{e.message}"
   end
 
-  # 🔒 SÉCURITÉ : Empêcher qu'un user achète son propre produit
+  # SÉCURITÉ : Empêcher qu'un user achète son propre produit
   def buyer_and_seller_must_be_different
     if buyer_id == seller_id
       errors.add(:base, "Vous ne pouvez pas acheter votre propre produit")
     end
   end
 
-  # 🔒 SÉCURITÉ : Vérifier que le produit est disponible
+  # SÉCURITÉ : Vérifier que le produit est disponible
   def product_must_be_available
     if product&.sold?
       errors.add(:product, "n'est plus disponible à la vente")
     end
   end
 
-  # 🔒 SÉCURITÉ : Vérifier que le montant correspond au prix
+  # SÉCURITÉ : Vérifier que le montant correspond au prix
   def amount_matches_product_price
     if product && amount != product.price
       errors.add(:amount, "ne correspond pas au prix du produit")
     end
   end
 
-  # 🔒 SÉCURITÉ : Transitions de statut cohérentes
+  # SÉCURITÉ : Transitions de statut cohérentes
   def status_transition_is_valid
     valid_transitions = {
       'pending' => %w[paid cancelled],
