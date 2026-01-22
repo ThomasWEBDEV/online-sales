@@ -50,15 +50,16 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
 
-  # 🔒 SECURITY HEADERS
+  # SECURITY HEADERS
   config.action_dispatch.default_headers = {
     'X-Frame-Options' => 'SAMEORIGIN',
     'X-Content-Type-Options' => 'nosniff',
     'X-XSS-Protection' => '1; mode=block',
-    'Referrer-Policy' => 'strict-origin-when-cross-origin'
+    'Referrer-Policy' => 'strict-origin-when-cross-origin',
+    'Permissions-Policy' => 'camera=(), microphone=(), geolocation=(), payment=(self)'
   }
 
-  # 🔒 CONTENT SECURITY POLICY (CSP)
+  # CONTENT SECURITY POLICY (CSP)
   config.content_security_policy do |policy|
     policy.default_src :self, :https
     policy.font_src    :self, :https, :data, 'https://cdnjs.cloudflare.com'
@@ -80,7 +81,7 @@ Rails.application.configure do
   # Report violations without enforcing policy (use for testing)
   # config.content_security_policy_report_only = true
 
-  # 🔒 SECURE COOKIES
+  # SECURE COOKIES
   config.session_store :cookie_store,
     key: '_vente_en_ligne_session',
     secure: true,           # Envoyer uniquement via HTTPS
@@ -123,7 +124,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # 🔒 PROTECTION DNS REBINDING : Autoriser uniquement les domaines légitimes
+  # PROTECTION DNS REBINDING : Autoriser uniquement les domaines légitimes
   config.hosts = [
     "vente-en-ligne-thomas-33c780989c1d.herokuapp.com",  # Heroku
     "innovaition.cloud",                                  # Domaine principal
