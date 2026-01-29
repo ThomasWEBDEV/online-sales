@@ -29,6 +29,7 @@ class Order < ApplicationRecord
     message: "doit être un numéro de téléphone valide",
     allow_blank: true
   }
+  validates :tracking_number, length: { maximum: 100 }, allow_blank: true
 
   # VALIDATION : Buyer et Seller doivent être différents
   validate :buyer_and_seller_must_be_different
